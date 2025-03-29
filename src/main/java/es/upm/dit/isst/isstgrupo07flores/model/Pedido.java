@@ -1,21 +1,36 @@
 package es.upm.dit.isst.isstgrupo07flores.model;
 
 import java.util.UUID;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Digits;
 
+import org.hibernate.annotations.CreationTimestamp;
+
+@Entity
 public class Pedido {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO) 
     private UUID id; 
     private UUID clientId; // PARA QUE SEAN FOREIGN KEYS NO SE SI HAY QUE TOCAR ALGO AQUI
     private UUID sellerId; // PARA QUE SEAN FOREIGN KEYS NO SE SI HAY QUE TOCAR ALGO AQUI
-    private float coste;
-    private Timestamp fecha;
+
+    // No se si hay que hacerlo con BigDecimal.
+    // No se si hay que restringir el tema de los decimales de esta forma.
+    @DecimalMin(value = "0.01", message = "El precio debe ser mayor que cero")
+    @Digits(integer = 3, fraction = 2, message = "El precio debe tener hasta 3 dígitos enteros y 2 decimales")
+    private BigDecimal coste; 
+
+    @CreationTimestamp private Timestamp fecha;
     private String urlTracking; 
 
     // Constructor vacío
     public Pedido() {}
 
     // Constructor con parámetros
-    public Pedido(UUID id, UUID clientId, UUID sellerId, float coste, Timestamp fecha, String urlTracking) {
+    public Pedido(UUID id, UUID clientId, UUID sellerId, BigDecimal coste, Timestamp fecha, String urlTracking) {
         this.id = id;
         this.clientId = clientId;
         this.sellerId = sellerId;
@@ -49,11 +64,11 @@ public class Pedido {
         this.sellerId = sellerId;
     }
 
-    public float getCoste() {
+    public BigDecimal getCoste() {
         return coste;
     }
 
-    public void setCoste(float coste) {
+    public void setCoste(BigDecimal coste) {
         this.coste = coste;
     }
 
