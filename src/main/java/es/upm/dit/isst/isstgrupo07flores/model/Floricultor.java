@@ -1,13 +1,20 @@
 package es.upm.dit.isst.isstgrupo07flores.model;
 
 import java.util.UUID;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
+@Entity
 public class Floricultor {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO) 
     private UUID id; // Identificador único del usuario
     private String nombre; // Nombre escogido al crear la cuenta
+    @Email
     private String correoElectronico; // Correo electrónico usado para crear la cuenta
     private String contrasena; // Contraseña del usuario cifrada
     private String direccion; // Dirección del negocio del floricultor
+    @Pattern(regexp = "^\\d{5}$", message = "El código postal no es válido")
     private String cp; // Código postal de la dirección
     private float valoracion; // Valoración media del floricultor
 
@@ -47,9 +54,6 @@ public class Floricultor {
     }
 
     public void setCorreoElectronico(String correoElectronico) {
-        if (correoElectronico == null || !correoElectronico.matches("^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
-            throw new IllegalArgumentException("El correo electrónico no tiene un formato válido.");
-        }
         this.correoElectronico = correoElectronico;
     }
 

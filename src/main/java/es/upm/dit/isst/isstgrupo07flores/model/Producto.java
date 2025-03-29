@@ -1,13 +1,22 @@
 package es.upm.dit.isst.isstgrupo07flores.model;
-import java.util.UUID;
 
+import java.math.BigDecimal;
+import java.util.UUID;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Digits;
+@Entity
 public class Producto {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id; 
     private UUID userId; 
     private String nombre; 
     // private Colores color; // UN RAMO TIENE TIENE COLOR O COLORES???
     private String descripcion; 
-    private float precio; 
+    @DecimalMin(value = "0.01", message = "El precio debe ser mayor que cero")
+    @Digits(integer = 3, fraction = 2, message = "El precio debe tener hasta 3 dígitos enteros y 2 decimales")
+    private BigDecimal precio; 
     private int stock; 
     private String urlImg; 
     private Ocasiones ocasion;
@@ -21,7 +30,7 @@ public class Producto {
     public Producto() {}
 
     // Constructor con parámetros
-    public Producto(UUID id, UUID userId, String nombre, String descripcion, float precio, int stock, String urlImg, Ocasiones ocasion) {
+    public Producto(UUID id, UUID userId, String nombre, String descripcion, BigDecimal precio, int stock, String urlImg, Ocasiones ocasion) {
         this.id = id;
         this.userId = userId;
         this.nombre = nombre;
@@ -65,11 +74,11 @@ public class Producto {
         this.descripcion = descripcion;
     }
 
-    public float getPrecio() {
+    public BigDecimal getPrecio() {
         return precio;
     }
 
-    public void setPrecio(float precio) {
+    public void setPrecio(BigDecimal precio) {
         this.precio = precio;
     }
 
