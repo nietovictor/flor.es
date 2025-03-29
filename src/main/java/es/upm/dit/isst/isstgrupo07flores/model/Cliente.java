@@ -9,8 +9,7 @@ public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id; 
-    @Email
-    private String correoElectronico; 
+    @Email private String correoElectronico; 
     private String contrasena; 
     @Pattern(regexp = "^\\d{9}$", message = "El número de teléfono no es válido") // HABRA QUE USAR @Valid PARA ACTIVAR ESTO EN EL CONTROLADOR
     private String telefono; 

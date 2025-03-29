@@ -9,6 +9,5 @@ import java.util.List;
 
 @Repository
 public interface FloricultorRepository extends JpaRepository<Floricultor, UUID> {
-    List<Floricultor> findByComunidad(String localidad); // Esto lo usaremos para comprobar si el floricultor está 
-                                                         // en la misma comunidad que el cliente, no tengo claro donde se implementa el metodo
+   
 }

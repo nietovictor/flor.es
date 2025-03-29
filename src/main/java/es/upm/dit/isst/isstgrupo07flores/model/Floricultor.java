@@ -9,27 +9,33 @@ public class Floricultor {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) 
     private UUID id; 
+
     private String nombre; 
+
     @Email
     private String correoElectronico; 
+
     private String contrasena; 
+    
     private String direccion; 
+
     @Pattern(regexp = "^\\d{5}$", message = "El código postal no es válido") // HABRA QUE USAR @Valid PARA ACTIVAR ESTO EN EL CONTROLADOR
     private String cp;
-    private float valoracion;
+
+    /* private float valoracion; No hace falta guardarlo en la BBDD, que se haga con un metodo en el front y ya*/
 
     // Constructor vacío
     public Floricultor() {}
 
     // Constructor con parámetros
-    public Floricultor(UUID id, String nombre, String correoElectronico, String contrasena, String direccion, String cp, float valoracion) {
+    public Floricultor(UUID id, String nombre, String correoElectronico, String contrasena, String direccion, String cp/* , float valoracion */) {
         this.id = id;
         this.nombre = nombre;
         setCorreoElectronico(correoElectronico); 
         this.contrasena = contrasena;
         this.direccion = direccion;
         this.cp = cp;
-        this.valoracion = valoracion;   // LA VALORACIÓN TENDRIA QUE HACERSE CON UNA MEDIA DE VALORACIONES, SEGURAMENTE SE HAGA EN UNO DE LOS METODOS
+        /* this.valoracion = valoracion; */
     }
 
     // Getters y Setters
@@ -81,13 +87,13 @@ public class Floricultor {
         this.cp = cp;
     }
 
-    public float getValoracion() {
+    /* public float getValoracion() {
         return valoracion;
     }
 
     public void setValoracion(float valoracion) {
         this.valoracion = valoracion;
-    }
+    } */
 
     @Override
     public String toString() {
@@ -97,7 +103,6 @@ public class Floricultor {
                 ", correoElectronico='" + correoElectronico + '\'' +
                 ", direccion='" + direccion + '\'' +
                 ", cp='" + cp + '\'' +
-                ", valoracion=" + valoracion +
                 '}';
     }
 }

@@ -7,5 +7,5 @@ import java.util.UUID;
 
 @Repository
 public interface PedidoRepository extends JpaRepository<Pedido, UUID> {
-    // Aquí puedes definir métodos personalizados si los necesitas.
+    
 }
