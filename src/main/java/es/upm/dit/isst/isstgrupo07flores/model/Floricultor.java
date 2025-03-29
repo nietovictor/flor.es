@@ -8,15 +8,15 @@ import jakarta.validation.constraints.*;
 public class Floricultor {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) 
-    private UUID id; // Identificador único del usuario
-    private String nombre; // Nombre escogido al crear la cuenta
+    private UUID id; 
+    private String nombre; 
     @Email
-    private String correoElectronico; // Correo electrónico usado para crear la cuenta
-    private String contrasena; // Contraseña del usuario cifrada
-    private String direccion; // Dirección del negocio del floricultor
-    @Pattern(regexp = "^\\d{5}$", message = "El código postal no es válido")
-    private String cp; // Código postal de la dirección
-    private float valoracion; // Valoración media del floricultor
+    private String correoElectronico; 
+    private String contrasena; 
+    private String direccion; 
+    @Pattern(regexp = "^\\d{5}$", message = "El código postal no es válido") // HABRA QUE USAR @Valid PARA ACTIVAR ESTO EN EL CONTROLADOR
+    private String cp;
+    private float valoracion;
 
     // Constructor vacío
     public Floricultor() {}

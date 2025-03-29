@@ -14,9 +14,13 @@ public class Producto {
     private String nombre; 
     // private Colores color; // UN RAMO TIENE TIENE COLOR O COLORES???
     private String descripcion; 
+
+    // No se si hay que hacerlo con BigDecimal.
+    // No se si hay que restringir el tema de los decimales de esta forma.
     @DecimalMin(value = "0.01", message = "El precio debe ser mayor que cero")
     @Digits(integer = 3, fraction = 2, message = "El precio debe tener hasta 3 dígitos enteros y 2 decimales")
     private BigDecimal precio; 
+
     private int stock; 
     private String urlImg; 
     private Ocasiones ocasion;
