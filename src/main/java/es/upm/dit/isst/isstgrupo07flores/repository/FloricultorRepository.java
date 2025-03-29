@@ -9,5 +9,4 @@ import java.util.List;
 
 @Repository
 public interface FloricultorRepository extends JpaRepository<Floricultor, UUID> {
-   
 }
