@@ -4,8 +4,7 @@ import java.util.UUID;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.*;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -14,29 +13,44 @@ public class Pedido {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) 
     private UUID id; 
-    private UUID clientId; // PARA QUE SEAN FOREIGN KEYS NO SE SI HAY QUE TOCAR ALGO AQUI
-    private UUID sellerId; // PARA QUE SEAN FOREIGN KEYS NO SE SI HAY QUE TOCAR ALGO AQUI
 
-    // No se si hay que hacerlo con BigDecimal.
-    // No se si hay que restringir el tema de los decimales de esta forma.
-    @DecimalMin(value = "0.01", message = "El precio debe ser mayor que cero")
+    @ManyToOne
+    @JoinColumn(name = "client_id", nullable = false) // Clave foránea hacia Cliente
+    private Cliente cliente; 
+
+    @ManyToOne
+    @JoinColumn(name = "seller_id", nullable = false) // Clave foránea hacia Floricultor
+    private Floricultor floricultor; 
+
+    @ManyToOne
+    @JoinColumn(name = "producto", nullable = false) // Clave foránea hacia Floricultor
+    private Producto producto; 
+
+    @Positive
     @Digits(integer = 3, fraction = 2, message = "El precio debe tener hasta 3 dígitos enteros y 2 decimales")
     private BigDecimal coste; 
 
-    @CreationTimestamp private Timestamp fecha;
+    @CreationTimestamp 
+    private Timestamp fecha;
+
     private String urlTracking; 
+
+    private float valoracion; 
+
+
 
     // Constructor vacío
     public Pedido() {}
 
     // Constructor con parámetros
-    public Pedido(UUID id, UUID clientId, UUID sellerId, BigDecimal coste, Timestamp fecha, String urlTracking) {
+    public Pedido(UUID id, Cliente cliente, Floricultor floricultor, BigDecimal coste, Timestamp fecha, String urlTracking, float valoracion) {
         this.id = id;
-        this.clientId = clientId;
-        this.sellerId = sellerId;
+        this.cliente = cliente;
+        this.floricultor = floricultor;
         this.coste = coste;
         this.fecha = fecha;
         this.urlTracking = urlTracking;
+        this.valoracion = valoracion;
     }
 
     // Getters y Setters
@@ -48,20 +62,20 @@ public class Pedido {
         this.id = id;
     }
 
-    public UUID getClientId() {
-        return clientId;
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public void setClientId(UUID clientId) {
-        this.clientId = clientId;
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
-    public UUID getSellerId() {
-        return sellerId;
+    public Floricultor getFloricultor() {
+        return floricultor;
     }
 
-    public void setSellerId(UUID sellerId) {
-        this.sellerId = sellerId;
+    public void setFloricultor(Floricultor floricultor) {
+        this.floricultor = floricultor;
     }
 
     public BigDecimal getCoste() {
@@ -88,12 +102,20 @@ public class Pedido {
         this.urlTracking = urlTracking;
     }
 
+    public float getValoracion() {
+        return valoracion;
+    }
+
+    public void setValoracion(float valoracion) {
+        this.valoracion = valoracion;
+    }
+
     @Override
     public String toString() {
         return "Pedido{" +
                 "id=" + id +
-                ", clientId=" + clientId +
-                ", sellerId=" + sellerId +
+                ", cliente=" + cliente +
+                ", floricultor=" + floricultor +
                 ", coste=" + coste +
                 ", fecha=" + fecha +
                 ", urlTracking='" + urlTracking + '\'' +

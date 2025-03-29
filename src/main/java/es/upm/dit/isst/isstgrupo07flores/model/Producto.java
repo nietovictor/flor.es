@@ -3,22 +3,32 @@ package es.upm.dit.isst.isstgrupo07flores.model;
 import java.math.BigDecimal;
 import java.util.UUID;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.*;
+
+
 @Entity
 public class Producto {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id; 
-    private UUID userId; 
+
+    @ManyToOne
+    @JoinColumn(name = "floricultor_id", nullable = false) // Clave foránea hacia Floricultor
+    private Floricultor floricultor; 
+
     private String nombre; 
-    // private Colores color; // UN RAMO TIENE TIENE COLOR O COLORES???
+
     private String descripcion; 
-    @DecimalMin(value = "0.01", message = "El precio debe ser mayor que cero")
+
+    @PositiveOrZero // Dejamos que sea 0 por si hay problemas para añadir cosas como envoltorio/bolsa que no tienen precio
     @Digits(integer = 3, fraction = 2, message = "El precio debe tener hasta 3 dígitos enteros y 2 decimales")
     private BigDecimal precio; 
+
+    @PositiveOrZero
     private int stock; 
+
     private String urlImg; 
+
     private Ocasiones ocasion;
 
     // Enum para las ocasiones
@@ -30,9 +40,9 @@ public class Producto {
     public Producto() {}
 
     // Constructor con parámetros
-    public Producto(UUID id, UUID userId, String nombre, String descripcion, BigDecimal precio, int stock, String urlImg, Ocasiones ocasion) {
+    public Producto(UUID id, Floricultor floricultor, String nombre, String descripcion, BigDecimal precio, int stock, String urlImg, Ocasiones ocasion) {
         this.id = id;
-        this.userId = userId;
+        this.floricultor = floricultor;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
@@ -50,12 +60,12 @@ public class Producto {
         this.id = id;
     }
 
-    public UUID getUserId() {
-        return userId;
+    public Floricultor getFloricultor() {
+        return floricultor;
     }
 
-    public void setUserId(UUID userId) {
-        this.userId = userId;
+    public void setFloricultor(Floricultor floricultor) {
+        this.floricultor = floricultor;
     }
 
     public String getNombre() {
@@ -87,9 +97,6 @@ public class Producto {
     }
 
     public void setStock(int stock) {
-        if (stock < 0) {
-            throw new IllegalArgumentException("El stock no puede ser negativo.");
-        }
         this.stock = stock;
     }
 
@@ -113,7 +120,7 @@ public class Producto {
     public String toString() {
         return "Producto{" +
                 "id=" + id +
-                ", userId=" + userId +
+                ", floricultor=" + floricultor +
                 ", nombre='" + nombre + '\'' +
                 ", descripcion='" + descripcion + '\'' +
                 ", precio=" + precio +
