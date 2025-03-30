@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Búsqueda por código postal</title>
+</head>
+<body>
+    <h1>Buscar floricultores en tu zona</h1>
+    
+    <div th:if="${error}">
+        <p style="color:red;" th:text="${error}"></p>
+    </div>
+
+    <form th:action="@{/catalog/search}" method="post">
+        <label for="postalCode">Código Postal:</label>
+        <input type="text" id="postalCode" name="postalCode" required maxlength="5"/>
+        <button type="submit">Buscar</button>
+    </form>
+</body>
+</html>
