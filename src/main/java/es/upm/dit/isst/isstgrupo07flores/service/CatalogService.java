@@ -18,11 +18,12 @@ public class CatalogService {
 
     // Nuevo método:
     public List<Floricultor> getFloricultoresByPostalCode(String clientPostalCode) {
-        if(clientPostalCode.length() < 2){
-            throw new IllegalArgumentException("El código postal del cliente debe tener al menos 2 dígitos.");
+        if(clientPostalCode.length() != 5){
+            throw new IllegalArgumentException("El código postal del cliente debe tener 5 dígitos.");
         }
 
         String prefix = clientPostalCode.substring(0,2);
+        System.out.println("Buscando floricultores con código postal que comienza con: " + prefix);
         return floricultorRepository.findByCpStartingWith(prefix);
     }
 }

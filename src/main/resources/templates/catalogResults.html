@@ -5,24 +5,22 @@
     <title>Floristas en tu zona</title>
 </head>
 <body>
-    <h1 th:text="'Resultados para el código postal: ' + ${cp}"></h1>
+    <h1 th:text="'Resultados para el código postal: ' + ${postalCode}"></h1>
 
     <div th:if="${#lists.isEmpty(floricultores)}">
         <p>No se encontraron floricultores en tu zona.</p>
     </div>
 
     <div th:each="floricultor : ${floricultores}">
-        <h2 th:text="${floricultor.name}">Nombre Floricultor</h2>
-        <p>Código Postal: <span th:text="${floricultor.postalCode}"></span></p>
-        
-        <ul>
-            <li th:each="product : ${floricultor.flowers}">
-                <strong th:text="${product.name}">Flor</strong> -
-                <span th:text="${product.description}">Descripción</span> -
-                Precio: <span th:text="${product.price}">0.00</span>€
-            </li>
-        </ul>
-        <hr/>
+        <h2 th:text="${floricultor.nombre}">Nombre Floricultor</h2>
+        <p>Código Postal: <span th:text="${floricultor.cp}"></span></p>
+        <div th:each="producto : ${productosPorFloricultor[floricultor.id]}">
+            <h3 th:text="${producto.nombre}">Nombre Producto</h3>
+            <p>Descripción: <span th:text="${producto.descripcion}"></span></p>
+            <p>Precio: <span th:text="${producto.precio}"></span></p>
+            <p>Stock: <span th:text="${producto.stock}"></span></p>
+            <p>Imagen: <img th:src="@{${producto.urlImg}}" alt="Imagen del producto" /></p>
+        </div>
     </div>
 
     <a th:href="@{/catalog/search}">Buscar de nuevo</a>
