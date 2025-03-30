@@ -23,6 +23,6 @@ public class CatalogService {
         }
 
         String prefix = clientPostalCode.substring(0,2);
-        return floricultorRepository.findByPostalCodeStartingWith(prefix);
+        return floricultorRepository.findByCpStartingWith(prefix);
     }
 }

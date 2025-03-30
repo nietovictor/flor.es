@@ -5,21 +5,21 @@
     <title>Floristas en tu zona</title>
 </head>
 <body>
-    <h1 th:text="'Resultados para el código postal: ' + ${postalCode}"></h1>
+    <h1 th:text="'Resultados para el código postal: ' + ${cp}"></h1>
 
-    <div th:if="${#lists.isEmpty(florists)}">
+    <div th:if="${#lists.isEmpty(floricultores)}">
         <p>No se encontraron floricultores en tu zona.</p>
     </div>
 
-    <div th:each="florist : ${florists}">
-        <h2 th:text="${florist.name}">Nombre Florista</h2>
-        <p>Código Postal: <span th:text="${florist.postalCode}"></span></p>
+    <div th:each="floricultor : ${floricultores}">
+        <h2 th:text="${floricultor.name}">Nombre Floricultor</h2>
+        <p>Código Postal: <span th:text="${floricultor.postalCode}"></span></p>
         
         <ul>
-            <li th:each="flower : ${florist.flowers}">
-                <strong th:text="${flower.name}">Flor</strong> -
-                <span th:text="${flower.description}">Descripción</span> -
-                Precio: <span th:text="${flower.price}">0.00</span>€
+            <li th:each="product : ${floricultor.flowers}">
+                <strong th:text="${product.name}">Flor</strong> -
+                <span th:text="${product.description}">Descripción</span> -
+                Precio: <span th:text="${product.price}">0.00</span>€
             </li>
         </ul>
         <hr/>

@@ -1,22 +1,43 @@
-package es.upm.dit.isst.isstgrupo07flores.config;
+package es.upm.dit.isst.isstgrupo07flores.controller;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.web.SecurityFilterChain;
+import java.util.List;
 
-@Configuration
-public class SecurityConfig {
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            .authorizeHttpRequests(auth -> auth
-                .anyRequest().permitAll() // Permite acceso a todas las páginas
-            )
-            .csrf(csrf -> csrf.disable()) // Desactiva CSRF para H2
-            .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin())); // Permite iframes
+import es.upm.dit.isst.isstgrupo07flores.model.Floricultor;
+import es.upm.dit.isst.isstgrupo07flores.service.CatalogService;
 
-        return http.build();
+@Controller
+public class CatalogController {
+
+    private final CatalogService catalogService;
+
+    public CatalogController(CatalogService catalogService) {
+        this.catalogService = catalogService;
+    }
+
+    // Página inicial para introducir código postal
+    @GetMapping("/catalog/search")
+    public String postalCodeForm(){
+        return "postalCodeForm";
+    }
+
+    // Procesar búsqueda de floricultores por CP
+    @PostMapping("/catalog/search")
+    public String searchByPostalCode(@RequestParam("cp") String postalCode, Model model) {
+        try {
+            List<Floricultor> floricultores = catalogService.getFloricultoresByPostalCode(postalCode);
+            model.addAttribute("floricultores", floricultores);
+            model.addAttribute("postalCode", postalCode);
+            return "catalogResults";
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage());
+            return "postalCodeForm";
+        }
     }
 }
+
