@@ -695,3 +695,65 @@ The connection was not closed by the application and is garbage collected [90018
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:690)
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
 	... 56 more
+2025-03-30 20:30:04.960693+02:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLDataException: Conversión de datos fallida, convirtiendo "'a1e0e7d2-9a1a-4e90-bb0c-0001' (FLORICULTOR: ""ID"" UUID NOT NULL)"
+Data conversion error converting "'a1e0e7d2-9a1a-4e90-bb0c-0001' (FLORICULTOR: ""ID"" UUID NOT NULL)"; SQL statement:
+INSERT INTO FLORICULTOR (ID, CONTRASENA, CORREO_ELECTRONICO, CP, DIRECCION, NOMBRE) VALUES
+('a1e0e7d2-9a1a-4e90-bb0c-0001', 'tulipan123', 'tulipan1@gmail.com', '28004', 'Calle Fresas 10, Madrid', 'Tulipanes de Lavapiés'),
+('a1e0e7d2-9a1a-4e90-bb0c-0002', 'rosas456', 'rosas2@gmail.com', '08001', 'Rambla 33, Barcelona', 'Rosas Rambla'),
+('a1e0e7d2-9a1a-4e90-bb0c-0003', 'orquidea789', 'orquidea3@gmail.com', '41001', 'Calle Sol 15, Sevilla', 'Orquídeas del Sur'),
+('a1e0e7d2-9a1a-4e90-bb0c-0004', 'margarita321', 'margarita4@gmail.com', '03001', 'Avenida Flor 5, Alicante', 'Margaritas del Mar'),
+('a1e0e7d2-9a1a-4e90-bb0c-0005', 'lirio987', 'lirio5@gmail.com', '29003', 'Calle Campoamor 22, Málaga', 'Lirios de Málaga'),
+('a1e0e7d2-9a1a-4e90-bb0c-0006', 'flores456', 'flores6@gmail.com', '46004', 'Calle del Carmen 3, Valencia', 'Floristería Carmen'),
+('a1e0e7d2-9a1a-4e90-bb0c-0007', 'petalos789', 'petalos7@gmail.com', '35001', 'Avenida Atlántico 100, Las Palmas', 'Pétalos Canarios'),
+('a1e0e7d2-9a1a-4e90-bb0c-0008', 'jardin321', 'jardin8@gmail.com', '50001', 'Paseo Independencia 45, Zaragoza', 'Flores del Ebro'),
+('a1e0e7d2-9a1a-4e90-bb0c-0009', 'campo654', 'campo9@gmail.com', '33001', 'Calle Jardín 12, Oviedo', 'Flor del Norte'),
+('a1e0e7d2-9a1a-4e90-bb0c-0010', 'verde987', 'verde10@gmail.com', '20001', 'Boulevard 8, San Sebastián', 'Floristería Donostia') [22018-232]
+2025-03-30 20:45:18.980496+02:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLDataException: Conversión de datos fallida, convirtiendo "'ed79c528-7e8e-426f-bc69-596ceec2f958a' (PEDIDO: ""CLIENT_ID"" UUID NOT NULL)"
+Data conversion error converting "'ed79c528-7e8e-426f-bc69-596ceec2f958a' (PEDIDO: ""CLIENT_ID"" UUID NOT NULL)"; SQL statement:
+INSERT INTO PEDIDO (ID, COSTE, VALORACION, FECHA, CLIENT_ID, SELLER_ID, PRODUCTO_ID, URL_TRACKING) VALUES
+(RANDOM_UUID(), 39.99, 4.5, '2024-03-01 10:00:00', '550e8400-e29b-41d4-a716-446655440000', '550e8400-e29b-41d4-a716-446655440001', '550e8400-e29b-41d4-a716-446655440000', 'https://track.example.com/abc1'),
+(RANDOM_UUID(), 199.99, 4.8, '2024-03-02 12:15:00', '650e8400-e29b-41d4-a716-446655440000', '550e8400-e29b-41d4-a716-446655440001', '750e8400-e29b-41d4-a716-446655440000', 'https://track.example.com/abc2'),
+(RANDOM_UUID(), 94.50, 4.2, '2024-03-03 09:30:00', '4ad28204-b9d7-47bf-92cf-a73c469b608b', '495fc113-8325-46c1-89b2-78d58c9191db', 'deb67628-5405-4489-a4b1-e01ccf6cea45', 'https://track.example.com/abc3'),
+(RANDOM_UUID(), 56.81, 4.6, '2024-03-04 18:20:00', 'bdeb6beb-76f4-4330-898b-eb0aa478752d', '495fc113-8325-46c1-89b2-78d58c9191db', '500db818-cc09-4424-9849-7ca48ad4e191', 'https://track.example.com/abc4'),
+(RANDOM_UUID(), 97.30, 4.9, '2024-03-05 14:10:00', '980d3980-0684-4d13-8163-fc2dea5d3660', '495fc113-8325-46c1-89b2-78d58c9191db', '8b4bd599-9ff2-4dab-81e1-b347f919ff9e', 'https://track.example.com/abc5'),
+(RANDOM_UUID(), 30.68, 3.9, '2024-03-06 11:45:00', 'ed79c528-7e8e-426f-bc69-596ceec2f958a', '2ef4e68b-7815-4e42-b2f9-5626e7070795', '4fae603f-b78f-4986-84a0-a201eac1a63c', 'https://track.example.com/abc6'),
+(RANDOM_UUID(), 51.34, 4.3, '2024-03-07 17:35:00', '7b6abb83-8c35-4984-93ee-8b9afb773761', '2ef4e68b-7815-4e42-b2f9-5626e7070795', 'b3e75b4d-2140-4830-b99f-83285b7977c5', 'https://track.example.com/abc7'),
+(RANDOM_UUID(), 89.79, 4.7, '2024-03-08 20:50:00', 'bdeb6beb-76f4-4330-898b-eb0aa478752d', '2ef4e68b-7815-4e42-b2f9-5626e7070795', '546550bd-ef5d-4456-9c12-18d5ed7ce4f2', 'https://track.example.com/abc8'),
+(RANDOM_UUID(), 43.86, 4.1, '2024-03-09 08:15:00', '980d3980-0684-4d13-8163-fc2dea5d3660', '2ef4e68b-7815-4e42-b2f9-5626e7070795', 'f1c6a76e-8c0a-4f6e-bc02-28efec36ffed', 'https://track.example.com/abc9'),
+(RANDOM_UUID(), 16.63, 4.0, '2024-03-10 13:00:00', 'ed79c528-7e8e-426f-bc69-596ceec2f958a', '69d70222-b227-431b-8a1a-0fc9ec2e03dc', 'ffbbef55-61dd-411b-bb24-3eb93224a1d4', 'https://track.example.com/abc10'),
+(RANDOM_UUID(), 39.11, 3.8, '2024-03-11 15:30:00', '4ad28204-b9d7-47bf-92cf-a73c469b608b', '69d70222-b227-431b-8a1a-0fc9ec2e03dc', '091ab88a-a565-4472-8b90-4551c6849db3', 'https://track.example.com/abc11'),
+(RANDOM_UUID(), 31.72, 4.0, '2024-03-12 10:30:00', '650e8400-e29b-41d4-a716-446655440000', '69d70222-b227-431b-8a1a-0fc9ec2e03dc', '62e392fb-0813-4886-8756-5c75e99811b2', 'https://track.example.com/abc12'),
+(RANDOM_UUID(), 37.56, 3.5, '2024-03-13 16:40:00', '550e8400-e29b-41d4-a716-446655440000', '044d6826-e941-43ca-bed6-b205f814733c', '1f5612f2-73fe-4bd0-9c1a-b9c26078bcbd', 'https://track.example.com/abc13'),
+(RANDOM_UUID(), 68.18, 4.9, '2024-03-14 07:50:00', '7b6abb83-8c35-4984-93ee-8b9afb773761', '044d6826-e941-43ca-bed6-b205f814733c', '7d059f8e-8ad5-4e64-af94-cc666f6deec87', 'https://track.example.com/abc14'),
+(RANDOM_UUID(), 64.17, 3.7, '2024-03-15 09:25:00', 'bdeb6beb-76f4-4330-898b-eb0aa478752d', '044d6826-e941-43ca-bed6-b205f814733c', '4ab23eae-a9de-44d4-a606-97ce28372d17', 'https://track.example.com/abc15'),
+(RANDOM_UUID(), 59.21, 4.3, '2024-03-16 11:11:00', '650e8400-e29b-41d4-a716-446655440000', '044d6826-e941-43ca-bed6-b205f814733c', 'b35a2924-c83e-4594-a641-e064cdd99f65', 'https://track.example.com/abc16'),
+(RANDOM_UUID(), 73.91, 4.6, '2024-03-17 13:13:00', 'ed79c528-7e8e-426f-bc69-596ceec2f958a', '23347676-eb94-48e3-a185-ebac38d95369', '75020490-dd87-4436-aac4-fae3040745f8', 'https://track.example.com/abc17'),
+(RANDOM_UUID(), 34.30, 3.6, '2024-03-18 14:55:00', '4ad28204-b9d7-47bf-92cf-a73c469b608b', '23347676-eb94-48e3-a185-ebac38d95369', 'ef28d7e0-49ae-41e3-a18a-e185fbe57b06', 'https://track.example.com/abc18'),
+(RANDOM_UUID(), 33.94, 3.9, '2024-03-19 19:19:00', '7b6abb83-8c35-4984-93ee-8b9afb773761', '23347676-eb94-48e3-a185-ebac38d95369', 'd30f8c32-0d68-4bd9-9758-fed7b60c9d0e', 'https://track.example.com/abc19'),
+(RANDOM_UUID(), 26.47, 4.4, '2024-03-20 21:21:00', 'bdeb6beb-76f4-4330-898b-eb0aa478752d', 'ca842c23-a1d4-42af-a4f4-adc5c5ec55db', '74888602-01a3-4dcb-81e2-3971100b533f', 'https://track.example.com/abc20') [22018-232]
+2025-03-30 20:45:40.742425+02:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLDataException: Conversión de datos fallida, convirtiendo "'ed79c528-7e8e-426f-bc69-596ceec2f958a' (PEDIDO: ""CLIENT_ID"" UUID NOT NULL)"
+Data conversion error converting "'ed79c528-7e8e-426f-bc69-596ceec2f958a' (PEDIDO: ""CLIENT_ID"" UUID NOT NULL)"; SQL statement:
+INSERT INTO PEDIDO (ID, COSTE, VALORACION, FECHA, CLIENT_ID, SELLER_ID, PRODUCTO_ID, URL_TRACKING) VALUES
+(RANDOM_UUID(), 39.99, 4.5, '2024-03-01 10:00:00', '550e8400-e29b-41d4-a716-446655440000', '550e8400-e29b-41d4-a716-446655440001', '550e8400-e29b-41d4-a716-446655440000', 'https://track.example.com/abc1'),
+(RANDOM_UUID(), 199.99, 4.8, '2024-03-02 12:15:00', '650e8400-e29b-41d4-a716-446655440000', '550e8400-e29b-41d4-a716-446655440001', '750e8400-e29b-41d4-a716-446655440000', 'https://track.example.com/abc2'),
+(RANDOM_UUID(), 94.50, 4.2, '2024-03-03 09:30:00', '4ad28204-b9d7-47bf-92cf-a73c469b608b', '495fc113-8325-46c1-89b2-78d58c9191db', 'deb67628-5405-4489-a4b1-e01ccf6cea45', 'https://track.example.com/abc3'),
+(RANDOM_UUID(), 56.81, 4.6, '2024-03-04 18:20:00', 'bdeb6beb-76f4-4330-898b-eb0aa478752d', '495fc113-8325-46c1-89b2-78d58c9191db', '500db818-cc09-4424-9849-7ca48ad4e191', 'https://track.example.com/abc4'),
+(RANDOM_UUID(), 97.30, 4.9, '2024-03-05 14:10:00', '980d3980-0684-4d13-8163-fc2dea5d3660', '495fc113-8325-46c1-89b2-78d58c9191db', '8b4bd599-9ff2-4dab-81e1-b347f919ff9e', 'https://track.example.com/abc5'),
+(RANDOM_UUID(), 30.68, 3.9, '2024-03-06 11:45:00', 'ed79c528-7e8e-426f-bc69-596ceec2f958a', '2ef4e68b-7815-4e42-b2f9-5626e7070795', '4fae603f-b78f-4986-84a0-a201eac1a63c', 'https://track.example.com/abc6'),
+(RANDOM_UUID(), 51.34, 4.3, '2024-03-07 17:35:00', '7b6abb83-8c35-4984-93ee-8b9afb773761', '2ef4e68b-7815-4e42-b2f9-5626e7070795', 'b3e75b4d-2140-4830-b99f-83285b7977c5', 'https://track.example.com/abc7'),
+(RANDOM_UUID(), 89.79, 4.7, '2024-03-08 20:50:00', 'bdeb6beb-76f4-4330-898b-eb0aa478752d', '2ef4e68b-7815-4e42-b2f9-5626e7070795', '546550bd-ef5d-4456-9c12-18d5ed7ce4f2', 'https://track.example.com/abc8'),
+(RANDOM_UUID(), 43.86, 4.1, '2024-03-09 08:15:00', '980d3980-0684-4d13-8163-fc2dea5d3660', '2ef4e68b-7815-4e42-b2f9-5626e7070795', 'f1c6a76e-8c0a-4f6e-bc02-28efec36ffed', 'https://track.example.com/abc9'),
+(RANDOM_UUID(), 16.63, 4.0, '2024-03-10 13:00:00', 'ed79c528-7e8e-426f-bc69-596ceec2f958a', '69d70222-b227-431b-8a1a-0fc9ec2e03dc', 'ffbbef55-61dd-411b-bb24-3eb93224a1d4', 'https://track.example.com/abc10'),
+(RANDOM_UUID(), 39.11, 3.8, '2024-03-11 15:30:00', '4ad28204-b9d7-47bf-92cf-a73c469b608b', '69d70222-b227-431b-8a1a-0fc9ec2e03dc', '091ab88a-a565-4472-8b90-4551c6849db3', 'https://track.example.com/abc11'),
+(RANDOM_UUID(), 31.72, 4.0, '2024-03-12 10:30:00', '650e8400-e29b-41d4-a716-446655440000', '69d70222-b227-431b-8a1a-0fc9ec2e03dc', '62e392fb-0813-4886-8756-5c75e99811b2', 'https://track.example.com/abc12'),
+(RANDOM_UUID(), 37.56, 3.5, '2024-03-13 16:40:00', '550e8400-e29b-41d4-a716-446655440000', '044d6826-e941-43ca-bed6-b205f814733c', '1f5612f2-73fe-4bd0-9c1a-b9c26078bcbd', 'https://track.example.com/abc13'),
+(RANDOM_UUID(), 68.18, 4.9, '2024-03-14 07:50:00', '7b6abb83-8c35-4984-93ee-8b9afb773761', '044d6826-e941-43ca-bed6-b205f814733c', '7d059f8e-8ad5-4e64-af94-cc666f6deec87', 'https://track.example.com/abc14'),
+(RANDOM_UUID(), 64.17, 3.7, '2024-03-15 09:25:00', 'bdeb6beb-76f4-4330-898b-eb0aa478752d', '044d6826-e941-43ca-bed6-b205f814733c', '4ab23eae-a9de-44d4-a606-97ce28372d17', 'https://track.example.com/abc15'),
+(RANDOM_UUID(), 59.21, 4.3, '2024-03-16 11:11:00', '650e8400-e29b-41d4-a716-446655440000', '044d6826-e941-43ca-bed6-b205f814733c', 'b35a2924-c83e-4594-a641-e064cdd99f65', 'https://track.example.com/abc16'),
+(RANDOM_UUID(), 73.91, 4.6, '2024-03-17 13:13:00', 'ed79c528-7e8e-426f-bc69-596ceec2f958a', '23347676-eb94-48e3-a185-ebac38d95369', '75020490-dd87-4436-aac4-fae3040745f8', 'https://track.example.com/abc17'),
+(RANDOM_UUID(), 34.30, 3.6, '2024-03-18 14:55:00', '4ad28204-b9d7-47bf-92cf-a73c469b608b', '23347676-eb94-48e3-a185-ebac38d95369', 'ef28d7e0-49ae-41e3-a18a-e185fbe57b06', 'https://track.example.com/abc18'),
+(RANDOM_UUID(), 33.94, 3.9, '2024-03-19 19:19:00', '7b6abb83-8c35-4984-93ee-8b9afb773761', '23347676-eb94-48e3-a185-ebac38d95369', 'd30f8c32-0d68-4bd9-9758-fed7b60c9d0e', 'https://track.example.com/abc19'),
+(RANDOM_UUID(), 26.47, 4.4, '2024-03-20 21:21:00', 'bdeb6beb-76f4-4330-898b-eb0aa478752d', 'ca842c23-a1d4-42af-a4f4-adc5c5ec55db', '74888602-01a3-4dcb-81e2-3971100b533f', 'https://track.example.com/abc20') [22018-232]
