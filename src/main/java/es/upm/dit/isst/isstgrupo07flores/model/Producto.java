@@ -5,16 +5,15 @@ import java.util.UUID;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
-
 @Entity
 public class Producto {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id; 
 
-    @ManyToOne
-    @JoinColumn(name = "floricultor_id", nullable = false) // Clave foránea hacia Floricultor
-    private Floricultor floricultor; 
+    // Relación con Floricultor basada en su ID
+    @Column(name = "floricultor_id", nullable = false)
+    private UUID floricultorId; 
 
     private String nombre; 
 
@@ -40,9 +39,9 @@ public class Producto {
     public Producto() {}
 
     // Constructor con parámetros
-    public Producto(UUID id, Floricultor floricultor, String nombre, String descripcion, BigDecimal precio, int stock, String urlImg, Ocasiones ocasion) {
+    public Producto(UUID id, UUID floricultorId, String nombre, String descripcion, BigDecimal precio, int stock, String urlImg, Ocasiones ocasion) {
         this.id = id;
-        this.floricultor = floricultor;
+        this.floricultorId = floricultorId;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
@@ -60,12 +59,12 @@ public class Producto {
         this.id = id;
     }
 
-    public Floricultor getFloricultor() {
-        return floricultor;
+    public UUID getFloricultorId() {
+        return floricultorId;
     }
 
-    public void setFloricultor(Floricultor floricultor) {
-        this.floricultor = floricultor;
+    public void setFloricultorId(UUID floricultorId) {
+        this.floricultorId = floricultorId;
     }
 
     public String getNombre() {
@@ -120,7 +119,7 @@ public class Producto {
     public String toString() {
         return "Producto{" +
                 "id=" + id +
-                ", floricultor=" + floricultor +
+                ", floricultorId=" + floricultorId +
                 ", nombre='" + nombre + '\'' +
                 ", descripcion='" + descripcion + '\'' +
                 ", precio=" + precio +

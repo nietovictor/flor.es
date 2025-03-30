@@ -14,7 +14,7 @@ public class Pedido {
     @GeneratedValue(strategy = GenerationType.AUTO) 
     private UUID id; 
 
-    @ManyToOne
+    /* @ManyToOne
     @JoinColumn(name = "client_id", nullable = false) // Clave foránea hacia Cliente
     private Cliente cliente; 
 
@@ -24,7 +24,19 @@ public class Pedido {
 
     @ManyToOne
     @JoinColumn(name = "producto", nullable = false) // Clave foránea hacia Floricultor
-    private Producto producto; 
+    private Producto producto;  */
+
+    // Relación con Cliente basada en su ID
+    @Column(name = "client_id", nullable = false)
+    private UUID clienteId; 
+
+    // Relación con Floricultor basada en su ID
+    @Column(name = "seller_id", nullable = false)
+    private UUID floricultorId; 
+
+    // Relación con Producto basada en su ID
+    @Column(name = "producto_id", nullable = false)
+    private UUID productoId; 
 
     @Positive
     @Digits(integer = 3, fraction = 2, message = "El precio debe tener hasta 3 dígitos enteros y 2 decimales")
@@ -37,16 +49,15 @@ public class Pedido {
 
     private float valoracion; 
 
-
-
     // Constructor vacío
     public Pedido() {}
 
     // Constructor con parámetros
-    public Pedido(UUID id, Cliente cliente, Floricultor floricultor, BigDecimal coste, Timestamp fecha, String urlTracking, float valoracion) {
+    public Pedido(UUID id, UUID clienteId, UUID floricultorId, UUID productoId, BigDecimal coste, Timestamp fecha, String urlTracking, float valoracion) {
         this.id = id;
-        this.cliente = cliente;
-        this.floricultor = floricultor;
+        this.clienteId = clienteId;
+        this.floricultorId = floricultorId;
+        this.productoId = productoId;
         this.coste = coste;
         this.fecha = fecha;
         this.urlTracking = urlTracking;
@@ -62,20 +73,28 @@ public class Pedido {
         this.id = id;
     }
 
-    public Cliente getCliente() {
-        return cliente;
+    public UUID getClienteId() {
+        return clienteId;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+    public void setClienteId(UUID clienteId) {
+        this.clienteId = clienteId;
     }
 
-    public Floricultor getFloricultor() {
-        return floricultor;
+    public UUID getFloricultorId() {
+        return floricultorId;
     }
 
-    public void setFloricultor(Floricultor floricultor) {
-        this.floricultor = floricultor;
+    public void setFloricultorId(UUID floricultorId) {
+        this.floricultorId = floricultorId;
+    }
+
+    public UUID getProductoId() {
+        return productoId;
+    }
+
+    public void setProductoId(UUID productoId) {
+        this.productoId = productoId;
     }
 
     public BigDecimal getCoste() {
@@ -114,11 +133,13 @@ public class Pedido {
     public String toString() {
         return "Pedido{" +
                 "id=" + id +
-                ", cliente=" + cliente +
-                ", floricultor=" + floricultor +
+                ", clienteId=" + clienteId +
+                ", floricultorId=" + floricultorId +
+                ", productoId=" + productoId +
                 ", coste=" + coste +
                 ", fecha=" + fecha +
                 ", urlTracking='" + urlTracking + '\'' +
+                ", valoracion=" + valoracion +
                 '}';
     }
 }
