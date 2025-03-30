@@ -1,0 +1,51 @@
+[33m67b8ef1[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mUS202_ver_catalogo[m[33m)[m HEAD@{0}: reset: moving to 67b8ef1
+[33m2a8b79c[m HEAD@{1}: commit: Cleanup antes de merge
+[33m67b8ef1[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mUS202_ver_catalogo[m[33m)[m HEAD@{2}: reset: moving to HEAD@{22}
+[33m65295ac[m HEAD@{3}: commit: fixed SecurityConfig
+[33mf4032be[m HEAD@{4}: commit (merge): Merge branch 'main' into US202_ver_catalogo
+[33m67b8ef1[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mUS202_ver_catalogo[m[33m)[m HEAD@{5}: checkout: moving from main to US202_ver_catalogo
+[33m0a823c1[m[33m ([m[1;32mmain[m[33m)[m HEAD@{6}: reset: moving to HEAD
+[33m0a823c1[m[33m ([m[1;32mmain[m[33m)[m HEAD@{7}: pull --tags origin main: Fast-forward
+[33m30b0434[m HEAD@{8}: checkout: moving from US202_ver_catalogo to main
+[33m67b8ef1[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mUS202_ver_catalogo[m[33m)[m HEAD@{9}: reset: moving to HEAD@{19}
+[33m30b0434[m HEAD@{10}: reset: moving to HEAD@{15}
+[33m30b0434[m HEAD@{11}: reset: moving to HEAD@{12}
+[33m67b8ef1[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mUS202_ver_catalogo[m[33m)[m HEAD@{12}: reset: moving to HEAD@{16}
+[33m30b0434[m HEAD@{13}: reset: moving to HEAD@{16}
+[33m30b0434[m HEAD@{14}: reset: moving to HEAD@{15}
+[33m67b8ef1[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mUS202_ver_catalogo[m[33m)[m HEAD@{15}: reset: moving to HEAD@{16}
+[33md540295[m[33m ([m[1;32mUS202_mal[m[33m)[m HEAD@{16}: reset: moving to HEAD@{17}
+[33m61002d7[m HEAD@{17}: reset: moving to HEAD@{13}
+[33m61002d7[m HEAD@{18}: reset: moving to HEAD@{12}
+[33m30b0434[m HEAD@{19}: reset: moving to HEAD@{6}
+[33m2f7746a[m HEAD@{20}: rebase (abort): returning to refs/heads/US202_ver_catalogo
+[33m30b0434[m HEAD@{21}: rebase (start): checkout main
+[33m2f7746a[m HEAD@{22}: commit: removed securityconfig
+[33m67b8ef1[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mUS202_ver_catalogo[m[33m)[m HEAD@{23}: rebase (abort): returning to refs/heads/US202_ver_catalogo
+[33m30b0434[m HEAD@{24}: rebase (start): checkout main
+[33m67b8ef1[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mUS202_ver_catalogo[m[33m)[m HEAD@{25}: checkout: moving from main to US202_ver_catalogo
+[33m30b0434[m HEAD@{26}: checkout: moving from US202_ver_catalogo to main
+[33m67b8ef1[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mUS202_ver_catalogo[m[33m)[m HEAD@{27}: checkout: moving from main to US202_ver_catalogo
+[33m30b0434[m HEAD@{28}: checkout: moving from US202_ver_catalogo to main
+[33m67b8ef1[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mUS202_ver_catalogo[m[33m)[m HEAD@{29}: checkout: moving from main to US202_ver_catalogo
+[33m30b0434[m HEAD@{30}: pull: Fast-forward
+[33m61002d7[m HEAD@{31}: checkout: moving from US202_ver_catalogo to main
+[33m67b8ef1[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mUS202_ver_catalogo[m[33m)[m HEAD@{32}: commit: Basic stuff (not working) need to fetch main
+[33m61002d7[m HEAD@{33}: checkout: moving from US202_mal to US202_ver_catalogo
+[33md540295[m[33m ([m[1;32mUS202_mal[m[33m)[m HEAD@{34}: checkout: moving from US202_ver_catalogo to US202_mal
+[33m61002d7[m HEAD@{35}: checkout: moving from main to US202_ver_catalogo
+[33m61002d7[m HEAD@{36}: checkout: moving from US202_mal to main
+[33md540295[m[33m ([m[1;32mUS202_mal[m[33m)[m HEAD@{37}: Branch: renamed refs/heads/US202_ver_catalogo to refs/heads/US202_mal
+[33md540295[m[33m ([m[1;32mUS202_mal[m[33m)[m HEAD@{39}: checkout: moving from main to US202_ver_catalogo
+[33m61002d7[m HEAD@{40}: pull --tags origin main: Fast-forward
+[33m9344988[m HEAD@{41}: checkout: moving from US202_ver_catalogo to main
+[33md540295[m[33m ([m[1;32mUS202_mal[m[33m)[m HEAD@{42}: reset: moving to HEAD
+[33md540295[m[33m ([m[1;32mUS202_mal[m[33m)[m HEAD@{43}: checkout: moving from miau to US202_ver_catalogo
+[33m9344988[m HEAD@{44}: checkout: moving from main to miau
+[33m9344988[m HEAD@{45}: checkout: moving from US202_ver_catalogo to main
+[33md540295[m[33m ([m[1;32mUS202_mal[m[33m)[m HEAD@{46}: checkout: moving from main to US202_ver_catalogo
+[33m9344988[m HEAD@{47}: pull --tags origin main: Fast-forward
+[33m6b9d02e[m HEAD@{48}: checkout: moving from US202_ver_catalogo to main
+[33md540295[m[33m ([m[1;32mUS202_mal[m[33m)[m HEAD@{49}: commit: Created basic structure (non functional)
+[33m6b9d02e[m HEAD@{50}: checkout: moving from main to US202_ver_catalogo
+[33m6b9d02e[m HEAD@{51}: clone: from github.com:nietovictor/flor.es.git
