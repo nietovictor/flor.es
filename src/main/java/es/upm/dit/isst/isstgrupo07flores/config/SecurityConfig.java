@@ -18,9 +18,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/h2-console/**").permitAll() // Permite acceso a H2
-                .requestMatchers("/swagger-ui.html/**").permitAll() // Permite acceso a Swagger UI
-                .anyRequest().authenticated()
+                .anyRequest().permitAll() // Permite acceso a todas las páginas
             )
             .csrf(csrf -> csrf.disable()) // Desactiva CSRF para H2
             .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin())); // Permite iframes
