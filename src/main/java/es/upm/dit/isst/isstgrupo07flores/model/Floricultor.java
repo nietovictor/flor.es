@@ -1,74 +1,43 @@
 package es.upm.dit.isst.isstgrupo07flores.model;
 
 import java.util.UUID;
+import java.util.Collection;
+import java.util.Collections;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
 @Entity
-public class Floricultor {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) 
-    private UUID id; 
+public class Floricultor extends Usuario {
+    @NotBlank(message = "El nombre no puede estar vacío")
+    private String nombre;
 
-    private String nombre; 
+    @NotBlank(message = "La dirección no puede estar vacía")
+    private String direccion;
 
-    @Email
-    private String correoElectronico; 
-
-    private String contrasena; 
-    
-    private String direccion; 
-
-    @Pattern(regexp = "^\\d{5}$", message = "El código postal no es válido") // HABRA QUE USAR @Valid PARA ACTIVAR ESTO EN EL CONTROLADOR
+    @Pattern(regexp = "^\\d{5}$", message = "El código postal no es válido")
     private String cp;
-
-    /* private float valoracion; No hace falta guardarlo en la BBDD, que se haga con un metodo en el front y ya*/
 
     // Constructor vacío
     public Floricultor() {}
 
     // Constructor con parámetros
-    public Floricultor(UUID id, String nombre, String correoElectronico, String contrasena, String direccion, String cp/* , float valoracion */) {
-        this.id = id;
+    public Floricultor(String nombre, String direccion, String cp) {
         this.nombre = nombre;
-        setCorreoElectronico(correoElectronico); 
-        this.contrasena = contrasena;
         this.direccion = direccion;
         this.cp = cp;
-        /* this.valoracion = valoracion; */
     }
 
     // Getters y Setters
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
     public String getNombre() {
         return nombre;
     }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public String getCorreoElectronico() {
-        return correoElectronico;
-    }
-
-    public void setCorreoElectronico(String correoElectronico) {
-        this.correoElectronico = correoElectronico;
-    }
-
-    public String getContrasena() {
-        return contrasena;
-    }
-
-    public void setContrasena(String contrasena) {
-        this.contrasena = contrasena;
     }
 
     public String getDireccion() {
@@ -86,16 +55,14 @@ public class Floricultor {
     public void setCp(String cp) {
         this.cp = cp;
     }
-
-    /* public float getValoracion() {
-        return valoracion;
+    
+    // Rol
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singletonList(new SimpleGrantedAuthority("FLORICULTOR"));
     }
 
-    public void setValoracion(float valoracion) {
-        this.valoracion = valoracion;
-    } */
-
-    @Override
+    /* @Override
     public String toString() {
         return "Floricultor{" +
                 "id=" + id +
@@ -104,5 +71,5 @@ public class Floricultor {
                 ", direccion='" + direccion + '\'' +
                 ", cp='" + cp + '\'' +
                 '}';
-    }
+    } */
 }
