@@ -18,7 +18,7 @@ public class PedidoController {
     private PedidoService pedidoService;
 
     @GetMapping("/clienteId/{id}")
-    public List<Pedido> obtenerPedidosPorCliente(@PathVariable UUID clienteId) {
+    public List<Pedido> obtenerPedidosPorCliente(@PathVariable("id")  UUID clienteId) {
         return pedidoService.obtenerPedidosPorCliente(clienteId);
     }
 
