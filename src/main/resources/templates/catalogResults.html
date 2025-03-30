@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Floristas en tu zona</title>
+    <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+    <h1 th:text="'Resultados para el código postal: ' + ${postalCode}"></h1>
+
+    <div th:if="${#lists.isEmpty(floricultores)}">
+        <p>No se encontraron floricultores en tu zona.</p>
+    </div>
+
+    <div th:each="floricultor : ${floricultores}">
+        <h2 th:text="${floricultor.nombre}">Nombre Floricultor</h2>
+        <p>Código Postal: <span th:text="${floricultor.cp}"></span></p>
+        <div th:each="producto : ${productosPorFloricultor[floricultor.id]}" class="producto_lista">
+            <h3 th:text="${producto.nombre}">Nombre Producto</h3>
+            <p>Descripción: <span th:text="${producto.descripcion}"></span></p>
+            <p>Precio: <span th:text="${producto.precio}"></span></p>
+            <p>Stock: <span th:text="${producto.stock}"></span></p>
+            <p>Imagen: <img th:src="@{${producto.urlImg}}" alt="Imagen del producto" /></p>
+        </div>
+    </div>
+
+    <button onclick="location.href='/catalog/search'" type="button">Volver a buscar</button>
+</body>
+</html>

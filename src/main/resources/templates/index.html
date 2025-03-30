@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Flor.es - Página de Inicio</title>
+    <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+    <header>
+        <h1>Bienvenido a Flor.es</h1>
+        <nav>
+            <div th:if="${#authentication.name == 'anonymousUser'}">
+                <button onclick="location.href='/login'" type="button">Iniciar sesión</button>
+            </div>
+            <div th:if="${#authentication.name != 'anonymousUser'}">
+                <p th:if="${rol.contains('CLIENTE')}">Hola, cliente</span></p>
+                <p th:if="${rol.contains('FLORICULTOR')}">Hola, floricultor</span></p>
+                <button onclick="location.href='/catalog/search'" type="button">Buscar en catálogo</button>
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit">Cerrar sesión</button>
+                </form>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Plataforma de venta y distribución de flores a domicilio</h2>
+        <p>Explora nuestras flores y realiza tu pedido fácilmente.</p>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Flor.es - Todos los derechos reservados</p>
+    </footer>
+</body>
+</html>

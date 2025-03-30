@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Iniciar Sesión</title>
+    <link rel="stylesheet" href="../css/login.css" />
+</head>
+<body>
+    <div class="login_container">
+        <h2>Iniciar Sesión</h2>
+        <form th:action="@{/login}" method="post">
+            <div>
+                <label for="correoElectronico">Correo Electrónico:</label>
+                <!-- El nombre "username" es el que Spring Security espera por defecto -->
+                <input type="email" id="correoElectronico" name="username" placeholder="tu correo" required />
+            </div>
+            <div>
+                <label for="contrasena">Contraseña:</label>
+                <!-- El nombre "password" es el que Spring Security espera -->
+                <input type="password" id="contrasena" name="password" placeholder="tu contraseña" required />
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button type="submit">Ingresar</button>
+                <div th:if="${#authentication.name == 'anonymousUser'}">
+                    <button class="btn-back" onclick="location.href='/'">Volver</button>
+                </div>
+            </div>
+        </form>
+
+        <p th:if="${param.error}">Correo o contraseña incorrectos</p>
+        <p th:if="${param.logout}">Has cerrado sesión correctamente</p>
+        <!--  <p>
+            ¿No tienes cuenta? 
+            <a th:href="@{/register}">Regístrate aquí</a>
+        </p> -->
+    </div>
+</body>
+</html>

@@ -1,13 +1,13 @@
 package es.upm.dit.isst.isstgrupo07flores.service;
 
-import es.upm.dit.isst.isstgrupo07flores.model.Pedido;
-import es.upm.dit.isst.isstgrupo07flores.model.Cliente;
-import es.upm.dit.isst.isstgrupo07flores.model.Floricultor;
-import es.upm.dit.isst.isstgrupo07flores.repository.PedidoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import es.upm.dit.isst.isstgrupo07flores.model.Pedido;
+import es.upm.dit.isst.isstgrupo07flores.repository.PedidoRepository;
 
 @Service
 public class PedidoService {
@@ -21,5 +21,9 @@ public class PedidoService {
 
     public List<Pedido> obtenerPedidosPorFloricultor(UUID floricultorId) {
         return pedidoRepository.findByFloricultorId(floricultorId);
+    }
+
+    public List<Pedido> getProductosByFloricultor(UUID floricultorId) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
