@@ -9,7 +9,23 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para destacar */
     text-align: center; /* Centrar contenido */
 }
+/* Back Button */
+.btn-back {
+    background-color: #ffffff; /* White background */
+    color: #388e3c; /* Medium green text */
+    border: 2px solid #388e3c; /* Medium green border */
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: background-color 0.3s, color 0.3s;
+}
 
+.btn-back:hover {
+    background-color: #388e3c; /* Medium green background */
+    color: #ffffff; /* White text */
+}
 /* General Reset */
 * {
     margin: 0;

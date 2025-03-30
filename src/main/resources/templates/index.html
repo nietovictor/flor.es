@@ -9,7 +9,7 @@
         <h1>Bienvenido a Flor.es</h1>
         <nav>
             <div th:if="${#authentication.name == 'anonymousUser'}">
-                <a href="/login">Iniciar sesión</a>
+                <button onclick="location.href='/login'" type="button">Iniciar sesión</button>
             </div>
             <div th:if="${#authentication.name != 'anonymousUser'}">
                 <p th:if="${rol.contains('CLIENTE')}">Hola, cliente</span></p>
