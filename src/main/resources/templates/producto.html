@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${producto.nombre}">Detalle del Producto</title>
+    <style>
+        .product-container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .product-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 10px;
+            cursor: pointer;
+            border: none;
+        }
+        .btn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+<div class="product-container">
+    <h2 th:text="${producto.nombre}">Nombre del Producto</h2>
+    <img th:src="${producto.urlImg}" alt="Imagen del producto" class="product-img"/>
+    <p><strong>Descripción:</strong> <span th:text="${producto.descripcion}"></span></p>
+    <p><strong>Precio:</strong> <span th:text="${producto.precio}"></span> €</p>
+    <p><strong>Stock disponible:</strong> <span th:text="${producto.stock}"></span></p>
+
+    <form th:action="@{/cart/add/{productId}(productId=${producto.id})}" method="post">
+        <button type="submit" class="btn">Añadir a la cesta</button>
+    </form>
+    <a th:href="@{/cart/view}" class="btn">Ver Cesta</a>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cesta de la Compra</title>
+    <style>
+        .cart-container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .product-item {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+            border: none;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="cart-container">
+    <h2>Cesta de la Compra</h2>
+    
+    <div th:if="${cart.producto == null}">
+        <p>No hay productos en la cesta.</p>
+    </div>
+
+    <ul th:unless="${cart.producto == null}">
+        <li><strong>Nombre:</strong> <span th:text="${cart.producto.nombre}"></span></li>
+        <li><strong>Precio:</strong> <span th:text="${cart.producto.precio}"></span> €</li>
+        <li><strong>Descripción:</strong> <span th:text="${cart.producto.descripcion}"></span></li>
+    </ul>
+    
+</div>
+
+</body>
+</html>
