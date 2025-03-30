@@ -9,6 +9,5 @@ import java.util.List;
 
 @Repository
 public interface ProductoRepository extends JpaRepository<Producto, UUID> {
-    List<Producto> findByFloricultor(Floricultor floricultor);
-    
+    List<Producto> findByFloricultorId(UUID floricultorId);
 }
