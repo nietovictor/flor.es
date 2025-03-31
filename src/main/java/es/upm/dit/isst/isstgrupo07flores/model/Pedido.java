@@ -14,25 +14,9 @@ public class Pedido {
     @GeneratedValue(strategy = GenerationType.AUTO) 
     private UUID id; 
 
-    /* @ManyToOne
-    @JoinColumn(name = "client_id", nullable = false) // Clave foránea hacia Cliente
-    private Cliente cliente; 
-
-    @ManyToOne
-    @JoinColumn(name = "seller_id", nullable = false) // Clave foránea hacia Floricultor
-    private Floricultor floricultor; 
-
-    @ManyToOne
-    @JoinColumn(name = "producto", nullable = false) // Clave foránea hacia Floricultor
-    private Producto producto;  */
-
     // Relación con Cliente basada en su ID
     @Column(name = "client_id", nullable = false)
     private UUID clienteId; 
-
-    // Relación con Floricultor basada en su ID
-    @Column(name = "seller_id", nullable = false)
-    private UUID floricultorId; 
 
     // Relación con Producto basada en su ID
     @Column(name = "producto_id", nullable = false)
@@ -53,10 +37,9 @@ public class Pedido {
     public Pedido() {}
 
     // Constructor con parámetros
-    public Pedido(UUID id, UUID clienteId, UUID floricultorId, UUID productoId, BigDecimal coste, Timestamp fecha, String urlTracking, float valoracion) {
+    public Pedido(UUID id, UUID clienteId, UUID productoId, BigDecimal coste, Timestamp fecha, String urlTracking, float valoracion) {
         this.id = id;
         this.clienteId = clienteId;
-        this.floricultorId = floricultorId;
         this.productoId = productoId;
         this.coste = coste;
         this.fecha = fecha;
@@ -81,13 +64,6 @@ public class Pedido {
         this.clienteId = clienteId;
     }
 
-    public UUID getFloricultorId() {
-        return floricultorId;
-    }
-
-    public void setFloricultorId(UUID floricultorId) {
-        this.floricultorId = floricultorId;
-    }
 
     public UUID getProductoId() {
         return productoId;
@@ -134,7 +110,6 @@ public class Pedido {
         return "Pedido{" +
                 "id=" + id +
                 ", clienteId=" + clienteId +
-                ", floricultorId=" + floricultorId +
                 ", productoId=" + productoId +
                 ", coste=" + coste +
                 ", fecha=" + fecha +

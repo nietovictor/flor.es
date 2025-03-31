@@ -36,3 +36,4 @@ build/
 
 ### DATABASE ###
 *.db
+data/

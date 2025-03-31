@@ -1955,3 +1955,154 @@ Caused by: java.lang.AssertionError
 	at org.h2.mvstore.FileStore.executeFileStoreOperation(FileStore.java:1893)
 	at org.h2.mvstore.MVStore.executeFilestoreOperation(MVStore.java:922)
 	... 13 more
+2025-03-31 18:48:12.756497+02:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "SELECT * FROM PEDIDO CLIENTE [*]PEDIDO"
+Syntax error in SQL statement "SELECT * FROM PEDIDO CLIENTE [*]PEDIDO"; SQL statement:
+SELECT * FROM PEDIDO CLIENTE PEDIDO [42000-232]
+2025-03-31 18:58:46.581439+02:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLDataException: Conversión de datos fallida, convirtiendo "'4fbc131-bfae-4042-9086-cfcd7c625d48' (PEDIDO: ""PRODUCTO_ID"" UUID NOT NULL)"
+Data conversion error converting "'4fbc131-bfae-4042-9086-cfcd7c625d48' (PEDIDO: ""PRODUCTO_ID"" UUID NOT NULL)"; SQL statement:
+INSERT INTO PEDIDO (ID, COSTE, VALORACION, FECHA, CLIENT_ID, PRODUCTO_ID, URL_TRACKING) VALUES
+(RANDOM_UUID(), 22.10, 4.5, CURRENT_TIMESTAMP, '24757bf8-edff-424c-9049-b64f6733458a', 'f741ef4d-d991-4087-9a5c-aebac535aba9', 'https://tracking.example.com/track1'),
+(RANDOM_UUID(), 34.99, 4.8, CURRENT_TIMESTAMP, '24757bf8-edff-424c-9049-b64f6733458a', '4fbc131-bfae-4042-9086-cfcd7c625d48', 'https://tracking.example.com/track2'),
+
+(RANDOM_UUID(), 19.99, 4.2, CURRENT_TIMESTAMP, '3011fc7d-4187-4a5f-9e84-ce540a6c246d', '5ec33643-a5df-4ca5-9cbc-d2f0be64df45', 'https://tracking.example.com/track3'),
+(RANDOM_UUID(), 45.25, 4.9, CURRENT_TIMESTAMP, '3011fc7d-4187-4a5f-9e84-ce540a6c246d', 'd49ee40d-b696-426d-ad3f-5e6debbbc345', 'https://tracking.example.com/track4'),
+
+(RANDOM_UUID(), 29.90, 3.9, CURRENT_TIMESTAMP, 'cb765a82-d180-4a32-8ee9-8cdc0b8d5428', '8e7a7e8a-5328-4e52-931f-f258b945aa6c', 'https://tracking.example.com/track5'),
+(RANDOM_UUID(), 42.75, 5.0, CURRENT_TIMESTAMP, 'cb765a82-d180-4a32-8ee9-8cdc0b8d5428', '7bcb50b9-bae2-4d0e-858f-e8341f8da9d6', 'https://tracking.example.com/track6') [22018-232]
+2025-03-31 18:59:05.591892+02:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLDataException: Conversión de datos fallida, convirtiendo "'4fbc131-bfae-4042-9086-cfcd7c625d48' (PEDIDO: ""PRODUCTO_ID"" UUID NOT NULL)"
+Data conversion error converting "'4fbc131-bfae-4042-9086-cfcd7c625d48' (PEDIDO: ""PRODUCTO_ID"" UUID NOT NULL)"; SQL statement:
+INSERT INTO PEDIDO (ID, COSTE, VALORACION, FECHA, CLIENT_ID, PRODUCTO_ID, URL_TRACKING) VALUES
+(RANDOM_UUID(), 22.10, 4.5, CURRENT_TIMESTAMP, '24757bf8-edff-424c-9049-b64f6733458a', 'f741ef4d-d991-4087-9a5c-aebac535aba9', 'https://tracking.example.com/track1'),
+(RANDOM_UUID(), 34.99, 4.8, CURRENT_TIMESTAMP, '24757bf8-edff-424c-9049-b64f6733458a', '4fbc131-bfae-4042-9086-cfcd7c625d48', 'https://tracking.example.com/track2'),
+(RANDOM_UUID(), 19.99, 4.2, CURRENT_TIMESTAMP, '3011fc7d-4187-4a5f-9e84-ce540a6c246d', '5ec33643-a5df-4ca5-9cbc-d2f0be64df45', 'https://tracking.example.com/track3'),
+(RANDOM_UUID(), 45.25, 4.9, CURRENT_TIMESTAMP, '3011fc7d-4187-4a5f-9e84-ce540a6c246d', 'd49ee40d-b696-426d-ad3f-5e6debbbc345', 'https://tracking.example.com/track4'),
+(RANDOM_UUID(), 29.90, 3.9, CURRENT_TIMESTAMP, 'cb765a82-d180-4a32-8ee9-8cdc0b8d5428', '8e7a7e8a-5328-4e52-931f-f258b945aa6c', 'https://tracking.example.com/track5'),
+(RANDOM_UUID(), 42.75, 5.0, CURRENT_TIMESTAMP, 'cb765a82-d180-4a32-8ee9-8cdc0b8d5428', '7bcb50b9-bae2-4d0e-858f-e8341f8da9d6', 'https://tracking.example.com/track6') [22018-232]
+2025-03-31 18:59:38.440900+02:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "INSERT INTO PEDIDO (ID, COSTE, VALORACION, FECHA, CLIENT_ID, PRODUCTO_ID, URL_TRACKING) VALUES\000d\000a(RANDOM_UUID(), 22.10, 4.5, CURRENT_TIMESTAMP, '24757bf8-edff-424c-9049-b64f6733458a', 'f741ef4d-d991-4087-9a5c-aebac535aba9', 'https://tracking.example.com/track1'),[*]"; se esperaba "ROW (, (, DEFAULT, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"
+Syntax error in SQL statement "INSERT INTO PEDIDO (ID, COSTE, VALORACION, FECHA, CLIENT_ID, PRODUCTO_ID, URL_TRACKING) VALUES\000d\000a(RANDOM_UUID(), 22.10, 4.5, CURRENT_TIMESTAMP, '24757bf8-edff-424c-9049-b64f6733458a', 'f741ef4d-d991-4087-9a5c-aebac535aba9', 'https://tracking.example.com/track1'),[*]"; expected "ROW (, (, DEFAULT, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"; SQL statement:
+INSERT INTO PEDIDO (ID, COSTE, VALORACION, FECHA, CLIENT_ID, PRODUCTO_ID, URL_TRACKING) VALUES
+(RANDOM_UUID(), 22.10, 4.5, CURRENT_TIMESTAMP, '24757bf8-edff-424c-9049-b64f6733458a', 'f741ef4d-d991-4087-9a5c-aebac535aba9', 'https://tracking.example.com/track1'), [42001-232]
+2025-03-31 19:00:24.895776+02:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLDataException: Conversión de datos fallida, convirtiendo "'4fbc131-bfae-4042-9086-cfcd7c625d48' (PEDIDO: ""PRODUCTO_ID"" UUID NOT NULL)"
+Data conversion error converting "'4fbc131-bfae-4042-9086-cfcd7c625d48' (PEDIDO: ""PRODUCTO_ID"" UUID NOT NULL)"; SQL statement:
+INSERT INTO PEDIDO (ID, COSTE, VALORACION, FECHA, CLIENT_ID, PRODUCTO_ID, URL_TRACKING) VALUES
+(RANDOM_UUID(), 34.99, 4.8, CURRENT_TIMESTAMP, '24757bf8-edff-424c-9049-b64f6733458a', '4fbc131-bfae-4042-9086-cfcd7c625d48', 'https://tracking.example.com/track2') [22018-232]
+2025-03-31 19:00:58.610221+02:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLDataException: Conversión de datos fallida, convirtiendo "'4fbc131-bfae-4042-9086-cfcd7c625d48' (PEDIDO: ""PRODUCTO_ID"" UUID NOT NULL)"
+Data conversion error converting "'4fbc131-bfae-4042-9086-cfcd7c625d48' (PEDIDO: ""PRODUCTO_ID"" UUID NOT NULL)"; SQL statement:
+INSERT INTO PEDIDO (ID, COSTE, VALORACION, FECHA, CLIENT_ID, PRODUCTO_ID, URL_TRACKING) VALUES
+(RANDOM_UUID(), 34.99, 4.8, CURRENT_TIMESTAMP, '24757bf8-edff-424c-9049-b64f6733458a', '4fbc131-bfae-4042-9086-cfcd7c625d48', 'https://tracking.example.com/track2') [22018-232]
+2025-03-31 19:01:56.072404+02:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "INSERT INTO PEDIDO (ID, COSTE, VALORACION, FECHA, CLIENT_ID, PRODUCTO_ID, URL_TRACKING) VALUES\000d\000a(RANDOM_UUID(), 34.99, 4.8, CURRENT_TIMESTAMP, 24757[*]bf8-edff-424c-9049-b64f6733458a, 4fbc131-bfae-4042-9086-cfcd7c625d48, 'https://tracking.example.com/track2')"; se esperaba "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, ,, )"
+Syntax error in SQL statement "INSERT INTO PEDIDO (ID, COSTE, VALORACION, FECHA, CLIENT_ID, PRODUCTO_ID, URL_TRACKING) VALUES\000d\000a(RANDOM_UUID(), 34.99, 4.8, CURRENT_TIMESTAMP, 24757[*]bf8-edff-424c-9049-b64f6733458a, 4fbc131-bfae-4042-9086-cfcd7c625d48, 'https://tracking.example.com/track2')"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, ,, )"; SQL statement:
+INSERT INTO PEDIDO (ID, COSTE, VALORACION, FECHA, CLIENT_ID, PRODUCTO_ID, URL_TRACKING) VALUES
+(RANDOM_UUID(), 34.99, 4.8, CURRENT_TIMESTAMP, 24757bf8-edff-424c-9049-b64f6733458a, 4fbc131-bfae-4042-9086-cfcd7c625d48, 'https://tracking.example.com/track2') [42001-232]
+2025-03-31 19:08:57.000264+02:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "[*]NSERT INTO CLIENTE (ID, CONTRASENA, CORREO_ELECTRONICO, TELEFONO) VALUES\000d\000a('24757bf8-edff-424c-9049-b64f6733458a', '$2a$10$fzTeezqmPTxmEjUUBsuQjeT5EPdOI6gfxAoLGb99R.MzDproC4BdK', 'cliente1@example.com', '612345678'),\000d\000a('3011fc7d-4187-4a5f-9e84-ce540a6c246d', '$2a$10$fzTeezqmPTxmEjUUBsuQjeT5EPdOI6gfxAoLGb99R.MzDproC4BdK', 'cliente2@example.com', '623456789'),\000d\000a('cb765a82-d180-4a32-8ee9-8cdc0b8d5428', '$2a$10$fzTeezqmPTxmEjUUBsuQjeT5EPdOI6gfxAoLGb99R.MzDproC4BdK', 'cliente3@example.com', '634567890')"
+Syntax error in SQL statement "[*]NSERT INTO CLIENTE (ID, CONTRASENA, CORREO_ELECTRONICO, TELEFONO) VALUES\000d\000a('24757bf8-edff-424c-9049-b64f6733458a', '$2a$10$fzTeezqmPTxmEjUUBsuQjeT5EPdOI6gfxAoLGb99R.MzDproC4BdK', 'cliente1@example.com', '612345678'),\000d\000a('3011fc7d-4187-4a5f-9e84-ce540a6c246d', '$2a$10$fzTeezqmPTxmEjUUBsuQjeT5EPdOI6gfxAoLGb99R.MzDproC4BdK', 'cliente2@example.com', '623456789'),\000d\000a('cb765a82-d180-4a32-8ee9-8cdc0b8d5428', '$2a$10$fzTeezqmPTxmEjUUBsuQjeT5EPdOI6gfxAoLGb99R.MzDproC4BdK', 'cliente3@example.com', '634567890')"; SQL statement:
+NSERT INTO CLIENTE (ID, CONTRASENA, CORREO_ELECTRONICO, TELEFONO) VALUES
+('24757bf8-edff-424c-9049-b64f6733458a', '$2a$10$fzTeezqmPTxmEjUUBsuQjeT5EPdOI6gfxAoLGb99R.MzDproC4BdK', 'cliente1@example.com', '612345678'),
+('3011fc7d-4187-4a5f-9e84-ce540a6c246d', '$2a$10$fzTeezqmPTxmEjUUBsuQjeT5EPdOI6gfxAoLGb99R.MzDproC4BdK', 'cliente2@example.com', '623456789'),
+('cb765a82-d180-4a32-8ee9-8cdc0b8d5428', '$2a$10$fzTeezqmPTxmEjUUBsuQjeT5EPdOI6gfxAoLGb99R.MzDproC4BdK', 'cliente3@example.com', '634567890') [42000-232]
+2025-03-31 19:09:35.633975+02:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLDataException: Conversión de datos fallida, convirtiendo "'4fbc131-bfae-4042-9086-cfcd7c625d48' (PRODUCTO: ""ID"" UUID NOT NULL)"
+Data conversion error converting "'4fbc131-bfae-4042-9086-cfcd7c625d48' (PRODUCTO: ""ID"" UUID NOT NULL)"; SQL statement:
+INSERT INTO PRODUCTO (OCASION, PRECIO, STOCK, FLORICULTOR_ID, ID, DESCRIPCION, NOMBRE, URL_IMG) VALUES
+(1, 22.10, 18, '23269172-b62c-4583-82c7-cbc4b7e61685', 'f741ef4d-d991-4087-9a5c-aebac535aba9', 'Ramo delicado con lirios blancos', 'Ramo Pureza', 'https://example.com/pureza.jpg'),
+(2, 45.25, 6,  '23269172-b62c-4583-82c7-cbc4b7e61685', 'd49ee40d-b696-426d-ad3f-5e6debbbc345', 'Centro de mesa elegante para cenas', 'Centro Elegante', 'https://example.com/elegante.jpg'),
+(3, 31.40, 13, '23269172-b62c-4583-82c7-cbc4b7e61685', 'bc09521c-22cc-4556-8b44-61f90daf01f1', 'Decoración para aniversario', 'Ramo Aniversario', 'https://example.com/aniversario.jpg'),
+(1, 34.99, 15, '5e384ce6-2cee-4cfe-b4b9-e92d9484596e', '4fbc131-bfae-4042-9086-cfcd7c625d48', 'Ramo de rosas rojas frescas', 'Ramo Pasión', 'https://example.com/pasion.jpg'),
+(2, 25.50, 20, '5e384ce6-2cee-4cfe-b4b9-e92d9484596e', '13d94e06-23c3-4cad-b231-1d5852d7f63b', 'Decoración floral para cumpleaños', 'Ramo Cumpleaños', 'https://example.com/cumple.jpg'),
+(3, 42.75, 10, '5e384ce6-2cee-4cfe-b4b9-e92d9484596e', '7bcb50b9-bae2-4d0e-858f-e8341f8da9d6', 'Bouquet elegante para eventos', 'Bouquet Gala', 'https://example.com/gala.jpg'),
+(1, 19.99, 9,  '9b1e1c44-7fbb-4a97-a043-8e42e9fd1358', '5ec33643-a5df-4ca5-9cbc-d2f0be64df45', 'Rosas multicolor para regalar', 'Ramo Arcoiris', 'https://example.com/arcoiris.jpg'),
+(2, 29.90, 12, '9b1e1c44-7fbb-4a97-a043-8e42e9fd1358', '8e7a7e8a-5328-4e52-931f-f258b945aa6c', 'Centro de mesa con flores silvestres', 'Centro Silvestre', 'https://example.com/centro.jpg'),
+(3, 37.60, 8,  '9b1e1c44-7fbb-4a97-a043-8e42e9fd1358', 'baa8b089-46d3-4754-9c4b-6e98cb7eab03a', 'Decoración floral para bodas', 'Decoración Boda', 'https://example.com/boda.jpg') [22018-232]
+2025-03-31 19:09:51.213604+02:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLDataException: Conversión de datos fallida, convirtiendo "'baa8b089-46d3-4754-9c4b-6e98cb7eab03a' (PRODUCTO: ""ID"" UUID NOT NULL)"
+Data conversion error converting "'baa8b089-46d3-4754-9c4b-6e98cb7eab03a' (PRODUCTO: ""ID"" UUID NOT NULL)"; SQL statement:
+INSERT INTO PRODUCTO (OCASION, PRECIO, STOCK, FLORICULTOR_ID, ID, DESCRIPCION, NOMBRE, URL_IMG) VALUES
+(1, 22.10, 18, '23269172-b62c-4583-82c7-cbc4b7e61685', 'f741ef4d-d991-4087-9a5c-aebac535aba9', 'Ramo delicado con lirios blancos', 'Ramo Pureza', 'https://example.com/pureza.jpg'),
+(2, 45.25, 6,  '23269172-b62c-4583-82c7-cbc4b7e61685', 'd49ee40d-b696-426d-ad3f-5e6debbbc345', 'Centro de mesa elegante para cenas', 'Centro Elegante', 'https://example.com/elegante.jpg'),
+(3, 31.40, 13, '23269172-b62c-4583-82c7-cbc4b7e61685', 'bc09521c-22cc-4556-8b44-61f90daf01f1', 'Decoración para aniversario', 'Ramo Aniversario', 'https://example.com/aniversario.jpg'),
+(1, 34.99, 15, '5e384ce6-2cee-4cfe-b4b9-e92d9484596e', '4fbfc131-bfae-4042-9086-cfcd7c625d48', 'Ramo de rosas rojas frescas', 'Ramo Pasión', 'https://example.com/pasion.jpg'),
+(2, 25.50, 20, '5e384ce6-2cee-4cfe-b4b9-e92d9484596e', '13d94e06-23c3-4cad-b231-1d5852d7f63b', 'Decoración floral para cumpleaños', 'Ramo Cumpleaños', 'https://example.com/cumple.jpg'),
+(3, 42.75, 10, '5e384ce6-2cee-4cfe-b4b9-e92d9484596e', '7bcb50b9-bae2-4d0e-858f-e8341f8da9d6', 'Bouquet elegante para eventos', 'Bouquet Gala', 'https://example.com/gala.jpg'),
+(1, 19.99, 9,  '9b1e1c44-7fbb-4a97-a043-8e42e9fd1358', '5ec33643-a5df-4ca5-9cbc-d2f0be64df45', 'Rosas multicolor para regalar', 'Ramo Arcoiris', 'https://example.com/arcoiris.jpg'),
+(2, 29.90, 12, '9b1e1c44-7fbb-4a97-a043-8e42e9fd1358', '8e7a7e8a-5328-4e52-931f-f258b945aa6c', 'Centro de mesa con flores silvestres', 'Centro Silvestre', 'https://example.com/centro.jpg'),
+(3, 37.60, 8,  '9b1e1c44-7fbb-4a97-a043-8e42e9fd1358', 'baa8b089-46d3-4754-9c4b-6e98cb7eab03a', 'Decoración floral para bodas', 'Decoración Boda', 'https://example.com/boda.jpg') [22018-232]
+2025-03-31 19:12:11.754307+02:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLDataException: Conversión de datos fallida, convirtiendo "'4fbc131-bfae-4042-9086-cfcd7c625d48' (PEDIDO: ""PRODUCTO_ID"" UUID NOT NULL)"
+Data conversion error converting "'4fbc131-bfae-4042-9086-cfcd7c625d48' (PEDIDO: ""PRODUCTO_ID"" UUID NOT NULL)"; SQL statement:
+INSERT INTO PEDIDO (ID, COSTE, VALORACION, FECHA, CLIENT_ID, PRODUCTO_ID, URL_TRACKING) VALUES
+('1ed0a6aa-79f9-4b6d-aac2-14a2fcbdc901', 22.10, 4.5, CURRENT_TIMESTAMP, '24757bf8-edff-424c-9049-b64f6733458a', 'f741ef4d-d991-4087-9a5c-aebac535aba9', 'https://tracking.example.com/track1'),
+('58cbd2a2-9bb8-4268-9a5e-368e4e8be9e7', 34.99, 4.8, CURRENT_TIMESTAMP, '24757bf8-edff-424c-9049-b64f6733458a', '4fbc131-bfae-4042-9086-cfcd7c625d48', 'https://tracking.example.com/track2'),
+('7de27ef4-42a9-4fa6-b749-ea8aefcb89f2', 19.99, 4.2, CURRENT_TIMESTAMP, '3011fc7d-4187-4a5f-9e84-ce540a6c246d', '5ec33643-a5df-4ca5-9cbc-d2f0be64df45', 'https://tracking.example.com/track3'),
+('d11f6c4c-e319-4471-8e24-115a7490f11c', 45.25, 4.9, CURRENT_TIMESTAMP, '3011fc7d-4187-4a5f-9e84-ce540a6c246d', 'd49ee40d-b696-426d-ad3f-5e6debbbc345', 'https://tracking.example.com/track4'),
+('71d6f476-0db5-48d0-9e44-1931521e1553', 29.90, 3.9, CURRENT_TIMESTAMP, 'cb765a82-d180-4a32-8ee9-8cdc0b8d5428', '8e7a7e8a-5328-4e52-931f-f258b945aa6c', 'https://tracking.example.com/track5'),
+('388f82f7-108c-4b3f-b7cd-0b27676ccdd8', 42.75, 5.0, CURRENT_TIMESTAMP, 'cb765a82-d180-4a32-8ee9-8cdc0b8d5428', '7bcb50b9-bae2-4d0e-858f-e8341f8da9d6', 'https://tracking.example.com/track6') [22018-232]
+2025-03-31 19:21:38.306145+02:00 jdbc[15]: null
+org.h2.message.DbException: La conexión no fue cerrada por la aplicación y esta siendo limpiada (garbage collected)
+The connection was not closed by the application and is garbage collected [90018-232]
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.message.DbException.get(DbException.java:188)
+	at org.h2.jdbc.JdbcConnection.closeOld(JdbcConnection.java:217)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:134)
+	at org.h2.Driver.connect(Driver.java:59)
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:137)
+	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:360)
+	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:202)
+	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:461)
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:550)
+	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:98)
+	at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:111)
+	at org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl.getConnection(DatasourceConnectionProviderImpl.java:126)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess.obtainConnection(JdbcEnvironmentInitiator.java:467)
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.delegateWork(JdbcIsolationDelegate.java:61)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentUsingJdbcMetadata(JdbcEnvironmentInitiator.java:320)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:129)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:81)
+	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:130)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:263)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:238)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:215)
+	at org.hibernate.boot.model.relational.Database.<init>(Database.java:45)
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.getDatabase(InFlightMetadataCollectorImpl.java:226)
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.<init>(InFlightMetadataCollectorImpl.java:194)
+	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:171)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1442)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1513)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:66)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:390)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:419)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:400)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1859)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1808)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:601)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:523)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:347)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:207)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:970)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:627)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:752)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350)
+	at es.upm.dit.isst.isstgrupo07flores.Isstgrupo07floresApplication.main(Isstgrupo07floresApplication.java:11)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientConnectionException: La conexión no fue cerrada por la aplicación y esta siendo limpiada (garbage collected)
+The connection was not closed by the application and is garbage collected [90018-232]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:690)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	... 54 more

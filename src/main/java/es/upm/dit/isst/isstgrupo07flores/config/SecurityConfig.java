@@ -42,7 +42,7 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/h2-console/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                .requestMatchers("/pedidos/**").permitAll()
+                /* .requestMatchers("/productos/**").permitAll() */
                 .requestMatchers("/","/login", "/register/**", "/css/**", "/js/**").permitAll() // Permitir login y registro
                 .anyRequest().authenticated() // Todo lo demás requiere autenticación
             )
