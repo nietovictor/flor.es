@@ -13,7 +13,7 @@ public class Isstgrupo07floresApplication {
 		 BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
         // La contraseña original que deseas encriptar
-        String password = "pass";
+        String password = "word";
 
         // Encriptar la contraseña
         String encodedPassword = encoder.encode(password);

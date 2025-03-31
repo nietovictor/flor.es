@@ -1,0 +1,92 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html {
+    background-color: #e8f5e9; /* Soft green background */
+}
+/* Body Styling */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #2e7d32; /* Dark green text */
+    background-color: #f1f8e9; /* Light green background */
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+    margin-bottom: 15px;
+    color: #388e3c; /* Medium green */
+}
+
+/* Links */
+a {
+    color: #1b5e20; /* Deep green */
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Lists */
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+ul li {
+    margin-bottom: 10px;
+}
+
+/* Buttons */
+button {
+    background-color: #66bb6a; /* Soft green */
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 5px; /* Added margin for spacing */
+}
+
+button:hover {
+    background-color: #43a047; /* Darker green */
+}
+
+/* Forms */
+input, textarea {
+    width: 100%;
+    max-width: 400px; /* Limit the width of inputs */
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #a5d6a7; /* Light green border */
+    border-radius: 5px;
+}
+
+input:focus, textarea:focus {
+    border-color: #66bb6a; /* Soft green focus */
+    outline: none;
+}
+
+/* Containers */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center; /* Center align text */
+}
+
+/* Footer */
+div.producto_lista {
+    border: 1px solid #a5d6a7; /* Light green border */
+    border-radius: 10px;
+    margin: 10px;
+    padding: 10px;
+}

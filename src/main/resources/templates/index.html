@@ -2,18 +2,19 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Flor.es - Página de Inicio</title>
-    <link rel="stylesheet" href="/css/styles.css"> <!-- Aquí puedes agregar tus estilos -->
+    <link rel="stylesheet" href="../css/style.css" />
 </head>
 <body>
     <header>
         <h1>Bienvenido a Flor.es</h1>
         <nav>
             <div th:if="${#authentication.name == 'anonymousUser'}">
-                <a href="/login">Iniciar sesión</a>
+                <button onclick="location.href='/login'" type="button">Iniciar sesión</button>
             </div>
             <div th:if="${#authentication.name != 'anonymousUser'}">
                 <p th:if="${rol.contains('CLIENTE')}">Hola, cliente</span></p>
                 <p th:if="${rol.contains('FLORICULTOR')}">Hola, floricultor</span></p>
+                <button onclick="location.href='/catalog/search'" type="button">Buscar en catálogo</button>
                 <form th:action="@{/logout}" method="post">
                     <button type="submit">Cerrar sesión</button>
                 </form>
