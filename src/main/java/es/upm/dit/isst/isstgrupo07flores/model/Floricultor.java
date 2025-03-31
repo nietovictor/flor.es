@@ -1,14 +1,14 @@
 package es.upm.dit.isst.isstgrupo07flores.model;
 
-import java.util.UUID;
 import java.util.Collection;
 import java.util.Collections;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.persistence.Entity;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 public class Floricultor extends Usuario {
@@ -21,14 +21,17 @@ public class Floricultor extends Usuario {
     @Pattern(regexp = "^\\d{5}$", message = "El código postal no es válido")
     private String cp;
 
+    private String nif; // NIF del floricultor (opcional)
+
     // Constructor vacío
     public Floricultor() {}
 
     // Constructor con parámetros
-    public Floricultor(String nombre, String direccion, String cp) {
+    public Floricultor(String nombre, String direccion, String cp, String nif) {
         this.nombre = nombre;
         this.direccion = direccion;
         this.cp = cp;
+        this.nif = nif; // NIF opcional, se puede dejar como null
     }
 
     // Getters y Setters
@@ -54,6 +57,14 @@ public class Floricultor extends Usuario {
 
     public void setCp(String cp) {
         this.cp = cp;
+    }
+
+    public String getNif() {
+        return nif;
+    }
+
+    public void setNif(String nif) {
+        this.nif = nif;
     }
     
     // Rol
