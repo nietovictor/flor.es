@@ -17,6 +17,9 @@
                 <button onclick="location.href='/cart/view'" th:if="${rol.contains('CLIENTE')}" type="button">Ver Cesta</button>
                 <button onclick="location.href='/catalog/search'" th:if="${rol.contains('CLIENTE')}" type="button">Buscar en catálogo</button>
                 <button onclick="location.href='/producto/add'" th:if="${rol.contains('FLORICULTOR')}" type="button">Agregar productos</button>
+                <form th:if="${rol.contains('FLORICULTOR')}" th:action="@{/mycatalog}" method="post">
+                    <button type="submit">Mi Catálogo</button>
+                </form>
                 <form th:action="@{/logout}" method="post">
                     <button type="submit">Cerrar sesión</button>
                 </form>
