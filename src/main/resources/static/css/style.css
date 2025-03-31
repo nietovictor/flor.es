@@ -90,3 +90,61 @@ div.producto_lista {
     margin: 10px;
     padding: 10px;
 }
+
+/* Estilos específicos para el formulario de productos */
+.product-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Reducir el espacio entre los campos */
+    max-width: 400px; /* Asegurar un ancho consistente para el formulario */
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* Reducir el espacio entre el label y el input */
+}
+
+label {
+    font-weight: bold;
+}
+
+input,
+textarea,
+select {
+    width: 100%; /* Asegurar que todos los elementos tengan el mismo ancho */
+    padding: 6px; /* Reducir el padding para inputs y selects */
+    font-size: 14px;
+    margin-bottom: 0px;
+    border: 1px solid #a5d6a7; /* Light green border */
+    border-radius: 4px;
+    box-sizing: border-box;
+    background-color: #ffffff; /* Fondo blanco para todos los elementos */
+}
+
+textarea {
+    resize: vertical;
+    height: 80px; /* Reducir la altura del textarea */
+}
+
+select {
+    height: 36px; /* Ajustar la altura del select para que coincida con los inputs */
+    background-color: #ffffff; /* Fondo blanco para el select */
+    color: #2e7d32; /* Texto del mismo color que los inputs */
+}
+
+button.submit-button {
+    width: 100%; /* Asegurar que el botón tenga el mismo ancho que los inputs */
+    padding: 8px; /* Reducir el padding del botón */
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 0px;
+    background-color: #66bb6a; /* Fondo verde consistente */
+    color: #fff;
+    border: 1px solid #66bb6a; /* Borde del mismo color que el fondo */
+}
+
+button.submit-button:hover {
+    background-color: #43a047; /* Fondo más oscuro al pasar el cursor */
+}
