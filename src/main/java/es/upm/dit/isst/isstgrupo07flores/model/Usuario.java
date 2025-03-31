@@ -11,7 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 @MappedSuperclass
 public abstract class Usuario implements UserDetails {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id; 

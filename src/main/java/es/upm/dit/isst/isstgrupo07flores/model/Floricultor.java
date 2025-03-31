@@ -12,12 +12,6 @@ import jakarta.validation.constraints.*;
 
 @Entity
 public class Floricultor extends Usuario {
-    @Id
-    private UUID id;
-
-    @Column(name = "CORREO_ELECTRONICO", nullable = false, unique = true)
-    private String correoElectronico;
-
     @NotBlank(message = "El nombre no puede estar vacío")
     private String nombre;
 
@@ -38,22 +32,6 @@ public class Floricultor extends Usuario {
     }
 
     // Getters y Setters
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public String getCorreoElectronico() {
-        return correoElectronico;
-    }
-
-    public void setCorreoElectronico(String correoElectronico) {
-        this.correoElectronico = correoElectronico;
-    }
-
     public String getNombre() {
         return nombre;
     }

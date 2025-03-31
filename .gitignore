@@ -35,5 +35,3 @@ build/
 .fake
 
 ### DATABASE ###
-*.db
-data/
