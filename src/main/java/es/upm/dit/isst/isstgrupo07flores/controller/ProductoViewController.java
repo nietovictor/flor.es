@@ -1,0 +1,66 @@
+package es.upm.dit.isst.isstgrupo07flores.controller;
+
+import es.upm.dit.isst.isstgrupo07flores.model.Producto;
+import es.upm.dit.isst.isstgrupo07flores.model.Floricultor;
+import es.upm.dit.isst.isstgrupo07flores.repository.ProductoRepository;
+import es.upm.dit.isst.isstgrupo07flores.repository.FloricultorRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Optional;
+import java.util.UUID;
+
+@Controller
+public class ProductoViewController {
+
+    @Autowired
+    private ProductoRepository productoRepository;
+
+    @Autowired
+    private FloricultorRepository floricultorRepository;
+
+    @GetMapping("/productos/add")
+    public String mostrarFormularioNuevoProducto(Model model) {
+        // Añade un objeto Producto vacío al modelo para el formulario
+        if (!model.containsAttribute("producto")) {
+            model.addAttribute("producto", new Producto());
+        }
+        return "newProductForm"; // Nombre del archivo HTML (sin extensión)
+    }
+
+    @PostMapping("/productos/add")
+    public String guardarProducto(Producto producto, Authentication authentication, RedirectAttributes redirectAttributes) {
+        try {
+            // Asignar un ID único al producto
+            producto.setId(UUID.randomUUID());
+
+            // Obtener el correo del floricultor logueado
+            String email = authentication.getName();
+
+            // Buscar el floricultor por su correo
+            Optional<Floricultor> floricultorOpt = floricultorRepository.findByCorreoElectronico(email);
+            if (floricultorOpt.isEmpty()) {
+                throw new Exception("No se encontró un floricultor con el correo: " + email);
+            }
+
+            // Asignar el ID del floricultor al producto
+            producto.setFloricultorId(floricultorOpt.get().getId());
+
+            // Guardar el producto en la base de datos
+            productoRepository.save(producto);
+
+            // Redirigir a la página principal si se guarda correctamente
+            return "redirect:/";
+        } catch (Exception e) {
+            // Añadir un mensaje de error al modelo
+            redirectAttributes.addFlashAttribute("error", "Error al guardar el producto: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("producto", producto); // Mantener los datos del formulario
+            return "redirect:/productos/add";
+        }
+    }
+}

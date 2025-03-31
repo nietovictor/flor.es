@@ -15,6 +15,7 @@
                 <p th:if="${rol.contains('CLIENTE')}">Hola, cliente</span></p>
                 <p th:if="${rol.contains('FLORICULTOR')}">Hola, floricultor</span></p>
                 <button onclick="location.href='/catalog/search'" type="button">Buscar en catálogo</button>
+                <button onclick="location.href='/productos/add'" th:if="${rol.contains('FLORICULTOR')}" type="button">Agregar productos</button>
                 <form th:action="@{/logout}" method="post">
                     <button type="submit">Cerrar sesión</button>
                 </form>

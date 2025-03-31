@@ -8,19 +8,15 @@ import jakarta.validation.constraints.*;
 @Entity
 public class Producto {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id; 
 
-    // Relación con Floricultor basada en su ID
-    @Column(name = "floricultor_id", nullable = false)
+    @Column(nullable = false)
     private UUID floricultorId; 
 
     private String nombre; 
 
     private String descripcion; 
 
-    @PositiveOrZero // Dejamos que sea 0 por si hay problemas para añadir cosas como envoltorio/bolsa que no tienen precio
-    @Digits(integer = 3, fraction = 2, message = "El precio debe tener hasta 3 dígitos enteros y 2 decimales")
     private BigDecimal precio; 
 
     @PositiveOrZero
@@ -28,6 +24,7 @@ public class Producto {
 
     private String urlImg; 
 
+    @Enumerated(EnumType.ORDINAL) // Guardar como TINYINT (ordinal del enum)
     private Ocasiones ocasion;
 
     // Enum para las ocasiones
