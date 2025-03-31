@@ -1,12 +1,20 @@
 package es.upm.dit.isst.isstgrupo07flores.model;
 
-import java.util.UUID;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.Positive;
 
 @Entity
 public class Pedido {
@@ -33,11 +41,19 @@ public class Pedido {
 
     private float valoracion; 
 
+    @Enumerated(EnumType.ORDINAL) // Guardar como TINYINT (ordinal del enum)
+    private Estados estado;
+
+    // Enum para los estados
+    public enum Estados {
+        SOLICITADO, ACEPTADO, DENEGADO, LISTO_PARA_RECOGIDA, RECOGIDO    // USANDO LA Ñ A LO MEJOR DA PROBLEMAS, HABRIA QUE MIRARLO
+    }
+
     // Constructor vacío
     public Pedido() {}
 
     // Constructor con parámetros
-    public Pedido(UUID id, UUID clienteId, UUID productoId, BigDecimal coste, Timestamp fecha, String urlTracking, float valoracion) {
+    public Pedido(UUID id, UUID clienteId, UUID productoId, BigDecimal coste, Timestamp fecha, String urlTracking, float valoracion, Estados estado) {
         this.id = id;
         this.clienteId = clienteId;
         this.productoId = productoId;
@@ -45,6 +61,7 @@ public class Pedido {
         this.fecha = fecha;
         this.urlTracking = urlTracking;
         this.valoracion = valoracion;
+        this.estado = estado;
     }
 
     // Getters y Setters
@@ -105,6 +122,14 @@ public class Pedido {
         this.valoracion = valoracion;
     }
 
+    public Estados getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Estados estado) {
+        this.estado = estado;
+    }
+    
     @Override
     public String toString() {
         return "Pedido{" +
