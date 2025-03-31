@@ -2,8 +2,14 @@ package es.upm.dit.isst.isstgrupo07flores.model;
 
 import java.math.BigDecimal;
 import java.util.UUID;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
+import jakarta.validation.constraints.PositiveOrZero;
 
 @Entity
 public class Producto {
@@ -22,8 +28,6 @@ public class Producto {
     @PositiveOrZero
     private int stock; 
 
-    private String urlImg; 
-
     @Lob
     private byte[] imagen; // Store image as byte array
 
@@ -39,15 +43,15 @@ public class Producto {
     public Producto() {}
 
     // Constructor con parámetros
-    public Producto(UUID id, UUID floricultorId, String nombre, String descripcion, BigDecimal precio, int stock, String urlImg, Ocasiones ocasion) {
+    public Producto(UUID id, UUID floricultorId, String nombre, String descripcion, BigDecimal precio, int stock, Ocasiones ocasion, byte[] imagen) {
         this.id = id;
         this.floricultorId = floricultorId;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
         this.stock = stock;
-        this.urlImg = urlImg;
         this.ocasion = ocasion;
+        this.imagen = imagen;
     }
 
     // Getters y Setters
@@ -99,14 +103,6 @@ public class Producto {
         this.stock = stock;
     }
 
-    public String getUrlImg() {
-        return urlImg;
-    }
-
-    public void setUrlImg(String urlImg) {
-        this.urlImg = urlImg;
-    }
-
     public byte[] getImagen() {
         return imagen;
     }
@@ -132,7 +128,6 @@ public class Producto {
                 ", descripcion='" + descripcion + '\'' +
                 ", precio=" + precio +
                 ", stock=" + stock +
-                ", urlImg='" + urlImg + '\'' +
                 ", ocasion=" + ocasion +
                 '}';
     }
