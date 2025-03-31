@@ -24,6 +24,9 @@ public class Producto {
 
     private String urlImg; 
 
+    @Lob
+    private byte[] imagen; // Store image as byte array
+
     @Enumerated(EnumType.ORDINAL) // Guardar como TINYINT (ordinal del enum)
     private Ocasiones ocasion;
 
@@ -102,6 +105,14 @@ public class Producto {
 
     public void setUrlImg(String urlImg) {
         this.urlImg = urlImg;
+    }
+
+    public byte[] getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(byte[] imagen) {
+        this.imagen = imagen;
     }
 
     public Ocasiones getOcasion() {

@@ -15,6 +15,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -53,7 +57,7 @@ public class ProductoViewController {
     }
 
     @PostMapping("/add")
-    public String guardarProducto(Producto producto, Authentication authentication, RedirectAttributes redirectAttributes) {
+    public String guardarProducto(@RequestParam("imagenArchivo") MultipartFile imagenArchivo, Producto producto, Authentication authentication, RedirectAttributes redirectAttributes) {
         try {
             // Asignar un ID único al producto
             producto.setId(UUID.randomUUID());
@@ -70,6 +74,10 @@ public class ProductoViewController {
             // Asignar el ID del floricultor al producto
             producto.setFloricultorId(floricultorOpt.get().getId());
 
+            if (!imagenArchivo.isEmpty()) {
+                producto.setImagen(imagenArchivo.getBytes()); // Save uploaded image as byte array
+            }
+
             // Guardar el producto en la base de datos
             productoRepository.save(producto);
 
@@ -82,4 +90,6 @@ public class ProductoViewController {
             return "redirect:/productos/add";
         }
     }
+
+    
 }

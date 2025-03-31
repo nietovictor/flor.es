@@ -9,7 +9,7 @@
 
 <div class="product-container">
     <h2 th:text="${producto.nombre}">Nombre del Producto</h2>
-    <img th:src="${producto.urlImg}" alt="Imagen del producto" class="product-img"/>
+    <img th:src="@{/producto/image/{id}(id=${producto.id})}" class="product-img" alt="Imagen del producto" style="max-width: 300px; height: auto;" />
     <p><strong>Descripción:</strong> <span th:text="${producto.descripcion}"></span></p>
     <p><strong>Precio:</strong> <span th:text="${producto.precio}"></span> €</p>
     <p><strong>Stock disponible:</strong> <span th:text="${producto.stock}"></span></p>
