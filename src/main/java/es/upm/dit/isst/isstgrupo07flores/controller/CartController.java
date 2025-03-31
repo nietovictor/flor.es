@@ -1,17 +1,18 @@
 package es.upm.dit.isst.isstgrupo07flores.controller;
 
-import org.springframework.web.bind.annotation.*;
+import java.util.UUID;
 
-import org.springframework.ui.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import jakarta.servlet.http.HttpSession;
-import es.upm.dit.isst.isstgrupo07flores.model.Producto;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import es.upm.dit.isst.isstgrupo07flores.service.CartService;
-import es.upm.dit.isst.isstgrupo07flores.model.Cliente;
-import es.upm.dit.isst.isstgrupo07flores.model.Cart;
-import es.upm.dit.isst.isstgrupo07flores.service.ProductoService;
-import java.util.UUID;
+import jakarta.servlet.http.HttpSession;
 
 
 @Controller

@@ -17,7 +17,8 @@
     <form th:action="@{/cart/add/{productId}(productId=${producto.id})}" method="post">
         <button type="submit" class="btn">Añadir a la cesta</button>
     </form>
-    <a th:href="@{/cart/view}" class="btn">Ver Cesta</a>
+    <button onclick="location.href='/cart/view'" type="button">Ver Cesta</button>
+    <button onclick="location.href='/'" type="button">Home</button>
 
 </div>
 
