@@ -43,7 +43,7 @@ public class ProductoViewController {
         return "producto"; // This will resolve to producto.html in templates folder
     }
 
-    @GetMapping("/productos/add")
+    @GetMapping("/add")
     public String mostrarFormularioNuevoProducto(Model model) {
         // Añade un objeto Producto vacío al modelo para el formulario
         if (!model.containsAttribute("producto")) {
@@ -52,7 +52,7 @@ public class ProductoViewController {
         return "newProductForm"; // Nombre del archivo HTML (sin extensión)
     }
 
-    @PostMapping("/productos/add")
+    @PostMapping("/add")
     public String guardarProducto(Producto producto, Authentication authentication, RedirectAttributes redirectAttributes) {
         try {
             // Asignar un ID único al producto
