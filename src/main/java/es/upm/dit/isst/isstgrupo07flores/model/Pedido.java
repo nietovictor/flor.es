@@ -14,6 +14,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 
 @Entity
@@ -41,8 +42,13 @@ public class Pedido {
 
     private float valoracion; 
 
+    @NotBlank(message = "La dirección no puede estar vacía")
+    private String direccionentrega;
+
     @Enumerated(EnumType.ORDINAL) // Guardar como TINYINT (ordinal del enum)
     private Estados estado;
+
+
 
     // Enum para los estados
     public enum Estados {
@@ -53,7 +59,7 @@ public class Pedido {
     public Pedido() {}
 
     // Constructor con parámetros
-    public Pedido(UUID id, UUID clienteId, UUID productoId, BigDecimal coste, Timestamp fecha, String urlTracking, float valoracion, Estados estado) {
+    public Pedido(UUID id, UUID clienteId, UUID productoId, BigDecimal coste, Timestamp fecha, String urlTracking, float valoracion, Estados estado, String direccionentrega) {
         this.id = id;
         this.clienteId = clienteId;
         this.productoId = productoId;
@@ -62,6 +68,7 @@ public class Pedido {
         this.urlTracking = urlTracking;
         this.valoracion = valoracion;
         this.estado = estado;
+        this.direccionentrega = direccionentrega;
     }
 
     // Getters y Setters
@@ -128,6 +135,14 @@ public class Pedido {
 
     public void setEstado(Estados estado) {
         this.estado = estado;
+    }
+
+    public String getDireccionentrega() {
+        return direccionentrega;
+    }   
+
+    public void setDireccionentrega(String direccionentrega) {
+        this.direccionentrega = direccionentrega;
     }
     
     @Override
