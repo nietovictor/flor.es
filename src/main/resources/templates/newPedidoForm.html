@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Nuevo Pedido</title>
+    <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+    <header>
+        <h1>Crear un nuevo pedido</h1>
+    </header>
+    <main>
+        <form th:action="@{/pedido/create}" method="post" class="pedido-form">
+            <div class="form-group">
+                <label for="direccionEntrega">Dirección de Entrega:</label>
+                <input type="text" id="direccionEntrega" name="direccionEntrega" required />
+            </div>
+            <div class="form-group">
+                <button type="submit" class="submit-button">Confirmar Pedido</button>
+            </div>
+        </form>
+        <button onclick="location.href='/cart/view'" type="button">Volver a la cesta</button>
+    </main>
+</body>
+</html>

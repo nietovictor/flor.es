@@ -3,6 +3,42 @@
 <head>
     <title>Flor.es - Página de Inicio</title>
     <link rel="stylesheet" href="../css/style.css" />
+    <style>
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .notification button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -12,28 +48,38 @@
                 <button onclick="location.href='/login'" type="button">Iniciar sesión</button>
             </div>
             <div th:if="${#authentication.name != 'anonymousUser'}">
-                <p th:if="${rol.contains('CLIENTE')}">Hola, cliente</span></p>
-                <p th:if="${rol.contains('FLORICULTOR')}">Hola, floricultor</span></p>
-                <button onclick="location.href='/cart/view'" th:if="${rol.contains('CLIENTE')}" type="button">Ver Cesta</button>
-                <button onclick="location.href='/catalog/search'" th:if="${rol.contains('CLIENTE')}" type="button">Buscar en catálogo</button>
-                <button onclick="location.href='/producto/add'" th:if="${rol.contains('FLORICULTOR')}" type="button">Agregar productos</button>
-                <form th:if="${rol.contains('FLORICULTOR')}" th:action="@{/mycatalog}" method="post">
-                    <button type="submit">Mi Catálogo</button>
-                </form>
-                <form th:action="@{/logout}" method="post">
-                    <button type="submit">Cerrar sesión</button>
-                </form>
+                <p th:if="${rol.contains('CLIENTE')}">Hola, cliente</p>
+                <p th:if="${rol.contains('FLORICULTOR')}">Hola, floricultor</p>
+                <div th:if="${successMessage}" class="notification" id="notification">
+                    <p th:text="${successMessage}"></p>
+                    <button onclick="document.getElementById('notification').style.display='none'">&times;</button>
+                </div>
+                <div style="display: inline-block;">
+                    <button onclick="location.href='/cart/view'" th:if="${rol.contains('CLIENTE')}" type="button">Ver Cesta</button>
+                    <form th:action="@{/logout}" method="post" style="display: inline;">
+                        <button type="submit">Cerrar sesión</button>
+                    </form>
+                </div>
             </div>
         </nav>
     </header>
 
     <main>
+        <br/>
         <h2>Plataforma de venta y distribución de flores a domicilio</h2>
         <p>Explora nuestras flores y realiza tu pedido fácilmente.</p>
+        <button onclick="location.href='/catalog/search'" th:if="${rol.contains('CLIENTE')}" type="button">Buscar en catálogo</button>
+        <div style="display: inline-block;"></div>
+            <form th:if="${rol.contains('FLORICULTOR')}" th:action="@{/mycatalog}" method="post" style="display: inline;">
+            <button type="submit">Mi catálogo</button>
+            </form>
+            <button onclick="location.href='/producto/add'" th:if="${rol.contains('FLORICULTOR')}" type="button" style="display: inline;">Agregar productos</button>
+        </div>
+        
     </main>
 
-    <footer>
+    <!-- <footer>
         <p>&copy; 2025 Flor.es - Todos los derechos reservados</p>
-    </footer>
+    </footer> -->
 </body>
 </html>

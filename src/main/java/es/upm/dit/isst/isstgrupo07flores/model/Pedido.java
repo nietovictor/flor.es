@@ -13,6 +13,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Version;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
@@ -40,14 +41,14 @@ public class Pedido {
 
     private String urlTracking; 
 
-    private float valoracion; 
+    @Column(nullable = true)
+    private Float valoracion; // Cambiado de float a Float para permitir null
 
     @NotBlank(message = "La dirección no puede estar vacía")
     private String direccionentrega;
 
     @Enumerated(EnumType.ORDINAL) // Guardar como TINYINT (ordinal del enum)
-    private Estados estado;
-
+    private Estados estado = Estados.SOLICITADO; // Default state
 
 
     // Enum para los estados
@@ -121,11 +122,11 @@ public class Pedido {
         this.urlTracking = urlTracking;
     }
 
-    public float getValoracion() {
+    public Float getValoracion() {
         return valoracion;
     }
 
-    public void setValoracion(float valoracion) {
+    public void setValoracion(Float valoracion) {
         this.valoracion = valoracion;
     }
 
@@ -144,6 +145,7 @@ public class Pedido {
     public void setDireccionentrega(String direccionentrega) {
         this.direccionentrega = direccionentrega;
     }
+
     
     @Override
     public String toString() {
