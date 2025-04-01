@@ -1,11 +1,9 @@
 package es.upm.dit.isst.isstgrupo07flores.service;
 
-import es.upm.dit.isst.isstgrupo07flores.model.Usuario;
 import es.upm.dit.isst.isstgrupo07flores.model.Floricultor;
 import es.upm.dit.isst.isstgrupo07flores.repository.ClienteRepository;
 import es.upm.dit.isst.isstgrupo07flores.model.Cliente;
 import es.upm.dit.isst.isstgrupo07flores.repository.FloricultorRepository;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;

@@ -7,7 +7,6 @@ import es.upm.dit.isst.isstgrupo07flores.service.ProductoService;
 import es.upm.dit.isst.isstgrupo07flores.model.Producto;
 import org.springframework.ui.Model;
 import java.util.UUID;
-import es.upm.dit.isst.isstgrupo07flores.model.Producto;
 import es.upm.dit.isst.isstgrupo07flores.model.Floricultor;
 import es.upm.dit.isst.isstgrupo07flores.repository.ProductoRepository;
 import es.upm.dit.isst.isstgrupo07flores.repository.FloricultorRepository;
@@ -16,9 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
 
 import java.util.Optional;
 import java.util.UUID;

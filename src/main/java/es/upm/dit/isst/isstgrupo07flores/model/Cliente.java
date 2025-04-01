@@ -1,6 +1,5 @@
 package es.upm.dit.isst.isstgrupo07flores.model;
 
-import java.util.UUID;
 import java.util.Collection;
 import java.util.Collections;
 

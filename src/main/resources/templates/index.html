@@ -68,7 +68,7 @@
         <br/>
         <h2>Plataforma de venta y distribución de flores a domicilio</h2>
         <p>Explora nuestras flores y realiza tu pedido fácilmente.</p>
-        <button onclick="location.href='/catalog/search'" th:if="${rol.contains('CLIENTE')}" type="button">Buscar en catálogo</button>
+        <button onclick="location.href='/catalog/search'" th:if="${rol.contains('CLIENTE') or #authentication.name == 'anonymousUser'}" type="button">Buscar en catálogo</button>
         <div style="display: inline-block;"></div>
             <form th:if="${rol.contains('FLORICULTOR')}" th:action="@{/mycatalog}" method="post" style="display: inline;">
             <button type="submit">Mi catálogo</button>

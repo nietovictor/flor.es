@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import es.upm.dit.isst.isstgrupo07flores.model.Producto;
 import es.upm.dit.isst.isstgrupo07flores.service.ProductoService;
 
-import org.springframework.ui.Model;
 
 @RestController
 @RequestMapping("/producto")

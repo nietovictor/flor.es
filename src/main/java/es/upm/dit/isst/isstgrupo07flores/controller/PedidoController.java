@@ -1,16 +1,11 @@
 package es.upm.dit.isst.isstgrupo07flores.controller;
 
 import es.upm.dit.isst.isstgrupo07flores.model.Pedido;
-import es.upm.dit.isst.isstgrupo07flores.model.Cliente;
-import es.upm.dit.isst.isstgrupo07flores.model.Floricultor;
-import es.upm.dit.isst.isstgrupo07flores.model.Producto;
 import es.upm.dit.isst.isstgrupo07flores.service.PedidoService;
 import es.upm.dit.isst.isstgrupo07flores.service.CartService;
 import es.upm.dit.isst.isstgrupo07flores.repository.PedidoRepository;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.security.core.Authentication;
 
 import java.util.List;
 import java.util.UUID;

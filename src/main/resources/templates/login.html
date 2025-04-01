@@ -11,12 +11,10 @@
         <form th:action="@{/login}" method="post">
             <div>
                 <label for="correoElectronico">Correo Electrónico:</label>
-                <!-- El nombre "username" es el que Spring Security espera por defecto -->
                 <input type="email" id="correoElectronico" name="username" placeholder="tu correo" required />
             </div>
             <div>
                 <label for="contrasena">Contraseña:</label>
-                <!-- El nombre "password" es el que Spring Security espera -->
                 <input type="password" id="contrasena" name="password" placeholder="tu contraseña" required />
             </div>
             <div style="display: flex; gap: 10px;">

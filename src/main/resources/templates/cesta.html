@@ -19,7 +19,12 @@
         <li><strong>Precio:</strong> <span th:text="${cart.producto.precio}"></span> €</li>
         <li><strong>Descripción:</strong> <span th:text="${cart.producto.descripcion}"></span></li>
     </ul>
-    <button onclick="location.href='/pedido/new'" type="button">Comprar</button>
+    <div th:if="${cart.producto != null}">
+        <button onclick="location.href='/pedido/new'" type="button">Comprar</button>
+        <!-- <form th:action="@{/cart/clear}" method="post" style="display: inline;">
+            <button type="submit">Vaciar Cesta</button>
+        </form> -->
+    </div>
     <button onclick="location.href='/'" type="button">Inicio</button>
     <!-- <button onclick="history.back()" type="button">Volver</button> -->
     

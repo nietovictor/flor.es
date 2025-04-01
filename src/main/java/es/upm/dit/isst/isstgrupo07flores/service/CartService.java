@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 import es.upm.dit.isst.isstgrupo07flores.model.Cart;
 import es.upm.dit.isst.isstgrupo07flores.model.Producto;
-import es.upm.dit.isst.isstgrupo07flores.service.ProductoService;
 
 @Service
 public class CartService {

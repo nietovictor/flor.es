@@ -3,15 +3,11 @@ package es.upm.dit.isst.isstgrupo07flores.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
 import es.upm.dit.isst.isstgrupo07flores.service.UsuarioService;
 
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -41,8 +37,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/h2-console/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                .requestMatchers("/producto/**").permitAll()
+                .requestMatchers("/h2-console/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll() // Permite acceder a la base de datos H2 y Swagger
+                .requestMatchers("/catalog/**", "/producto/**").permitAll() // Permite acceso al catalogo y a las imagenes de los productos
                 .requestMatchers("/","/login", "/register/**", "/css/**", "/js/**").permitAll() // Permitir login y registro
                 .anyRequest().authenticated() // Todo lo demás requiere autenticación
             )

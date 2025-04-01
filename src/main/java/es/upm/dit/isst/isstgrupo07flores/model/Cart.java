@@ -1,6 +1,5 @@
 package es.upm.dit.isst.isstgrupo07flores.model;
 
-import es.upm.dit.isst.isstgrupo07flores.model.Producto;
 
 public class Cart {
     private Producto producto;
