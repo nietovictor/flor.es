@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.List;
+import java.util.Collections;
 
 @Controller
 @RequestMapping("/pedido")
@@ -85,10 +86,31 @@ public class PedidoViewController {
         // Obtener los pedidos del cliente
         List<Pedido> pedidos = pedidoRepository.findByClienteId(cliente.getId());
 
+        // Invertir el orden de los pedidos
+        Collections.reverse(pedidos);
+
+        
+
         // Pasar los pedidos al modelo
         model.addAttribute("pedidos", pedidos);
 
         return "pedidosCliente"; // Nombre de la plantilla Thymeleaf
     }
     
+    @PostMapping("/valorar/{id}")
+    public String valorarPedido(@PathVariable("id") UUID pedidoId, @RequestParam("valoracion") int valoracion) {
+        // Buscar el pedido por ID
+        Optional<Pedido> pedidoOpt = pedidoRepository.findById(pedidoId);
+        if (pedidoOpt.isEmpty()) {
+            throw new IllegalArgumentException("Pedido no encontrado con ID: " + pedidoId);
+        }
+
+        // Actualizar la valoración del pedido
+        Pedido pedido = pedidoOpt.get();
+        pedido.setValoracion(valoracion);
+        pedidoRepository.save(pedido);
+
+        // Redirigir a la lista de pedidos
+        return "redirect:/pedido/cliente";
+    }
 }

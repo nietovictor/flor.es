@@ -41,7 +41,7 @@ public class Pedido {
     private String urlTracking; 
 
     @Column(nullable = true)
-    private Float valoracion; // Cambiado de float a Float para permitir null
+    private Integer valoracion; // Cambiado de float a Float para permitir null
 
     @NotBlank(message = "La dirección no puede estar vacía")
     private String direccionentrega;
@@ -59,7 +59,7 @@ public class Pedido {
     public Pedido() {}
 
     // Constructor con parámetros
-    public Pedido(UUID id, UUID clienteId, UUID productoId, BigDecimal coste, Timestamp fecha, String urlTracking, float valoracion, Estados estado, String direccionentrega) {
+    public Pedido(UUID id, UUID clienteId, UUID productoId, BigDecimal coste, Timestamp fecha, String urlTracking, Integer valoracion, Estados estado, String direccionentrega) {
         this.id = id;
         this.clienteId = clienteId;
         this.productoId = productoId;
@@ -121,11 +121,11 @@ public class Pedido {
         this.urlTracking = urlTracking;
     }
 
-    public Float getValoracion() {
+    public Integer getValoracion() {
         return valoracion;
     }
 
-    public void setValoracion(Float valoracion) {
+    public void setValoracion(Integer valoracion) {
         this.valoracion = valoracion;
     }
 

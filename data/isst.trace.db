@@ -3001,3 +3001,19 @@ The connection was not closed by the application and is garbage collected [90018
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:690)
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
 	... 54 more
+2025-05-03 00:36:19.106480+02:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "ALTER TABLE pedido [*]MODIFY valoracion INT NULL"; se esperaba "., ADD, SET, RENAME, DROP, ALTER"
+Syntax error in SQL statement "ALTER TABLE pedido [*]MODIFY valoracion INT NULL"; expected "., ADD, SET, RENAME, DROP, ALTER"; SQL statement:
+ALTER TABLE pedido MODIFY valoracion INT NULL [42001-232]
+2025-05-03 00:37:00.878065+02:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "[*]PEDIDO"; se esperaba "PREPARE"
+Syntax error in SQL statement "[*]PEDIDO"; expected "PREPARE"; SQL statement:
+PEDIDO [42001-232]
+2025-05-03 01:39:22.432609+02:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLDataException: Conversión de datos fallida, convirtiendo "'' (PEDIDO: ""VALORACION"" INTEGER)"
+Data conversion error converting "'' (PEDIDO: ""VALORACION"" INTEGER)"; SQL statement:
+UPDATE "PUBLIC"."PEDIDO" SET "COSTE"=? ,"VALORACION"=? ,"FECHA"=? ,"CLIENT_ID"=? ,"ID"=? ,"PRODUCTO_ID"=? ,"URL_TRACKING"=? ,"ESTADO"=? ,"DIRECCIONENTREGA"=?  WHERE "ID"=? [22018-232]
+2025-05-03 01:39:22.433609+02:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLDataException: Conversión de datos fallida, convirtiendo "'' (PEDIDO: ""VALORACION"" INTEGER)"
+Data conversion error converting "'' (PEDIDO: ""VALORACION"" INTEGER)"; SQL statement:
+UPDATE "PUBLIC"."PEDIDO" SET "COSTE"=? ,"VALORACION"=? ,"FECHA"=? ,"CLIENT_ID"=? ,"ID"=? ,"PRODUCTO_ID"=? ,"URL_TRACKING"=? ,"ESTADO"=? ,"DIRECCIONENTREGA"=?  WHERE "ID"=? [22018-232]
