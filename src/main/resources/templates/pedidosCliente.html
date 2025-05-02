@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mis Pedidos</title>
+    <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+    <header>
+        <h1>Mis Pedidos</h1>
+    </header>
+    <main>
+        <div th:if="${#lists.isEmpty(pedidos)}">
+            <p>No tienes pedidos realizados.</p>
+        </div>
+        <div th:each="pedido : ${pedidos}">
+            <h3 th:text="'Pedido ID: ' + ${pedido.id}"></h3>
+            <p><strong>Nombre:</strong> <span th:text="${pedido.productoId}"></span></p>
+            <p><strong>Coste:</strong> <span th:text="${pedido.coste}"></span> €</p>
+            <p><strong>Dirección de Entrega:</strong> <span th:text="${pedido.direccionentrega}"></span></p>
+            <p><strong>Estado:</strong> <span th:text="${pedido.estado}"></span></p>
+            <p><strong>Fecha:</strong> <span th:text="${pedido.fecha}"></span></p>
+            <hr/>
+        </div>
+        <button onclick="location.href='/'" type="button">Volver al Inicio</button>
+    </main>
+</body>
+</html>

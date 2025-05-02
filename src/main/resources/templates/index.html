@@ -59,6 +59,7 @@
                     <form th:action="@{/logout}" method="post" style="display: inline;">
                         <button type="submit">Cerrar sesión</button>
                     </form>
+                    <button onclick="location.href='/pedido/cliente'" th:if="${rol.contains('CLIENTE')}" type="button">Pedidos</button>
                 </div>
             </div>
         </nav>

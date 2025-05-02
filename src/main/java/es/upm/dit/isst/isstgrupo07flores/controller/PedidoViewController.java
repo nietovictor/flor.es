@@ -5,8 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import es.upm.dit.isst.isstgrupo07flores.model.Producto;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+
 import es.upm.dit.isst.isstgrupo07flores.service.CartService;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import es.upm.dit.isst.isstgrupo07flores.model.Pedido; 
@@ -14,9 +13,11 @@ import es.upm.dit.isst.isstgrupo07flores.repository.PedidoRepository;
 import jakarta.servlet.http.HttpSession; 
 import es.upm.dit.isst.isstgrupo07flores.model.Cliente; 
 import es.upm.dit.isst.isstgrupo07flores.repository.ClienteRepository;
+import org.springframework.ui.Model;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.List;
 
 @Controller
 @RequestMapping("/pedido")
@@ -68,5 +69,26 @@ public class PedidoViewController {
         return "redirect:/"; // Redirige a la página principal
     }
 
+    @GetMapping("/cliente")
+    public String verPedidosCliente(Authentication authentication, Model model) {
+        // Obtener el correo del cliente autenticado
+        String email = authentication.getName();
+
+        // Buscar el cliente por correo electrónico
+        Optional<Cliente> clienteOpt = clienteRepository.findByCorreoElectronico(email);
+        if (clienteOpt.isEmpty()) {
+            throw new IllegalArgumentException("Cliente no encontrado con el correo: " + email);
+        }
+
+        Cliente cliente = clienteOpt.get();
+
+        // Obtener los pedidos del cliente
+        List<Pedido> pedidos = pedidoRepository.findByClienteId(cliente.getId());
+
+        // Pasar los pedidos al modelo
+        model.addAttribute("pedidos", pedidos);
+
+        return "pedidosCliente"; // Nombre de la plantilla Thymeleaf
+    }
     
 }
