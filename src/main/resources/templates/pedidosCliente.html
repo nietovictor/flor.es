@@ -15,11 +15,22 @@
         </div>
         <div th:each="pedido : ${pedidos}">
             <h3 th:text="'Pedido ID: ' + ${pedido.id}"></h3>
-            <p><strong>Nombre:</strong> <span th:text="${pedido.productoId}"></span></p>
+            <p><strong>Producto ID:</strong> <span th:text="${pedido.productoId}"></span></p>
             <p><strong>Coste:</strong> <span th:text="${pedido.coste}"></span> €</p>
             <p><strong>Dirección de Entrega:</strong> <span th:text="${pedido.direccionentrega}"></span></p>
             <p><strong>Estado:</strong> <span th:text="${pedido.estado}"></span></p>
             <p><strong>Fecha:</strong> <span th:text="${pedido.fecha}"></span></p>
+            <p>
+                
+                <!-- Mostrar botón si la valoración es null -->
+                <span th:if="${pedido.valoracion == null}">
+                    <button type="button" >Valorar</button>
+                </span>
+                <!-- Mostrar la valoración si no es null -->
+                <span th:if="${pedido.valoracion != null}">
+                    <strong>Valoración:</strong> <span th:text="${pedido.valoracion}"></span>
+                </span>
+            </p>
             <hr/>
         </div>
         <button onclick="location.href='/'" type="button">Volver al Inicio</button>
