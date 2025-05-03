@@ -207,4 +207,12 @@ public class PedidoViewController {
         pedidoRepository.save(pedido);
         return "redirect:/pedido/floricultor"; // Redirigir a la lista de pedidos del floricultor
     }
+
+    @PostMapping("/listo_para_recoger/{id}")
+    public String listoParaRecogerPedido(@PathVariable("id") UUID id) {
+        Pedido pedido = pedidoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Pedido no encontrado"));
+        pedido.setEstado(Pedido.Estados.LISTO_PARA_RECOGIDA);
+        pedidoRepository.save(pedido);
+        return "redirect:/pedido/floricultor"; // Redirigir a la lista de pedidos del floricultor
+    }
 }
