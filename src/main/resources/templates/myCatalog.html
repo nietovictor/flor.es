@@ -11,6 +11,9 @@
     </div>
     <h2 th:text="${floricultor.nombre}">Nombre Floricultor</h2>
     <p>Código Postal: <span th:text="${floricultor.cp}"></span></p>
+
+    <button onclick="location.href='/producto/add'" type="button" style="display: inline;">Agregar productos</button>
+
     <div th:each="producto : ${productos}" class="producto_lista">
         <h3 th:text="${producto.nombre}">Nombre Producto</h3>
         <p>Descripción: <span th:text="${producto.descripcion}"></span></p>
