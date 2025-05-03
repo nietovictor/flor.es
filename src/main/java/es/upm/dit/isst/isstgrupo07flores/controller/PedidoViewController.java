@@ -147,4 +147,20 @@ public class PedidoViewController {
         // Redirigir a la lista de pedidos
         return "redirect:/pedido/cliente";
     }
+
+    @PostMapping("/aceptar/{id}")
+    public String aceptarPedido(@PathVariable("id") UUID id) {
+        Pedido pedido = pedidoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Pedido no encontrado"));
+        pedido.setEstado(Pedido.Estados.ACEPTADO);
+        pedidoRepository.save(pedido);
+        return "redirect:/pedido/floricultor"; // Redirigir a la lista de pedidos del floricultor
+    }
+
+    @PostMapping("/rechazar/{id}")
+    public String rechazarPedido(@PathVariable("id") UUID id) {
+        Pedido pedido = pedidoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Pedido no encontrado"));
+        pedido.setEstado(Pedido.Estados.DENEGADO);
+        pedidoRepository.save(pedido);
+        return "redirect:/pedido/floricultor"; // Redirigir a la lista de pedidos del floricultor
+    }
 }

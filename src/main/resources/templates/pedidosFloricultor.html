@@ -25,6 +25,13 @@
             <p><strong>Dirección de Entrega:</strong> <span th:text="${pedido.direccionentrega}"></span></p>
             <p><strong>Estado:</strong> <span th:text="${pedido.estado}"></span></p>
             <p><strong>Fecha:</strong> <span th:text="${pedido.fecha}"></span></p>
+            <form th:action="@{/pedido/aceptar/{id}(id=${pedido.id})}" method="post" style="display: inline;">
+                <button type="submit" style="background-color: green; color: white;">Aceptar</button>
+            </form>
+            <form th:action="@{/pedido/rechazar/{id}(id=${pedido.id})}" method="post" style="display: inline;">
+                <button type="submit" style="background-color: red; color: white;">Rechazar</button>
+            </form>
+            </p>
             <hr/>
             </div>
         </div>
