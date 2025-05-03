@@ -22,7 +22,7 @@
             <p><strong>Fecha:</strong> <span th:text="${pedido.fecha}"></span></p>
             <p>
                 <!-- Mostrar las estrellas si la valoración no es null -->
-                <div th:if="${pedido.valoracion != null}">
+                <div th:if="${pedido.valoracion != null and pedido.estado.toString() == 'RECOGIDO'}">
                     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
                     <strong>Valoración:</strong>
                     <div class="star-rating" id ="star-rating-values">
@@ -35,7 +35,7 @@
                 </div>
 
                 <!-- Mostrar el formulario si la valoración es null -->
-                <div th:unless="${pedido.valoracion != null}">
+                <div th:if="${pedido.valoracion == null and pedido.estado.toString() == 'RECOGIDO'}">
                     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
                     <form th:action="@{'/pedido/valorar/' + ${pedido.id}}" method="post">
                         <div class="star-rating-rate">
