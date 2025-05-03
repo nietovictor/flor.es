@@ -1,27 +1,9 @@
 package es.upm.dit.isst.isstgrupo07flores.controller;
 
-import org.springframework.web.bind.annotation.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import es.upm.dit.isst.isstgrupo07flores.model.Producto;
-import org.springframework.security.core.Authentication;
-
-import es.upm.dit.isst.isstgrupo07flores.service.CartService;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import es.upm.dit.isst.isstgrupo07flores.model.Pedido; 
-import es.upm.dit.isst.isstgrupo07flores.repository.PedidoRepository; 
-import jakarta.servlet.http.HttpSession; 
-import es.upm.dit.isst.isstgrupo07flores.model.Cliente; 
-import es.upm.dit.isst.isstgrupo07flores.repository.ClienteRepository;
-import es.upm.dit.isst.isstgrupo07flores.model.Floricultor;
-import es.upm.dit.isst.isstgrupo07flores.repository.FloricultorRepository;
-import es.upm.dit.isst.isstgrupo07flores.repository.ProductoRepository;
-import org.springframework.ui.Model;
-
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.List;
-import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -33,6 +15,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import es.upm.dit.isst.isstgrupo07flores.model.Cliente;
+import es.upm.dit.isst.isstgrupo07flores.model.Floricultor;
+import es.upm.dit.isst.isstgrupo07flores.model.Pedido;
+import es.upm.dit.isst.isstgrupo07flores.model.Producto;
+import es.upm.dit.isst.isstgrupo07flores.repository.ClienteRepository;
+import es.upm.dit.isst.isstgrupo07flores.repository.FloricultorRepository;
+import es.upm.dit.isst.isstgrupo07flores.repository.PedidoRepository;
+import es.upm.dit.isst.isstgrupo07flores.repository.ProductoRepository;
+import es.upm.dit.isst.isstgrupo07flores.service.CartService;
+import jakarta.servlet.http.HttpSession;
 
 
 
@@ -203,6 +196,14 @@ public class PedidoViewController {
     public String rechazarPedido(@PathVariable("id") UUID id) {
         Pedido pedido = pedidoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Pedido no encontrado"));
         pedido.setEstado(Pedido.Estados.DENEGADO);
+        pedidoRepository.save(pedido);
+        return "redirect:/pedido/floricultor"; // Redirigir a la lista de pedidos del floricultor
+    }
+
+    @PostMapping("/entregar/{id}")
+    public String entregarPedido(@PathVariable("id") UUID id) {
+        Pedido pedido = pedidoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Pedido no encontrado"));
+        pedido.setEstado(Pedido.Estados.RECOGIDO);
         pedidoRepository.save(pedido);
         return "redirect:/pedido/floricultor"; // Redirigir a la lista de pedidos del floricultor
     }
