@@ -20,6 +20,8 @@ import org.springframework.ui.Model;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.List;
+import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -32,15 +34,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import es.upm.dit.isst.isstgrupo07flores.model.Cliente; 
-import es.upm.dit.isst.isstgrupo07flores.model.Floricultor;
-import es.upm.dit.isst.isstgrupo07flores.model.Pedido;
-import es.upm.dit.isst.isstgrupo07flores.model.Producto; 
-import es.upm.dit.isst.isstgrupo07flores.repository.ClienteRepository;
-import es.upm.dit.isst.isstgrupo07flores.repository.FloricultorRepository;
-import es.upm.dit.isst.isstgrupo07flores.repository.PedidoRepository;
-import es.upm.dit.isst.isstgrupo07flores.service.CartService;
-import jakarta.servlet.http.HttpSession;
+
 
 @Controller
 @RequestMapping("/pedido")
