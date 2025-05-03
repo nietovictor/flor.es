@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Editar Producto</title>
+    <link rel="stylesheet" href="../css/style.css" />
+</head>
+
+<body>
+    <header>
+        <h1>Editar producto</h1>
+    </header>
+    <main>
+
+        <form th:action="@{/producto/editar/guardar}" th:object="${producto}" method="post">
+            <input type="hidden" th:field="*{id}"/>
+
+            <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" th:field="*{nombre}"required />
+            </div>
+
+            <div class="form-group">
+                <label for="descripcion" class="textarea-label">Descripción:</label>
+                <textarea id="descripcion" name="descripcion" th:field="*{descripcion}" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="precio">Precio:</label>
+                <input type="number" id="precio" name="precio" th:field="*{precio}" step="0.01" required />
+            </div>
+
+            <div class="form-group">
+                <label for="stock">Stock:</label>
+                <input type="number" id="stock" name="stock" th:field="*{stock}" required />
+            </div>
+
+
+            <div class="form-group">
+                <label for="imagenArchivo">Imagen del Producto:</label>
+                <input type="numbre" id="imagenArchivo" name="imagenArchivo" th:field="*{imagen}" />
+            </div>
+
+            <div class="form-group">
+                <label for="ocasion">Ocasión:</label>
+                <select id="ocasion" name="ocasion" th:field="*{ocasion}">
+                    <option th:each="ocasion : ${T(es.upm.dit.isst.isstgrupo07flores.model.Producto.Ocasiones).values()}"
+                            th:value="${ocasion}" th:text="${ocasion}">
+                    </option>
+                </select>
+            </div>
+            <br/>
+            <div class="form-group">
+                <button type="submit" class="submit-button">Guardar Producto</button>
+            </div>
+        </form>
+    </main>
+</body>
+
+</html>

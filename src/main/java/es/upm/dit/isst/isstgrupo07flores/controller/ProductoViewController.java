@@ -11,8 +11,6 @@ import es.upm.dit.isst.isstgrupo07flores.model.Floricultor;
 import es.upm.dit.isst.isstgrupo07flores.repository.ProductoRepository;
 import es.upm.dit.isst.isstgrupo07flores.repository.FloricultorRepository;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -88,5 +86,20 @@ public class ProductoViewController {
         }
     }
 
+    @GetMapping("/editar/{id}")
+    public String mostrarFormularioEdicion(@PathVariable UUID id, Model model) {
+        Producto producto = productoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Producto no encontrado"));
+        model.addAttribute("producto", producto);
+        return "editProductoForm"; // Nombre del archivo HTML
+    }
+
+    @PostMapping("/editar/guardar")
+    public String guardarProductoEditado(@ModelAttribute Producto productoEditado) {
+        Producto productoExistente = productoRepository.findById(productoEditado.getId()).orElseThrow();
+        productoEditado.setFloricultorId(productoExistente.getFloricultorId());
+
+        productoRepository.save(productoEditado); // Guardar el producto editado
+        return "redirect:/";
+    }
     
 }
