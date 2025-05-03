@@ -10,10 +10,91 @@
         <h1>Mis Pedidos</h1>
     </header>
     <main>
-        <div th:if="${#lists.isEmpty(pedidos)}">
-            <p>No has recibido ningún pedido.</p>
+        <h2>
+            <button onclick="toggleVisibility('solicitudes-pedidos')" type="button" style="margin-right: 10px;">▼</button>
+            Solicitudes de pedidos
+        </h2>
+        <div id="solicitudes-pedidos" style="display: none;">
+            <div th:if="${pedidos == null or pedidos!= null and pedidos.?[estado.toString() == 'SOLICITADO'].isEmpty()}">
+            <p>¡No tienes ningún pedido pendiente con estado SOLICITADO!</p>
+            </div>
+            <div th:each="pedido : ${pedidos}" th:if="${pedido.estado.toString() == 'SOLICITADO'}">
+            <h3 th:text="'Pedido ID: ' + ${pedido.id}"></h3>
+            <p><strong>Producto ID:</strong> <span th:text="${pedido.productoId}"></span></p>
+            <p><strong>Coste:</strong> <span th:text="${pedido.coste}"></span> €</p>
+            <p><strong>Dirección de Entrega:</strong> <span th:text="${pedido.direccionentrega}"></span></p>
+            <p><strong>Estado:</strong> <span th:text="${pedido.estado}"></span></p>
+            <p><strong>Fecha:</strong> <span th:text="${pedido.fecha}"></span></p>
+            <hr/>
+            </div>
         </div>
-        <div th:each="pedido : ${pedidos}">
+
+        <h2>
+            <button onclick="toggleVisibility('pedidos-aceptados')" type="button" style="margin-right: 10px;">▼</button>
+            Pedidos aceptados
+        </h2>
+        <div id="pedidos-aceptados" style="display: none;">
+            <div th:if="${pedidos == null or pedidos != null and pedidos.?[estado.toString() == 'ACEPTADO'].isEmpty()}">
+            <p>¡No tienes ningún pedido con estado ACEPTADO!</p>
+            </div>
+            <div th:each="pedido : ${pedidos}" th:if="${pedido.estado.toString() == 'ACEPTADO'}">
+            <h3 th:text="'Pedido ID: ' + ${pedido.id}"></h3>
+            <p><strong>Producto ID:</strong> <span th:text="${pedido.productoId}"></span></p>
+            <p><strong>Coste:</strong> <span th:text="${pedido.coste}"></span> €</p>
+            <p><strong>Dirección de Entrega:</strong> <span th:text="${pedido.direccionentrega}"></span></p>
+            <p><strong>Estado:</strong> <span th:text="${pedido.estado}"></span></p>
+            <p><strong>Fecha:</strong> <span th:text="${pedido.fecha}"></span></p>
+            <hr/>
+            </div>
+        </div>
+
+        <h2>
+            <button onclick="toggleVisibility('pedidos-denegados')" type="button" style="margin-right: 10px;">▼</button>
+            Pedidos denegados
+        </h2>
+        <div id="pedidos-denegados" style="display: none;">
+            <div th:if="${pedidos == null or pedidos != null and pedidos.?[estado.toString() == 'DENEGADO'].isEmpty()}">
+            <p>¡No tienes ningún pedido con estado DENEGADO!</p>
+            </div>
+            <div th:each="pedido : ${pedidos}" th:if="${pedido.estado.toString() == 'DENEGADO'}">
+            <h3 th:text="'Pedido ID: ' + ${pedido.id}"></h3>
+            <p><strong>Producto ID:</strong> <span th:text="${pedido.productoId}"></span></p>
+            <p><strong>Coste:</strong> <span th:text="${pedido.coste}"></span> €</p>
+            <p><strong>Dirección de Entrega:</strong> <span th:text="${pedido.direccionentrega}"></span></p>
+            <p><strong>Estado:</strong> <span th:text="${pedido.estado}"></span></p>
+            <p><strong>Fecha:</strong> <span th:text="${pedido.fecha}"></span></p>
+            <hr/>
+            </div>
+        </div>
+
+        <h2>
+            <button onclick="toggleVisibility('pedidos-listos')" type="button" style="margin-right: 10px;">▼</button>
+            Pedidos listos para recogida
+        </h2>
+        <div id="pedidos-listos" style="display: none;">
+            <div th:if="${pedidos == null or pedidos != null and pedidos.?[estado.toString() == 'LISTO_PARA_RECOGIDA'].isEmpty()}">
+            <p>¡No tienes ningún pedido con estado LISTO PARA RECOGIDA!</p>
+            </div>
+            <div th:each="pedido : ${pedidos}" th:if="${pedido.estado.toString() == 'LISTO_PARA_RECOGIDA'}">
+            <h3 th:text="'Pedido ID: ' + ${pedido.id}"></h3>
+            <p><strong>Producto ID:</strong> <span th:text="${pedido.productoId}"></span></p>
+            <p><strong>Coste:</strong> <span th:text="${pedido.coste}"></span> €</p>
+            <p><strong>Dirección de Entrega:</strong> <span th:text="${pedido.direccionentrega}"></span></p>
+            <p><strong>Estado:</strong> <span th:text="${pedido.estado}"></span></p>
+            <p><strong>Fecha:</strong> <span th:text="${pedido.fecha}"></span></p>
+            <hr/>
+            </div>
+        </div>
+
+        <h2>
+            <button onclick="toggleVisibility('pedidos-entregados')" type="button" style="margin-right: 10px;">▼</button>
+            Pedidos recogidos
+        </h2>
+        <div id="pedidos-entregados" style="display: none;">
+            <div th:if="${pedidos == null or pedidos != null and pedidos.?[estado.toString() == 'RECOGIDO'].isEmpty()}">
+            <p>¡No tienes ningún pedido con estado RECOGIDO!</p>
+            </div>
+            <div th:each="pedido : ${pedidos}" th:if="${pedido.estado.toString() == 'RECOGIDO'}">
             <h3 th:text="'Pedido ID: ' + ${pedido.id}"></h3>
             <p><strong>Producto ID:</strong> <span th:text="${pedido.productoId}"></span></p>
             <p><strong>Coste:</strong> <span th:text="${pedido.coste}"></span> €</p>
@@ -21,21 +102,36 @@
             <p><strong>Estado:</strong> <span th:text="${pedido.estado}"></span></p>
             <p><strong>Fecha:</strong> <span th:text="${pedido.fecha}"></span></p>
             <p>
-                <!-- Mostrar las estrellas si la valoración no es null -->
                 <div th:if="${pedido.valoracion != null}">
-                    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-                    <strong>Valoración:</strong>
-                    <div class="star-rating" id ="star-rating-values">
-                        <label class="bi bi-star-fill" th:classappend="${pedido.valoracion >= 5 ? 'checked' : ''}"></label>
-                        <label class="bi bi-star-fill" th:classappend="${pedido.valoracion >= 4 ? 'checked' : ''}"></label>
-                        <label class="bi bi-star-fill" th:classappend="${pedido.valoracion >= 3 ? 'checked' : ''}"></label>
-                        <label class="bi bi-star-fill" th:classappend="${pedido.valoracion >= 2 ? 'checked' : ''}"></label>
-                        <label class="bi bi-star-fill" th:classappend="${pedido.valoracion >= 1 ? 'checked' : ''}"></label>
-                    </div>
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+                <strong>Valoración:</strong>
+                <div class="star-rating" id="star-rating-values">
+                    <label class="bi bi-star-fill" th:classappend="${pedido.valoracion >= 5 ? 'checked' : ''}"></label>
+                    <label class="bi bi-star-fill" th:classappend="${pedido.valoracion >= 4 ? 'checked' : ''}"></label>
+                    <label class="bi bi-star-fill" th:classappend="${pedido.valoracion >= 3 ? 'checked' : ''}"></label>
+                    <label class="bi bi-star-fill" th:classappend="${pedido.valoracion >= 2 ? 'checked' : ''}"></label>
+                    <label class="bi bi-star-fill" th:classappend="${pedido.valoracion >= 1 ? 'checked' : ''}"></label>
+                </div>
                 </div>
             </p>
             <hr/>
+            </div>
         </div>
+
+        <script>
+            function toggleVisibility(id) {
+            const element = document.getElementById(id);
+            const button = event.target;
+            if (element.style.display === "none") {
+                element.style.display = "block";
+                button.textContent = "▲";
+            } else {
+                element.style.display = "none";
+                button.textContent = "▼";
+            }
+            }
+        </script>
+
         <button onclick="location.href='/'" type="button">Volver al Inicio</button>
     </main>
 
