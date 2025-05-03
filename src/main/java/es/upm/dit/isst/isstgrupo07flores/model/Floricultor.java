@@ -6,9 +6,12 @@ import java.util.Collections;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.DecimalMax;
 
 @Entity
 public class Floricultor extends Usuario {
@@ -23,15 +26,21 @@ public class Floricultor extends Usuario {
 
     private String nif; // NIF del floricultor (opcional)
 
+    @Column(nullable = true)
+    @DecimalMin(value = "1.00", message = "La media de valoraciones no puede ser menor que 1")
+    @DecimalMax(value = "5.00", message = "La media de valoraciones no puede ser mayor que 5")
+    private Double mediaValoraciones;
+
     // Constructor vacío
     public Floricultor() {}
 
     // Constructor con parámetros
-    public Floricultor(String nombre, String direccion, String cp, String nif) {
+    public Floricultor(String nombre, String direccion, String cp, String nif, Double mediaValoraciones) {
         this.nombre = nombre;
         this.direccion = direccion;
         this.cp = cp;
         this.nif = nif; // NIF opcional, se puede dejar como null
+        this.mediaValoraciones = mediaValoraciones; // Inicializar la media de valoraciones
     }
 
     // Getters y Setters
@@ -65,6 +74,20 @@ public class Floricultor extends Usuario {
 
     public void setNif(String nif) {
         this.nif = nif;
+    }
+
+    public Double getMediaValoraciones() {
+        return mediaValoraciones;
+    }
+    
+    // Setter actualizado para limitar a dos decimales
+    public void setMediaValoraciones(Double mediaValoraciones) {
+        if (mediaValoraciones != null) {
+            // Redondear a dos decimales
+            this.mediaValoraciones = Math.round(mediaValoraciones * 100.0) / 100.0;
+        } else {
+            this.mediaValoraciones = null;
+        }
     }
     
     // Rol
