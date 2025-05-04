@@ -1,24 +1,33 @@
 package es.upm.dit.isst.isstgrupo07flores.controller;
 
-import org.springframework.web.bind.annotation.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import es.upm.dit.isst.isstgrupo07flores.model.Producto;
-import org.springframework.security.core.Authentication;
-
-import es.upm.dit.isst.isstgrupo07flores.service.CartService;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import es.upm.dit.isst.isstgrupo07flores.model.Pedido; 
-import es.upm.dit.isst.isstgrupo07flores.repository.PedidoRepository; 
-import jakarta.servlet.http.HttpSession; 
-import es.upm.dit.isst.isstgrupo07flores.model.Cliente; 
-import es.upm.dit.isst.isstgrupo07flores.repository.ClienteRepository;
-import org.springframework.ui.Model;
-
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.List;
-import java.util.Collections;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import es.upm.dit.isst.isstgrupo07flores.model.Cliente;
+import es.upm.dit.isst.isstgrupo07flores.model.Floricultor;
+import es.upm.dit.isst.isstgrupo07flores.model.Pedido;
+import es.upm.dit.isst.isstgrupo07flores.model.Producto;
+import es.upm.dit.isst.isstgrupo07flores.repository.ClienteRepository;
+import es.upm.dit.isst.isstgrupo07flores.repository.FloricultorRepository;
+import es.upm.dit.isst.isstgrupo07flores.repository.PedidoRepository;
+import es.upm.dit.isst.isstgrupo07flores.repository.ProductoRepository;
+import es.upm.dit.isst.isstgrupo07flores.service.CartService;
+import jakarta.servlet.http.HttpSession;
+
+
 
 @Controller
 @RequestMapping("/pedido")
@@ -32,10 +41,16 @@ public class PedidoViewController {
     @Autowired
     private ClienteRepository clienteRepository;
 
+    @Autowired
+    private FloricultorRepository floricultorRepository;
+    @Autowired
+    private ProductoRepository productoRepository;
+
     @GetMapping("/new")
     public String mostrarFormularioNuevoPedido() {
         return "newPedidoForm"; 
     }
+    
 
     @PostMapping("/create")
     public String crearPedido(@RequestParam("direccionEntrega") String direccionEntrega, Authentication authentication, HttpSession session, RedirectAttributes redirectAttributes) {
@@ -68,6 +83,31 @@ public class PedidoViewController {
 
         redirectAttributes.addFlashAttribute("successMessage", "Tu pedido se ha realizado correctamente");
         return "redirect:/"; // Redirige a la página principal
+    }
+
+    @GetMapping("/floricultor")
+    public String verPedidosFloricultor(Authentication authentication, Model model) {
+        // Obtener el correo del floricultor autenticado
+        String email = authentication.getName();
+
+        // Buscar el cliente por correo electrónico
+        Optional<Floricultor> floricultorOpt = floricultorRepository.findByCorreoElectronico(email);
+        if (floricultorOpt.isEmpty()) {
+            throw new IllegalArgumentException("Floricultor no encontrado con el correo: " + email);
+        }
+
+        Floricultor floricultor = floricultorOpt.get();
+
+        // Obtener los pedidos del floricultor
+        List<Pedido> pedidos = pedidoRepository.findByFloricultorId(floricultor.getId());
+
+        // Invertir el orden de los pedidos
+        Collections.reverse(pedidos);
+
+        // Pasar los pedidos al modelo
+        model.addAttribute("pedidos", pedidos);
+
+        return "pedidosFloricultor"; // Nombre de la plantilla Thymeleaf
     }
 
     @GetMapping("/cliente")
@@ -110,7 +150,69 @@ public class PedidoViewController {
         pedido.setValoracion(valoracion);
         pedidoRepository.save(pedido);
 
+        // Obtener el producto asociado al pedido
+        UUID productoId = pedido.getProductoId();
+        Optional<Producto> productoOpt = productoRepository.findById(productoId);
+        if (productoOpt.isEmpty()) {
+            throw new IllegalArgumentException("Producto no encontrado con ID: " + productoId);
+        }
+
+        Producto producto = productoOpt.get();
+
+        // Obtener el floricultor asociado al producto
+        UUID floricultorId = producto.getFloricultorId();
+        Optional<Floricultor> floricultorOpt = floricultorRepository.findById(floricultorId);
+        if (floricultorOpt.isEmpty()) {
+            throw new IllegalArgumentException("Floricultor no encontrado con ID: " + floricultorId);
+        }
+
+        Floricultor floricultor = floricultorOpt.get();
+
+        // Calcular la media de las valoraciones de todos los pedidos del floricultor
+        List<Pedido> pedidosDelFloricultor = pedidoRepository.findByFloricultorId(floricultorId);
+        double mediaValoraciones = pedidosDelFloricultor.stream()
+                .filter(p -> p.getValoracion() != null) // Ignorar pedidos sin valoración
+                .mapToInt(Pedido::getValoracion)
+                .average()
+                .orElse(0.0);
+
+        // Actualizar la media de valoraciones del floricultor
+        floricultor.setMediaValoraciones(mediaValoraciones);
+        floricultorRepository.save(floricultor);
+
         // Redirigir a la lista de pedidos
         return "redirect:/pedido/cliente";
+    }
+
+    @PostMapping("/aceptar/{id}")
+    public String aceptarPedido(@PathVariable("id") UUID id) {
+        Pedido pedido = pedidoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Pedido no encontrado"));
+        pedido.setEstado(Pedido.Estados.ACEPTADO);
+        pedidoRepository.save(pedido);
+        return "redirect:/pedido/floricultor"; // Redirigir a la lista de pedidos del floricultor
+    }
+
+    @PostMapping("/rechazar/{id}")
+    public String rechazarPedido(@PathVariable("id") UUID id) {
+        Pedido pedido = pedidoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Pedido no encontrado"));
+        pedido.setEstado(Pedido.Estados.DENEGADO);
+        pedidoRepository.save(pedido);
+        return "redirect:/pedido/floricultor"; // Redirigir a la lista de pedidos del floricultor
+    }
+
+    @PostMapping("/entregar/{id}")
+    public String entregarPedido(@PathVariable("id") UUID id) {
+        Pedido pedido = pedidoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Pedido no encontrado"));
+        pedido.setEstado(Pedido.Estados.RECOGIDO);
+        pedidoRepository.save(pedido);
+        return "redirect:/pedido/floricultor"; // Redirigir a la lista de pedidos del floricultor
+    }
+
+    @PostMapping("/listo_para_recoger/{id}")
+    public String listoParaRecogerPedido(@PathVariable("id") UUID id) {
+        Pedido pedido = pedidoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Pedido no encontrado"));
+        pedido.setEstado(Pedido.Estados.LISTO_PARA_RECOGIDA);
+        pedidoRepository.save(pedido);
+        return "redirect:/pedido/floricultor"; // Redirigir a la lista de pedidos del floricultor
     }
 }
