@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import es.upm.dit.isst.isstgrupo07flores.model.Floricultor;
 import es.upm.dit.isst.isstgrupo07flores.model.Producto;
 import es.upm.dit.isst.isstgrupo07flores.repository.FloricultorRepository;
+import es.upm.dit.isst.isstgrupo07flores.repository.PedidoRepository;
 import es.upm.dit.isst.isstgrupo07flores.service.CatalogService;
 import es.upm.dit.isst.isstgrupo07flores.service.ProductoService;
-import es.upm.dit.isst.isstgrupo07flores.repository.PedidoRepository;
 
 @Controller
 public class CatalogController {
@@ -100,8 +100,13 @@ public class CatalogController {
                 System.out.println("Stock: " + p.getStock());
             }
 
+            long valoracionesPorFloricultor = pedidoRepository.findByFloricultorId(floricultorObj.getId()).stream()
+                    .filter(p -> p.getValoracion() != null)
+                    .count();
+
         model.addAttribute("floricultor", floricultorObj);
         model.addAttribute("productos", productos);
+        model.addAttribute("valoracionesPorFloricultor", valoracionesPorFloricultor);
 
         return "myCatalog";
         

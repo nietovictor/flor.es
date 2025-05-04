@@ -10,6 +10,18 @@
         <p>Ha habido un error. Lo sentimos mucho</p>
     </div>
     <h2 th:text="${floricultor.nombre}">Nombre Floricultor</h2>
+    <div style="display: flex; gap: 10px;">
+        <span th:text="${floricultor.mediaValoraciones}"></span>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+        <div class="star-rating" id ="star-rating-values">
+            <label class="bi bi-star-fill" th:classappend="${floricultor.mediaValoraciones >= 5 ? 'checked' : ''}"></label>
+            <label class="bi bi-star-fill" th:classappend="${floricultor.mediaValoraciones >= 4 ? 'checked' : ''}"></label>
+            <label class="bi bi-star-fill" th:classappend="${floricultor.mediaValoraciones >= 3 ? 'checked' : ''}"></label>
+            <label class="bi bi-star-fill" th:classappend="${floricultor.mediaValoraciones >= 2 ? 'checked' : ''}"></label>
+            <label class="bi bi-star-fill" th:classappend="${floricultor.mediaValoraciones >= 1 ? 'checked' : ''}"></label>
+        </div>
+        <span th:text="'(' + ${valoracionesPorFloricultor} + ')'"></span>
+    </div>
     <p>Código Postal: <span th:text="${floricultor.cp}"></span></p>
 
     <button onclick="location.href='/producto/add'" type="button" style="display: inline;">Agregar productos</button>
@@ -28,3 +40,24 @@
     <button onclick="location.href='/'" type="button">Home</button>
 </body>
 </html>
+
+<style>
+    .star-rating {
+        direction: rtl;
+        display: inline-block;
+        cursor: pointer;
+    }
+    .star-rating input {
+        display: none;
+    }
+    .star-rating label {
+        color: #ddd;
+        font-size: 24px;
+        padding: 0 2px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    .star-rating label.checked {
+        color: #ffc107; /* Color de las estrellas seleccionadas */
+    }
+</style>
