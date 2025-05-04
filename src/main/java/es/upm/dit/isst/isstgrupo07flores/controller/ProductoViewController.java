@@ -13,6 +13,7 @@ import es.upm.dit.isst.isstgrupo07flores.repository.FloricultorRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
 
 
 import java.util.Optional;
@@ -94,9 +95,19 @@ public class ProductoViewController {
     }
 
     @PostMapping("/editar/guardar")
-    public String guardarProductoEditado(@ModelAttribute Producto productoEditado) {
+    public String guardarProductoEditado(@ModelAttribute Producto productoEditado, @RequestParam("imagenArchivo") MultipartFile imagenArchivo) {
         Producto productoExistente = productoRepository.findById(productoEditado.getId()).orElseThrow();
         productoEditado.setFloricultorId(productoExistente.getFloricultorId());
+
+        if (!imagenArchivo.isEmpty()) {
+            try {
+                productoEditado.setImagen(imagenArchivo.getBytes()); // Save uploaded image as byte array
+            } catch (IOException e) {
+                throw new RuntimeException("Error al procesar la imagen", e);
+            }
+        } else {
+            productoEditado.setImagen(productoExistente.getImagen()); // Mantener la imagen existente si no se sube una nueva
+        }
 
         productoRepository.save(productoEditado); // Guardar el producto editado
         return "redirect:/";
