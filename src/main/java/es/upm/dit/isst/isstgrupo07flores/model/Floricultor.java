@@ -8,10 +8,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.DecimalMax;
 
 @Entity
 public class Floricultor extends Usuario {
@@ -25,6 +25,9 @@ public class Floricultor extends Usuario {
     private String cp;
 
     private String nif; // NIF del floricultor (opcional)
+
+    @Column(nullable = false)
+    private boolean verificado = false;
 
     @Column(nullable = true)
     @DecimalMin(value = "1.00", message = "La media de valoraciones no puede ser menor que 1")
@@ -74,6 +77,14 @@ public class Floricultor extends Usuario {
 
     public void setNif(String nif) {
         this.nif = nif;
+    }
+
+    public boolean getVerificado() {
+        return verificado;
+    }
+
+    public void setVerificado(boolean verificado) {
+        this.verificado = verificado;
     }
 
     public Double getMediaValoraciones() {

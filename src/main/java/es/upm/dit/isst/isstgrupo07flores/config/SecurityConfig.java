@@ -3,16 +3,15 @@ package es.upm.dit.isst.isstgrupo07flores.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import es.upm.dit.isst.isstgrupo07flores.service.UsuarioService;
-
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 
 @Configuration
 public class SecurityConfig {
@@ -39,7 +38,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/h2-console/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll() // Permite acceder a la base de datos H2 y Swagger
                 .requestMatchers("/catalog/**", "/producto/**").permitAll() // Permite acceso al catalogo y a las imagenes de los productos
-                .requestMatchers("/","/login", "/register/**", "/css/**", "/js/**").permitAll() // Permitir login y registro
+                .requestMatchers("/","/login", "/registro/**", "/css/**", "/js/**", "/registro").permitAll() // Permitir login y registro
                 .anyRequest().authenticated() // Todo lo demás requiere autenticación
             )
             .formLogin(form -> form

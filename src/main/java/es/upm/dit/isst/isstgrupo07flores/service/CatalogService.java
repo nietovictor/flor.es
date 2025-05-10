@@ -24,6 +24,6 @@ public class CatalogService {
 
         String prefix = clientPostalCode.substring(0,2);
         System.out.println("Buscando floricultores con código postal que comienza con: " + prefix);
-        return floricultorRepository.findByCpStartingWith(prefix);
+        return floricultorRepository.findByCpStartingWithAndVerificadoTrue(prefix);
     }
 }

@@ -4,10 +4,50 @@
     <meta charset="UTF-8">
     <title>Iniciar Sesión</title>
     <link rel="stylesheet" href="../css/login.css" />
+    <style>
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .notification button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <div class="login_container">
         <h2>Iniciar Sesión</h2>
+        <div th:if="${successMessage}" class="notification" id="notification">
+            <p th:text="${successMessage}"></p>
+            <button onclick="document.getElementById('notification').style.display='none'">&times;</button>
+        </div>
         <form th:action="@{/login}" method="post">
             <div>
                 <label for="correoElectronico">Correo Electrónico:</label>
@@ -27,10 +67,10 @@
 
         <p th:if="${param.error}">Correo o contraseña incorrectos</p>
         <p th:if="${param.logout}">Has cerrado sesión correctamente</p>
-        <!--  <p>
-            ¿No tienes cuenta? 
-            <a th:href="@{/register}">Regístrate aquí</a>
-        </p> -->
-    </div>
+
+        <!-- Nuevo botón de registro -->
+        <p>¿No tienes cuenta?</p>
+        <button onclick="location.href='/registro'" type="button">Registrarse</button>
+        </div>
 </body>
 </html>

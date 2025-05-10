@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Registro de Usuario</title>
+        <link rel="stylesheet" href="../css/style.css" />
+
+        <style>
+            .tipo-selector {
+                display: flex;
+                gap: 20px;
+                margin: 15px 0;
+            }
+            .tipo-selector label {
+                cursor: pointer;
+            }
+
+            @keyframes slideIn {
+                from {
+                    opacity: 0;
+                    transform: translateX(100%);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+    
+            .notification {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background-color: #af4c4c;
+                color: white;
+                padding: 15px;
+                border-radius: 5px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+                z-index: 1000;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                animation: slideIn 0.5s ease-out;
+            }
+    
+            .notification button {
+                background: none;
+                border: none;
+                color: white;
+                font-size: 16px;
+                cursor: pointer;
+            }
+        </style>
+        <script>
+            function mostrarFormulario() {
+                const tipoCliente = document.getElementById("radioCliente").checked;
+                document.getElementById("formCliente").style.display = tipoCliente ? "block" : "none";
+                document.getElementById("formFloricultor").style.display = tipoCliente ? "none" : "block";
+            }
+        </script>
+    </head>
+    
+<body>
+    <div class="registro_container">
+        <h2>Registro de Usuario</h2>
+
+        <div th:if="${errorMessage}" class="notification" id="notification">
+            <p th:text="${errorMessage}"></p>
+            <button onclick="document.getElementById('notification').style.display='none'">&times;</button>
+        </div>
+
+        <div class="tipo-selector">
+            <label>
+                <input type="radio" name="tipoUsuario" id="radioCliente" value="cliente" onchange="mostrarFormulario()" />
+                Cliente
+            </label>
+            <label>
+                <input type="radio" name="tipoUsuario" id="radioFloricultor" value="floricultor" onchange="mostrarFormulario()" />
+                Floricultor
+            </label>
+        </div>
+
+        <!-- Formulario Cliente -->
+        <form id="formCliente" th:action="@{/registro/cliente}" method="post" style="display:none;">
+            <div>
+                <label for="correoCliente">Correo Electrónico:</label>
+                <input type="email" id="correoCliente" name="correoElectronico" required />
+            </div>
+            <div>
+                <label for="contrasenaCliente">Contraseña:</label>
+                <input type="password" id="contrasenaCliente" name="contrasena" required />
+            </div>
+            <div>
+                <label for="telefono">Teléfono:</label>
+                <input type="tel" id="telefono" name="telefono" required />
+            </div>
+            <button type="submit">Registrar Cliente</button>
+        </form>
+
+        <!-- Formulario Floricultor -->
+        <form id="formFloricultor" th:action="@{/registro/floricultor}" method="post" style="display:none;">
+            <div>
+                <label for="correoFlor">Correo Electrónico:</label>
+                <input type="email" id="correoFlor" name="correoElectronico" required />
+            </div>
+            <div>
+                <label for="contrasenaFlor">Contraseña:</label>
+                <input type="password" id="contrasenaFlor" name="contrasena" required />
+            </div>
+            <div>
+                <label for="nombreFlor">Nombre:</label>
+                <input type="text" id="nombreFlor" name="nombre" required />
+            </div>
+            <div>
+                <label for="direccion">Dirección:</label>
+                <input type="text" id="direccion" name="direccion" required />
+            </div>
+            <div>
+                <label for="cp">Código Postal:</label>
+                <input type="text" id="cp" name="cp" required />
+            </div>
+            <div>
+                <label for="nif">NIF:</label>
+                <input type="text" id="nif" name="nif" required />
+            </div>
+            <button type="submit">Registrar Floricultor</button>
+        </form>
+    </div>
+</body>
+</html>

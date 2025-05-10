@@ -11,7 +11,7 @@ import es.upm.dit.isst.isstgrupo07flores.model.Floricultor;
 
 @Repository
 public interface FloricultorRepository extends JpaRepository<Floricultor, UUID> {
-    List<Floricultor> findByCpStartingWith(String cpPrefix);
+    List<Floricultor> findByCpStartingWithAndVerificadoTrue(String cpPrefix);
     Optional<Floricultor> findByCorreoElectronico(String correoElectronico);
 }
 
