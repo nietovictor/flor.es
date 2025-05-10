@@ -115,52 +115,56 @@ public class CatalogController {
     } 
 
     @GetMapping("/catalog/search/filter")
-    public String filterFor(){
-        return "filterForm";
+    public String filterForm(){
+        return "postalCodeForm";
     }
 
     // Procesar búsqueda de floricultores por CP
     @PostMapping("/catalog/search/filter")
     public String searchByFilter(@RequestParam("cp") String postalCode,
-                             @RequestParam(required = false) List<String> ocasion,
-                             @RequestParam(required = false) Double price_min,
-                             @RequestParam(required = false) Double price_max,
-                             @RequestParam(required = false) List<String> flower_type,
-                             @RequestParam(required = false) String availability,
+                            @RequestParam(value = "ocasion", required = false) String ocasion,
+                            @RequestParam(value = "price_min", required = false) Double priceMin,
+                            @RequestParam(value = "price_max", required = false) Double priceMax,
+                            //@RequestParam(value = "flower_type", required = false) List<String> flowerType,
+                            @RequestParam(value = "availability", required = false) String availability,
                              Model model) {
 
         try {
             // Filtrar floricultores por código postal
-            List<Floricultor> floricultores = catalogService.getFloricultoresByPostalCode(postalCode);
+            List<Floricultor> floricultores_check = catalogService.getFloricultoresByPostalCode(postalCode);
 
             Map<UUID, List<Producto>> productosPorFloricultor = new HashMap<>();
             Map<UUID, Long> valoracionesPorFloricultor = new HashMap<>();
 
-            for (Floricultor f : floricultores) {
+            List<Floricultor> floricultores = new ArrayList<>();
+
+            for (Floricultor f : floricultores_check) {
                 // Obtener productos del floricultor y aplicar filtros
                 List<Producto> productos = productoService.getProductosByFloricultor(f.getId()).stream()
-                    .filter(p -> (ocasion == null || ocasion.contains(p.getOcasion().toString())))
-                    .filter(p -> (flower_type == null || flower_type.contains(p.getTipo())))
-                    .filter(p -> (price_min == null || p.getPrecio().compareTo(BigDecimal.valueOf(price_min)) >= 0))
-                    .filter(p -> (price_max == null || p.getPrecio().compareTo(BigDecimal.valueOf(price_max)) <= 0))
+                    .filter(p -> (ocasion == null || (p.getOcasion() != null && p.getOcasion().toString().equalsIgnoreCase(ocasion))))
+                    //.filter(p -> (flowerType == null || flowerType.contains(p.getTipo())))
+                    .filter(p -> (priceMin == null || p.getPrecio().compareTo(BigDecimal.valueOf(priceMin)) >= 0))
+                    .filter(p -> (priceMax == null || p.getPrecio().compareTo(BigDecimal.valueOf(priceMax)) <= 0))
                     .filter(p -> {
-                        if (availability == null) return true;
-                        try {
-                            int availabilityInt = Integer.parseInt(availability);
-                            return p.getStock() == availabilityInt;
-                        } catch (NumberFormatException e) {
-                            return false; // Ignore invalid availability input
+                        if ("in_stock".equalsIgnoreCase(availability)) {
+                            return p.getStock() > 1;
                         }
+                        return true;
                     })
                     .collect(Collectors.toList());
 
-                productosPorFloricultor.put(f.getId(), productos);
 
-                // Contar pedidos valorados del floricultor
-                long valoraciones = pedidoRepository.findByFloricultorId(f.getId()).stream()
-                    .filter(p -> p.getValoracion() != null)
-                    .count();
-                valoracionesPorFloricultor.put(f.getId(), valoraciones);
+                if (!productos.isEmpty()) {
+                    productosPorFloricultor.put(f.getId(), productos);
+                    floricultores.add(f);
+                    // Contar pedidos valorados del floricultor
+                    long valoraciones = pedidoRepository.findByFloricultorId(f.getId()).stream()
+                        .filter(p -> p.getValoracion() != null)
+                        .count();
+                    valoracionesPorFloricultor.put(f.getId(), valoraciones);
+                }
+
+                
             }
 
             model.addAttribute("floricultores", floricultores);
@@ -171,7 +175,8 @@ public class CatalogController {
             return "catalogResults";
         } catch (IllegalArgumentException e) {
             model.addAttribute("error", e.getMessage());
-            return "filterForm";
+            e.printStackTrace();
+            return "postalCodeForm";
         }
     }
 }
