@@ -1,11 +1,13 @@
 package es.upm.dit.isst.isstgrupo07flores.controller;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -111,5 +113,66 @@ public class CatalogController {
         return "myCatalog";
         
     } 
+
+    @GetMapping("/catalog/search/filter")
+    public String filterFor(){
+        return "filterForm";
+    }
+
+    // Procesar búsqueda de floricultores por CP
+    @PostMapping("/catalog/search/filter")
+    public String searchByFilter(@RequestParam("cp") String postalCode,
+                             @RequestParam(required = false) List<String> ocasion,
+                             @RequestParam(required = false) Double price_min,
+                             @RequestParam(required = false) Double price_max,
+                             @RequestParam(required = false) List<String> flower_type,
+                             @RequestParam(required = false) String availability,
+                             Model model) {
+
+        try {
+            // Filtrar floricultores por código postal
+            List<Floricultor> floricultores = catalogService.getFloricultoresByPostalCode(postalCode);
+
+            Map<UUID, List<Producto>> productosPorFloricultor = new HashMap<>();
+            Map<UUID, Long> valoracionesPorFloricultor = new HashMap<>();
+
+            for (Floricultor f : floricultores) {
+                // Obtener productos del floricultor y aplicar filtros
+                List<Producto> productos = productoService.getProductosByFloricultor(f.getId()).stream()
+                    .filter(p -> (ocasion == null || ocasion.contains(p.getOcasion().toString())))
+                    .filter(p -> (flower_type == null || flower_type.contains(p.getTipo())))
+                    .filter(p -> (price_min == null || p.getPrecio().compareTo(BigDecimal.valueOf(price_min)) >= 0))
+                    .filter(p -> (price_max == null || p.getPrecio().compareTo(BigDecimal.valueOf(price_max)) <= 0))
+                    .filter(p -> {
+                        if (availability == null) return true;
+                        try {
+                            int availabilityInt = Integer.parseInt(availability);
+                            return p.getStock() == availabilityInt;
+                        } catch (NumberFormatException e) {
+                            return false; // Ignore invalid availability input
+                        }
+                    })
+                    .collect(Collectors.toList());
+
+                productosPorFloricultor.put(f.getId(), productos);
+
+                // Contar pedidos valorados del floricultor
+                long valoraciones = pedidoRepository.findByFloricultorId(f.getId()).stream()
+                    .filter(p -> p.getValoracion() != null)
+                    .count();
+                valoracionesPorFloricultor.put(f.getId(), valoraciones);
+            }
+
+            model.addAttribute("floricultores", floricultores);
+            model.addAttribute("productosPorFloricultor", productosPorFloricultor);
+            model.addAttribute("valoracionesPorFloricultor", valoracionesPorFloricultor);
+            model.addAttribute("postalCode", postalCode);
+
+            return "catalogResults";
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage());
+            return "filterForm";
+        }
+    }
 }
 
