@@ -23,6 +23,8 @@ public class Producto {
 
     private String descripcion; 
 
+    private String tipo;
+
     private BigDecimal precio; 
 
     @PositiveOrZero
@@ -52,6 +54,7 @@ public class Producto {
         this.stock = stock;
         this.ocasion = ocasion;
         this.imagen = imagen;
+        this.tipo = "No definido"; // Valor por defecto
     }
 
     // Getters y Setters
@@ -119,6 +122,14 @@ public class Producto {
         this.ocasion = ocasion;
     }
 
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
     @Override
     public String toString() {
         return "Producto{" +
@@ -129,6 +140,7 @@ public class Producto {
                 ", precio=" + precio +
                 ", stock=" + stock +
                 ", ocasion=" + ocasion +
+                ", tipo='" + tipo + '\'' +
                 '}';
     }
 }
