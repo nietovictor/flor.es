@@ -105,9 +105,7 @@ public class ProductoViewController {
             } catch (IOException e) {
                 throw new RuntimeException("Error al procesar la imagen", e);
             }
-        } else {
-            productoEditado.setImagen(productoExistente.getImagen()); // Mantener la imagen existente si no se sube una nueva
-        }
+        } 
 
         productoRepository.save(productoEditado); // Guardar el producto editado
         return "redirect:/";

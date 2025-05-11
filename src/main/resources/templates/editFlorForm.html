@@ -2,13 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>Editar Producto</title>
+    <title>Editar Flor</title>
     <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 
 <body>
     <header>
-        <h1>Editar producto</h1>
+        <h1>Editar Flor</h1>
     </header>
     <main>
         <!-- Mostrar mensaje de error si existe -->
@@ -16,17 +16,17 @@
             <p th:text="${error}"></p>
         </div>
 
-        <form th:action="@{/producto/editar/guardar}" th:object="${producto}" method="post" enctype="multipart/form-data">
-            <input type="hidden" th:field="*{id}"/>
+        <form th:action="@{/flor/editar/guardar}" th:object="${flor}" method="post" enctype="multipart/form-data">
+            <input type="hidden" th:field="*{id}" />
 
             <div class="form-group">
                 <label for="nombre">Nombre:</label>
-                <input type="text" id="nombre" name="nombre" th:field="*{nombre}"required />
+                <input type="text" id="nombre" name="nombre" th:field="*{nombre}" required />
             </div>
 
             <div class="form-group">
                 <label for="descripcion" class="textarea-label">Descripción:</label>
-                <textarea id="descripcion" name="descripcion" th:field="*{descripcion}" required></textarea>
+                <textarea id="descripcion" name="descripcion" th:field="*{descripcion}"></textarea>
             </div>
 
             <div class="form-group">
@@ -40,27 +40,19 @@
             </div>
 
             <div class="form-group">
-                <label for="imagen">Imagen del Producto:</label>
-                <img th:src="@{/producto/image/{id}(id=${producto.id})}" class="product-img" alt="Imagen del producto" style="max-width: 100px; height: auto;" />
+                <label for="imagen">Imagen de la Flor:</label>
+                <img th:src="@{/flores/image/{id}(id=${flor.id})}" class="product-img" alt="Imagen de la flor" style="max-width: 100px; height: auto;" />
                 <input type="hidden" id="imagen" name="imagen" th:field="*{imagen}" />
             </div>
 
             <div class="form-group">
-                <label for="imagenArchivo">Cambiar Imagen del Producto:</label>
+                <label for="imagenArchivo">Cambiar Imagen de la Flor:</label>
                 <input type="file" id="imagenArchivo" name="imagenArchivo" accept="image/*" />
             </div>
 
+            <br />
             <div class="form-group">
-                <label for="ocasion">Ocasión:</label>
-                <select id="ocasion" name="ocasion" th:field="*{ocasion}">
-                    <option th:each="ocasion : ${T(es.upm.dit.isst.isstgrupo07flores.model.Producto.Ocasiones).values()}"
-                            th:value="${ocasion}" th:text="${ocasion}">
-                    </option>
-                </select>
-            </div>
-            <br/>
-            <div class="form-group">
-                <button type="submit" class="submit-button">Guardar Producto</button>
+                <button type="submit" class="submit-button">Guardar Flor</button>
             </div>
         </form>
         <form th:action="@{/mycatalog}" method="get" style="display: inline;">

@@ -45,7 +45,7 @@
         <p>Precio: <span th:text="${flor.precio}"></span> €</p>
         <p>Stock: <span th:text="${flor.stock}"></span></p>
         <img th:src="@{/flores/image/{id}(id=${flor.id})}" class="flor-img" alt="Imagen de la flor" style="max-width: 100px; height: auto;" />
-        <a th:href="@{/flores/editar/{id}(id=${flor.id})}">
+        <a th:href="@{/flor/editar/{id}(id=${flor.id})}">
             <button>Editar</button>
         </a>
     </div>

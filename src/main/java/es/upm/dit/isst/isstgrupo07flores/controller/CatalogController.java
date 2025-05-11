@@ -94,8 +94,7 @@ public class CatalogController {
         }
     }
 
-    // Procesar búsqueda de floricultores por CP
-    @PostMapping("/mycatalog")
+    @GetMapping("/mycatalog")
     public String searchByFloricultorId(Authentication authentication, Model model) {
         
             String email = authentication.getName();
