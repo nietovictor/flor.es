@@ -53,7 +53,7 @@ public class PedidoViewController {
     
 
     @PostMapping("/create")
-    public String crearPedido(@RequestParam("direccionEntrega") String direccionEntrega, Authentication authentication, HttpSession session, RedirectAttributes redirectAttributes) {
+    public String crearPedido(@RequestParam(value = "direccionEntrega", required = false) String direccionEntrega, @RequestParam("entregaEnLocal") Boolean entregaEnLocal, Authentication authentication, HttpSession session, RedirectAttributes redirectAttributes) {
         Producto producto = cartService.getCartProduct(session);
         if (producto == null) {
             throw new IllegalStateException("No hay producto en la cesta.");
@@ -70,9 +70,17 @@ public class PedidoViewController {
 
         Pedido pedido = new Pedido();
 
+        Floricultor floricultor = floricultorRepository.findById(producto.getFloricultorId()).orElseThrow(() -> new IllegalArgumentException("Floricultor no encontrado"));
+
         pedido.setClienteId(cliente.getId()); // Usa el UUID del cliente
         pedido.setProductoId(producto.getId());
         pedido.setCoste(producto.getPrecio());
+        if (entregaEnLocal) {
+            direccionEntrega = floricultor.getDireccion();
+        } else if (direccionEntrega == null || direccionEntrega.isEmpty()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "La dirección de entrega no puede estar vacía");
+            return "redirect:/pedido/new"; // Redirige al formulario si la dirección está vacía
+        }
         pedido.setDireccionentrega(direccionEntrega);
         pedido.setUrlTracking("https://example.com/tracking");
         pedido.setEstado(Pedido.Estados.SOLICITADO);

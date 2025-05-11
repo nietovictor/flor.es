@@ -11,6 +11,21 @@
     <main>
         <form th:action="@{/pedido/create}" method="post" class="pedido-form">
             <div class="form-group">
+                <label for="toggleDireccion">Entrega en local:</label>
+                <input type="checkbox" id="entregaEnLocal" onclick="toggleDireccionEntrega()" />
+                <input type="hidden" id="entregaEnLocalHidden" name="entregaEnLocal" value="false" />
+            </div>
+            <script>
+                function toggleDireccionEntrega() {
+                    const direccionInput = document.getElementById('direccionEntrega');
+                    direccionInput.disabled = !direccionInput.disabled;
+                    direccionInput.style.backgroundColor = direccionInput.disabled ? '#d3d3d3' : ''; // Cambia el color de fondo
+                    const hiddenField = document.getElementById('entregaEnLocalHidden');
+                    const checkbox = document.getElementById('entregaEnLocal');
+                    hiddenField.value = checkbox.checked; // Actualiza el valor a true o false
+                }
+            </script>
+            <div class="form-group">
                 <label for="direccionEntrega">Dirección de Entrega:</label>
                 <input type="text" id="direccionEntrega" name="direccionEntrega" required />
             </div>
