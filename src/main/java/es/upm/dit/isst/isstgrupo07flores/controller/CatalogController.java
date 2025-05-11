@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import es.upm.dit.isst.isstgrupo07flores.model.Flor;
 import es.upm.dit.isst.isstgrupo07flores.model.Floricultor;
 import es.upm.dit.isst.isstgrupo07flores.model.Producto;
+import es.upm.dit.isst.isstgrupo07flores.repository.FlorRepository;
 import es.upm.dit.isst.isstgrupo07flores.repository.FloricultorRepository;
 import es.upm.dit.isst.isstgrupo07flores.repository.PedidoRepository;
-import es.upm.dit.isst.isstgrupo07flores.repository.FlorRepository;
 import es.upm.dit.isst.isstgrupo07flores.service.CatalogService;
 import es.upm.dit.isst.isstgrupo07flores.service.ProductoService;
 
@@ -53,26 +53,31 @@ public class CatalogController {
 
         try {
             // Obtener floricultores por código postal
-            List<Floricultor> floricultores = catalogService.getFloricultoresByPostalCode(postalCode);
+            List<Floricultor> floricultores_check = catalogService.getFloricultoresByPostalCode(postalCode);
 
             Map<UUID, List<Producto>> productosPorFloricultor = new HashMap<>();
             Map<UUID, List<Flor>> floresPorFloricultor = new HashMap<>();
             Map<UUID, Long> valoracionesPorFloricultor = new HashMap<>();
 
-            for (Floricultor f : floricultores) {
+            List<Floricultor> floricultores = new ArrayList<>();
+
+            for (Floricultor f : floricultores_check) {
                 // Obtener productos del floricultor
                 List<Producto> productos = productoService.getProductosByFloricultor(f.getId());
-                productosPorFloricultor.put(f.getId(), productos != null ? productos : new ArrayList<>());
 
                 // Obtener flores del floricultor
                 List<Flor> flores = florRepository.findByFloricultorId(f.getId());
-                floresPorFloricultor.put(f.getId(), flores != null ? flores : new ArrayList<>());
 
-                // Contar pedidos valorados del floricultor
-                long valoraciones = pedidoRepository.findByFloricultorId(f.getId()).stream()
-                    .filter(p -> p.getValoracion() != null)
-                    .count();
-                valoracionesPorFloricultor.put(f.getId(), valoraciones);
+                if (!productos.isEmpty() || !flores.isEmpty()) {
+                    productosPorFloricultor.put(f.getId(), productos != null ? productos : new ArrayList<>());
+                    floresPorFloricultor.put(f.getId(), flores != null ? flores : new ArrayList<>());
+                    floricultores.add(f);
+                    // Contar pedidos valorados del floricultor
+                    long valoraciones = pedidoRepository.findByFloricultorId(f.getId()).stream()
+                        .filter(p -> p.getValoracion() != null)
+                        .count();
+                    valoracionesPorFloricultor.put(f.getId(), valoraciones);
+                }
             }
 
             // Agregar datos al modelo
@@ -148,6 +153,7 @@ public class CatalogController {
             List<Floricultor> floricultores_check = catalogService.getFloricultoresByPostalCode(postalCode);
 
             Map<UUID, List<Producto>> productosPorFloricultor = new HashMap<>();
+            Map<UUID, List<Flor>> floresPorFloricultor = new HashMap<>();
             Map<UUID, Long> valoracionesPorFloricultor = new HashMap<>();
 
             List<Floricultor> floricultores = new ArrayList<>();
@@ -167,9 +173,30 @@ public class CatalogController {
                     })
                     .collect(Collectors.toList());
 
+                List<Flor> flores = florRepository.findByFloricultorId(f.getId()).stream()
+                    .filter(flor -> (priceMin == null || flor.getPrecio().compareTo(priceMin) >= 0))
+                    .filter(flor -> (priceMax == null || flor.getPrecio().compareTo(priceMax) <= 0))
+                    .filter(flor -> {
+                        if ("in_stock".equalsIgnoreCase(availability)) {
+                            return flor.getStock() > 1;
+                        }
+                        return true;
+                    })
+                    .collect(Collectors.toList());
 
-                if (!productos.isEmpty()) {
-                    productosPorFloricultor.put(f.getId(), productos);
+
+                //if (!productos.isEmpty()) {
+                //    productosPorFloricultor.put(f.getId(), productos);
+                //    floricultores.add(f);
+                //    // Contar pedidos valorados del floricultor
+                //    long valoraciones = pedidoRepository.findByFloricultorId(f.getId()).stream()
+                //        .filter(p -> p.getValoracion() != null)
+                //        .count();
+                //    valoracionesPorFloricultor.put(f.getId(), valoraciones);
+                //}
+                if (!productos.isEmpty() || !flores.isEmpty()) {
+                    productosPorFloricultor.put(f.getId(), productos != null ? productos : new ArrayList<>());
+                    floresPorFloricultor.put(f.getId(), flores != null ? flores : new ArrayList<>());
                     floricultores.add(f);
                     // Contar pedidos valorados del floricultor
                     long valoraciones = pedidoRepository.findByFloricultorId(f.getId()).stream()
@@ -183,6 +210,7 @@ public class CatalogController {
 
             model.addAttribute("floricultores", floricultores);
             model.addAttribute("productosPorFloricultor", productosPorFloricultor);
+            model.addAttribute("floresPorFloricultor", floresPorFloricultor);
             model.addAttribute("valoracionesPorFloricultor", valoracionesPorFloricultor);
             model.addAttribute("postalCode", postalCode);
 
