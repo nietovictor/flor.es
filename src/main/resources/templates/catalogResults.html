@@ -34,69 +34,28 @@
 
     <h1 th:text="'Resultados para el código postal: ' + ${postalCode}"></h1>
 
-    <div th:if="${#lists.isEmpty(floricultores)}">
-        <p>No se encontraron floricultores en tu zona.</p>
+  <div class="mt-5 filters-wrapper">
+    <div class="filters-toggle" onclick="toggleFilters()">
+      <i class="bi bi-chevron-up" id="filters-icon"></i>
+      <span id="filters-label"></span>
     </div>
-
-    <!-- Filtro -->
-    <details id="filters-parent">
-        <summary style="font-size: 1.2em; font-weight: bold; cursor: pointer;">Filtros</summary>
-      
-        <form id="flower-filters" style="padding: 10px; background-color: #f9f9f9; border-radius: 8px;"
-            th:action="@{/catalog/search/filter}" method="post">
-          
-          <!-- Filtro por ocasión -->
-          <details style="margin-bottom: 10px;">
-            <summary style="font-weight: bold; cursor: pointer;">Ocasión</summary>
-            <label for="filter-ocasion">Ocasión:</label>
-                <select name="ocasion" id="filter-ocasion" style="width: 100%; padding: 8px; border-radius: 5px;">
-                    <option value="" disabled selected>Selecciona una ocasión</option>
-                    <option value="cumpleanos">Cumpleaños</option>
-                    <option value="aniversarios">Aniversarios</option>
-                    <option value="condolencias">Condolencias</option>
-                    <option value="san_valentin">San Valentín</option>
-                </select>
-          </details>
-      
-          <!-- Filtro por precio -->
-          <details style="margin-bottom: 10px;">
-            <summary style="font-weight: bold; cursor: pointer;">Precio (€)</summary>
-            <div class="price-range" style="display: flex; flex-direction: column; gap: 5px;">
-              <label for="price-min">Mínimo:</label>
-              <input type="number" name="price_min" id="price-min" min="0" step="1" placeholder="0" style="width: 100%; padding: 5px;" />
-
-              <label for="price-max">Máximo:</label>
-              <input type="number" name="price_max" id="price-max" min="0" step="1" placeholder="100" style="width: 100%; padding: 5px;" />
-              </div>
-          </details>
-      
-          <!-- Filtro por tipo de flor -->
-          <details style="margin-bottom: 10px;">
-            <summary style="font-weight: bold; cursor: pointer;">Tipo de flor</summary>
-            <div style="display: flex; flex-direction: column; gap: 5px;">
-              <label><input type="checkbox" name="flower_type" value="rosas"> Rosas</label>
-              <label><input type="checkbox" name="flower_type" value="tulipanes"> Tulipanes</label>
-              <label><input type="checkbox" name="flower_type" value="lirios"> Lirios</label>
-              <label><input type="checkbox" name="flower_type" value="orquideas"> Orquídeas</label>
-              <label><input type="checkbox" name="flower_type" value="girasoles"> Girasoles</label>
-            </div>
-          </details>
-      
-          <!-- Filtro por disponibilidad -->
-          <details style="margin-bottom: 10px;">
-            <summary style="font-weight: bold; cursor: pointer;">Disponibilidad</summary>
-            <div style="display: flex; flex-direction: column;">
-              <label><input type="checkbox" name="availability" value="in_stock"> En stock</label>
-            </div>
-          </details>
-
-          <input type="hidden" name="cp" th:value="${postalCode}" />
-
-      
-          <!-- Botones de acción -->
-          <div class="filter-actions" style="text-align: center; margin-top: 10px;">
-            <button type="submit" class="btn btn-primary">Aplicar filtros</button>
-            <button type="reset" class="btn-reset">Limpiar filtros</button>
+    <form th:action="@{/catalog/search/filter}" method="post">
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <label for="filter-ocasion">Ocasión</label>
+          <select name="ocasion" id="filter-ocasion" class="form-select">
+            <option value="" disabled selected>Selecciona una ocasión</option>
+            <option value="cumpleanos">Cumpleaños</option>
+            <option value="aniversarios">Aniversarios</option>
+            <option value="condolencias">Condolencias</option>
+            <option value="san_valentin">San Valentín</option>
+          </select>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label>Precio (€)</label>
+          <div class="d-flex gap-2">
+            <input type="number" name="price_min" min="0" step="1" placeholder="Mín" class="form-control">
+            <input type="number" name="price_max" min="0" step="1" placeholder="Máx" class="form-control">
           </div>
       
         </form>
@@ -151,12 +110,50 @@
                 </form>
             </div>
         </div>
+      </div>
+      <div class="text-center">
+        <input type="hidden" name="cp" th:value="${postalCode}" />
+        <button type="submit" class="btn btn-success me-2">Aplicar filtros</button>
+        <button type="reset" class="btn btn-secondary">Limpiar filtros</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="my-4 text-center">
+    <input type="checkbox" id="toggle-producto" hidden onchange="toggleTipo()">
+    <label class="toggle-slider" for="toggle-producto">
+      <span class="toggle-option productos">Productos</span>
+      <span class="toggle-option flores">Flores</span>
+      <span class="toggle-indicator"></span>
+    </label>
+  </div>
+
+  <div th:each="floricultor : ${floricultores}" class="floricultor-section">
+    <div class="floricultor-header">
+      <h2 th:text="${floricultor.nombre}"></h2>
+      <div class="star-rating">
+        <span class="bi bi-star-fill" th:classappend="${floricultor.mediaValoraciones >= 1 ? 'text-warning' : 'text-muted'}"></span>
+        <span class="bi bi-star-fill" th:classappend="${floricultor.mediaValoraciones >= 2 ? 'text-warning' : 'text-muted'}"></span>
+        <span class="bi bi-star-fill" th:classappend="${floricultor.mediaValoraciones >= 3 ? 'text-warning' : 'text-muted'}"></span>
+        <span class="bi bi-star-fill" th:classappend="${floricultor.mediaValoraciones >= 4 ? 'text-warning' : 'text-muted'}"></span>
+        <span class="bi bi-star-fill" th:classappend="${floricultor.mediaValoraciones >= 5 ? 'text-warning' : 'text-muted'}"></span>
+        <span class="ms-2" th:text="'(' + ${valoracionesPorFloricultor[floricultor.id]} + ')'">(0)</span>
+      </div>
+      <p>Código Postal: <span th:text="${floricultor.cp}"></span></p>
     </div>
 
-    <div style="display: flex; gap: 10px;">
-        <button style="flex: 1; padding: 5px 10px;" onclick="location.href='/catalog/search'" type="button">Volver a buscar</button>
-        <button style="flex: 1; padding: 5px 10px;" onclick="location.href='/'" type="button">Home</button>
+    <div class="product-grid">
+      <div th:each="producto : ${productosPorFloricultor[floricultor.id]}" class="product-card">
+        <img th:src="@{/producto/image/{id}(id=${producto.id})}" alt="Imagen" class="product-img">
+        <h4 th:text="${producto.nombre}"></h4>
+        <p th:text="${producto.descripcion}"></p>
+        <p><strong th:text="${producto.precio} + ' €'"></strong></p>
+        <p>Stock: <span th:text="${producto.stock}"></span></p>
+        <button class="btn btn-success w-100 mt-2" th:attr="onclick='location.href=\'/producto/' + ${producto.id} + '\''">Ver producto</button>
+      </div>
     </div>
+  </div>
+</div>
 </body>
 </html>
 

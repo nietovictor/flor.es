@@ -1,74 +1,118 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Nuevo Pedido</title>
-    <link rel="stylesheet" href="../css/style.css" />
+  <meta charset="UTF-8">
+  <title>Nuevo Pedido</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #d4f4d1;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .pedido-container {
+      max-width: 600px;
+      margin: 3rem auto;
+      background-color: #ffffff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      color: #2e7d32;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    label {
+      font-weight: 600;
+    }
+    .form-check-label {
+      margin-left: 0.5rem;
+    }
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+  </style>
+  <script>
+    function toggleDireccionEntrega() {
+      const direccionInput = document.getElementById('direccionEntrega');
+      const hiddenField = document.getElementById('entregaEnLocalHidden');
+      const checkbox = document.getElementById('entregaEnLocal');
+
+      direccionInput.disabled = checkbox.checked;
+      direccionInput.style.backgroundColor = checkbox.checked ? '#e0e0e0' : '';
+      hiddenField.value = checkbox.checked;
+    }
+
+    function toggleFechaEntrega() {
+      const fechaEntrega = document.getElementById('fechaEntrega');
+      const entregaUrgente = document.getElementById('entregaUrgente');
+      const hiddenField = document.getElementById('entregaUrgenteHidden');
+      const labelUrgente = document.getElementById('labelUrgente');
+
+      const isChecked = document.getElementById('entregaEnFecha').checked;
+      fechaEntrega.style.display = isChecked ? 'block' : 'none';
+      entregaUrgente.style.display = isChecked ? 'inline-block' : 'none';
+      labelUrgente.style.display = isChecked ? 'inline-block' : 'none';
+
+      fechaEntrega.disabled = !isChecked;
+      hiddenField.disabled = !isChecked;
+    }
+
+    window.onload = () => {
+      const hoy = new Date().toISOString().split('T')[0];
+      document.getElementById("fechaEntrega").setAttribute('min', hoy);
+    };
+  </script>
 </head>
 <body>
-    <header>
-        <h1>Crear un nuevo pedido</h1>
-    </header>
-    <main>
-        <form th:action="@{/pedido/create}" method="post" class="pedido-form">
-            <div class="form-group">
-                <label for="toggleDireccion">Entrega en local:</label>
-                <input type="checkbox" id="entregaEnLocal" onclick="toggleDireccionEntrega()" />
-                <input type="hidden" id="entregaEnLocalHidden" name="entregaEnLocal" value="false" />
-            </div>
-            <script>
-                function toggleDireccionEntrega() {
-                    const direccionInput = document.getElementById('direccionEntrega');
-                    direccionInput.disabled = !direccionInput.disabled;
-                    direccionInput.style.backgroundColor = direccionInput.disabled ? '#d3d3d3' : ''; // Cambia el color de fondo
-                    const hiddenField = document.getElementById('entregaEnLocalHidden');
-                    const checkbox = document.getElementById('entregaEnLocal');
-                    hiddenField.value = checkbox.checked; // Actualiza el valor a true o false
-                }
-            </script>
-            <div class="form-group">
-                <label for="entregaEnFecha">Programar entrega en fecha específica:</label>
-                <input type="checkbox" id="entregaEnFecha" name="entregaEnFecha" onclick="toggleFechaEntrega()" />
-                <input type="date" id="fechaEntrega" name="fechaEntrega" disabled style="display: none;"/>
-                <label for="entregaUrgente" id="lableUrgente" style="display: none;">Entrega urgente</label>
-                <input type="checkbox" id="entregaUrgente" name="entregaUrgente" style="display: none;"/>
-                <input type="hidden" id="entregaUrgenteHidden" name="entregaUrgente" disabled value="false" />
-            </div>
+<header th:replace="layout :: header"></header>
 
-            <script>
-                const hoy = new Date().toISOString().split('T')[0];
-                document.getElementById("fechaEntrega").setAttribute('min', hoy);
-                function toggleFechaEntrega() {
-                    const fechaEntrega = document.getElementById('fechaEntrega');
-                    const entregaUrgente = document.getElementById('entregaUrgente');
-                    const hiddenField = document.getElementById('entregaUrgenteHidden');
-                    const labelUrgente = document.getElementById('lableUrgente');
-                    hiddenField.disabled = !hiddenField.disabled;
-                    fechaEntrega.disabled = !fechaEntrega.disabled;
+<div class="pedido-container">
+  <h2>Detalles del Pedido</h2>
+  <form th:action="@{/pedido/create}" method="post">
+    <!-- Entrega local -->
+    <div class="form-check mb-3">
+      <input type="checkbox" class="form-check-input" id="entregaEnLocal" onclick="toggleDireccionEntrega()" />
+      <label for="entregaEnLocal" class="form-check-label">Entrega en local</label>
+      <input type="hidden" id="entregaEnLocalHidden" name="entregaEnLocal" value="false" />
+    </div>
 
-                    if (document.getElementById('entregaEnFecha').checked) {
-                        fechaEntrega.style.display = 'inline'; // Muestra el campo
-                        entregaUrgente.style.display = 'inline'; // Muestra el campo
-                        labelUrgente.style.display = 'inline'; // Muestra la etiqueta
-                    } else {
-                        fechaEntrega.style.display = 'none'; // Oculta el campo
-                        entregaUrgente.style.display = 'none'; // Oculta el campo
-                        labelUrgente.style.display = 'none'; // Oculta la etiqueta
-                    }
-                }
-            </script>
-            <div class="form-group">
-                <label for="direccionEntrega">Dirección de Entrega:</label>
-                <input type="text" id="direccionEntrega" name="direccionEntrega" required />
-            </div>
-            <div class="form-group">
-                <label for="dedicatoria">Dedicatoria:</label>
-                <textarea id="dedicatoria" name="dedicatoria" rows="3" placeholder="Escribe tu dedicatoria o instrucciones para el pedido aquí..."></textarea>
-            </div>
-            <div class="form-group">
-                <button type="submit" class="submit-button" style="width:130px; margin-top:10px;">Confirmar Pedido</button>
-            </div>
-        </form>
-        <button onclick="location.href='/cart/view'" type="button" style="width:130px;">Volver a la cesta</button>
-    </main>
+    <!-- Entrega en fecha -->
+    <div class="form-check mb-3">
+      <input type="checkbox" class="form-check-input" id="entregaEnFecha" name="entregaEnFecha" onclick="toggleFechaEntrega()" />
+      <label for="entregaEnFecha" class="form-check-label">Programar entrega en fecha específica</label>
+    </div>
+
+    <div class="mb-3">
+      <input type="date" id="fechaEntrega" name="fechaEntrega" class="form-control" style="display: none;" disabled />
+    </div>
+
+    <div class="form-check mb-3">
+      <input type="checkbox" class="form-check-input" id="entregaUrgente" name="entregaUrgente" style="display: none;" />
+      <label for="entregaUrgente" class="form-check-label" id="labelUrgente" style="display: none;">Entrega urgente</label>
+      <input type="hidden" id="entregaUrgenteHidden" name="entregaUrgente" disabled value="false" />
+    </div>
+
+    <!-- Dirección -->
+    <div class="mb-3">
+      <label for="direccionEntrega" class="form-label">Dirección de Entrega</label>
+      <input type="text" id="direccionEntrega" name="direccionEntrega" class="form-control" required />
+    </div>
+
+    <!-- Dedicatoria -->
+    <div class="mb-3">
+      <label for="dedicatoria" class="form-label">Dedicatoria</label>
+      <textarea id="dedicatoria" name="dedicatoria" class="form-control" rows="3" placeholder="Escribe tu dedicatoria o instrucciones para el pedido aquí..."></textarea>
+    </div>
+    <!-- Botones -->
+    <div class="btn-group">
+      <button type="submit" class="btn btn-success">Confirmar Pedido</button>
+      <button onclick="location.href='/cart/view'" type="button" class="btn btn-secondary">Volver a la cesta</button>
+    </div>
+  </form>
+</div>
 </body>
 </html>
