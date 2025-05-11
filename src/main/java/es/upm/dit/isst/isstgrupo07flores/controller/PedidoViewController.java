@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.HashSet;
+import java.util.Map; // Import the Map class
+import java.util.HashMap; // Import the HashMap class
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,7 @@ import es.upm.dit.isst.isstgrupo07flores.model.FloresEnPersonalizado;
 import es.upm.dit.isst.isstgrupo07flores.repository.ProductoPersonalizadoRepository; // Ensure this repository is correctly defined for ProductoPersonalizado
 import es.upm.dit.isst.isstgrupo07flores.service.FlorService; // Import FlorService
 import es.upm.dit.isst.isstgrupo07flores.repository.FloresEnPersonalizadoRepository; // Import FloresEnPersonalizadoRepository
+import es.upm.dit.isst.isstgrupo07flores.repository.FlorRepository; // Import FlorRepository
 
 
 
@@ -58,10 +61,16 @@ public class PedidoViewController {
     private ProductoRepository productoRepository;
 
     @Autowired
+    private FloresEnPersonalizadoRepository floresEnPersonalizadoRepository; // Inject FloresEnPersonalizadoRepository
+
+    @Autowired
     private FloresEnPersonalizadoRepository relacionRepository; // Inject FloresEnPersonalizadoRepository
 
     @Autowired
     private ProductoPersonalizadoRepository productoPersonalizadoRepository; // Inject ProductoPersonalizadoRepository
+
+    @Autowired
+    private FlorRepository florRepository; // Inject FlorRepository
 
     @GetMapping("/new")
     public String mostrarFormularioNuevoPedido() {
@@ -170,27 +179,53 @@ public class PedidoViewController {
 
     @GetMapping("/floricultor")
     public String verPedidosFloricultor(Authentication authentication, Model model) {
-        // Obtener el correo del floricultor autenticado
         String email = authentication.getName();
-
-        // Buscar el cliente por correo electrónico
         Optional<Floricultor> floricultorOpt = floricultorRepository.findByCorreoElectronico(email);
+
         if (floricultorOpt.isEmpty()) {
             throw new IllegalArgumentException("Floricultor no encontrado con el correo: " + email);
         }
 
-        Floricultor floricultor = floricultorOpt.get();
+        UUID floricultorId = floricultorOpt.get().getId();
+        List<Pedido> pedidos = pedidoRepository.findByFloricultorId(floricultorId);
 
-        // Obtener los pedidos del floricultor
-        List<Pedido> pedidos = pedidoRepository.findByFloricultorId(floricultor.getId());
+        // Crear un mapa para almacenar los nombres de productos o flores
+        Map<UUID, String> nombresProductos = new HashMap<>();
 
-        // Invertir el orden de los pedidos
-        Collections.reverse(pedidos);
+        for (Pedido pedido : pedidos) {
+            if (pedido.getProductoId() != null) {
+                // Buscar en Producto
+                Optional<Producto> productoOpt = productoRepository.findById(pedido.getProductoId());
+                if (productoOpt.isPresent()) {
+                    nombresProductos.put(pedido.getId(), productoOpt.get().getNombre());
+                } else {
+                    // Buscar en ProductoPersonalizado
+                    Optional<ProductoPersonalizado> personalizadoOpt = productoPersonalizadoRepository.findById(pedido.getProductoId());
+                    if (personalizadoOpt.isPresent()) {
+                        ProductoPersonalizado personalizado = personalizadoOpt.get();
+                        // Construir la cadena con nombres de flores y cantidades
+                        String nombresFloresConCantidad = floresEnPersonalizadoRepository.findByProductoPersonalizadoId(personalizado.getId())
+                                .stream()
+                                .map(f -> {
+                                    String nombreFlor = florRepository.findById(f.getFlorId()).map(Flor::getNombre).orElse("Desconocido");
+                                    return nombreFlor + " (x" + f.getCantidad() + ")";
+                                })
+                                .collect(Collectors.joining(", "));
+                        nombresProductos.put(pedido.getId(), nombresFloresConCantidad);
+                    } else {
+                        nombresProductos.put(pedido.getId(), "Desconocido");
+                    }
+                }
+            } else {
+                nombresProductos.put(pedido.getId(), "Sin producto asociado");
+            }
+        }
 
-        // Pasar los pedidos al modelo
+        // Pasar los pedidos y los nombres al modelo
         model.addAttribute("pedidos", pedidos);
+        model.addAttribute("nombresProductos", nombresProductos);
 
-        return "pedidosFloricultor"; // Nombre de la plantilla Thymeleaf
+        return "pedidosFloricultor";
     }
 
     @GetMapping("/cliente")
@@ -212,14 +247,45 @@ public class PedidoViewController {
         // Invertir el orden de los pedidos
         Collections.reverse(pedidos);
 
-        
+        // Crear un mapa para almacenar los nombres de productos o flores
+        Map<UUID, String> nombresProductos = new HashMap<>();
 
-        // Pasar los pedidos al modelo
+        for (Pedido pedido : pedidos) {
+            if (pedido.getProductoId() != null) {
+                // Buscar en Producto
+                Optional<Producto> productoOpt = productoRepository.findById(pedido.getProductoId());
+                if (productoOpt.isPresent()) {
+                    nombresProductos.put(pedido.getId(), productoOpt.get().getNombre());
+                } else {
+                    // Buscar en ProductoPersonalizado
+                    Optional<ProductoPersonalizado> personalizadoOpt = productoPersonalizadoRepository.findById(pedido.getProductoId());
+                    if (personalizadoOpt.isPresent()) {
+                        ProductoPersonalizado personalizado = personalizadoOpt.get();
+                        // Construir la cadena con nombres de flores y cantidades
+                        String nombresFloresConCantidad = floresEnPersonalizadoRepository.findByProductoPersonalizadoId(personalizado.getId())
+                                .stream()
+                                .map(f -> {
+                                    String nombreFlor = florRepository.findById(f.getFlorId()).map(Flor::getNombre).orElse("Desconocido");
+                                    return nombreFlor + " (x" + f.getCantidad() + ")";
+                                })
+                                .collect(Collectors.joining(", "));
+                        nombresProductos.put(pedido.getId(), nombresFloresConCantidad);
+                    } else {
+                        nombresProductos.put(pedido.getId(), "Desconocido");
+                    }
+                }
+            } else {
+                nombresProductos.put(pedido.getId(), "Sin producto asociado");
+            }
+        }
+
+        // Pasar los pedidos y los nombres al modelo
         model.addAttribute("pedidos", pedidos);
+        model.addAttribute("nombresProductos", nombresProductos);
 
-        return "pedidosCliente"; // Nombre de la plantilla Thymeleaf
+        return "pedidosCliente";
     }
-    
+
     @PostMapping("/valorar/{id}")
     public String valorarPedido(@PathVariable("id") UUID pedidoId, @RequestParam("valoracion") int valoracion) {
         // Buscar el pedido por ID
@@ -236,14 +302,22 @@ public class PedidoViewController {
         // Obtener el producto asociado al pedido
         UUID productoId = pedido.getProductoId();
         Optional<Producto> productoOpt = productoRepository.findById(productoId);
+        UUID floricultorId = null;
         if (productoOpt.isEmpty()) {
-            throw new IllegalArgumentException("Producto no encontrado con ID: " + productoId);
+            Optional<ProductoPersonalizado> productoPersonalizadoOpt = productoPersonalizadoRepository.findById(productoId);
+            if (productoPersonalizadoOpt.isEmpty()) {
+                throw new IllegalArgumentException("Producto no encontrado con ID: " + productoId);
+            }
+            ProductoPersonalizado producto = productoPersonalizadoOpt.get();
+            floricultorId = producto.getFloricultorId();
+        } else {
+            Producto producto = productoOpt.get();
+            floricultorId = producto.getFloricultorId();
         }
 
-        Producto producto = productoOpt.get();
+        
 
         // Obtener el floricultor asociado al producto
-        UUID floricultorId = producto.getFloricultorId();
         Optional<Floricultor> floricultorOpt = floricultorRepository.findById(floricultorId);
         if (floricultorOpt.isEmpty()) {
             throw new IllegalArgumentException("Floricultor no encontrado con ID: " + floricultorId);
