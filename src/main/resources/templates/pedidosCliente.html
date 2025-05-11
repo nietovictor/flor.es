@@ -23,6 +23,9 @@
             <p><strong>Dirección de Entrega:</strong> <span th:text="${pedido.direccionentrega}"></span></p>
             <p><strong>Estado:</strong> <span th:text="${pedido.estado}"></span></p>
             <p><strong>Fecha:</strong> <span th:text="${#dates.format(pedido.fecha, 'dd/MM/YYYY')}"></span></p>
+            <div th:if="${pedido.dedicatoria != null}">
+                <p><strong>Dedicatoria: </strong> <span th:text="${pedido.dedicatoria}"></span></p>
+            </div>
             <p>
                 <!-- Mostrar las estrellas si la valoración no es null -->
                 <div th:if="${pedido.valoracion != null and pedido.estado.toString() == 'RECOGIDO'}">
