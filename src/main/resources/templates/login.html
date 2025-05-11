@@ -42,6 +42,7 @@
     </style>
 </head>
 <body>
+    <header th:replace="layout :: header"></header>
     <div class="login_container">
         <h2>Iniciar Sesión</h2>
         <div th:if="${successMessage}" class="notification" id="notification">

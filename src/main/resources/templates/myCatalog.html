@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="../css/style.css" />
 </head>
 <body>
+    <header th:replace="layout :: header"></header>
     <div th:if="${#lists.isEmpty(floricultor)}">
         <p>Ha habido un error. Lo sentimos mucho</p>
     </div>

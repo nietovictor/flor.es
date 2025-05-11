@@ -6,6 +6,9 @@
     <link rel="stylesheet" href="/css/style.css" />
 </head>
 <body>
+  <header th:replace="layout :: header">
+    
+  </header>
     <h1 th:text="'Resultados para el código postal: ' + ${postalCode}"></h1>
 
     <div th:if="${#lists.isEmpty(floricultores)}">

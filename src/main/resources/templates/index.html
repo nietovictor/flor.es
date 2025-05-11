@@ -41,7 +41,7 @@
     </style>
 </head>
 <body>
-    <header>
+    <header th:replace="layout :: header">
         <h1>Bienvenido a Flor.es</h1>
         <nav>
             <div th:if="${#authentication.name == 'anonymousUser'}">
@@ -79,7 +79,9 @@
         </div>
         
     </main>
+    <footer fh:replace="layout :: footer">
 
+    </footer>
     <!-- <footer>
         <p>&copy; 2025 Flor.es - Todos los derechos reservados</p>
     </footer> -->
