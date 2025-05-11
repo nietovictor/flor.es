@@ -50,7 +50,8 @@ public class Pedido {
 
     @Enumerated(EnumType.ORDINAL) // Guardar como TINYINT (ordinal del enum)
     private Estados estado = Estados.SOLICITADO; // Default state
-    
+
+    private String dedicatoria;
 
     private LocalDate fechaEntrega;
 
@@ -63,7 +64,10 @@ public class Pedido {
     public Pedido() {}
 
     // Constructor con parámetros
-    public Pedido(UUID id, UUID clienteId, UUID productoId, BigDecimal coste, Timestamp fecha, String urlTracking, Integer valoracion, Estados estado, String direccionentrega, LocalDate fechaEntrega) {
+    public Pedido(UUID id, UUID clienteId, UUID productoId, 
+                  BigDecimal coste, Timestamp fecha, String urlTracking,
+                  Integer valoracion, Estados estado, String direccionentrega, 
+                  LocalDate fechaEntrega, String dedicatoria) {
         this.id = id;
         this.clienteId = clienteId;
         this.productoId = productoId;
@@ -74,6 +78,7 @@ public class Pedido {
         this.estado = estado;
         this.direccionentrega = direccionentrega;
         this.fechaEntrega = fechaEntrega;
+        this.dedicatoria = dedicatoria;
     }
 
     // Getters y Setters
@@ -158,6 +163,14 @@ public class Pedido {
         this.fechaEntrega = fechaEntrega;
     }
 
+    public String getDedicatoria() {
+        return dedicatoria;
+    }
+
+    public void setDedicatoria(String dedicatoria) {
+        this.dedicatoria = dedicatoria;
+    }
+
     
     @Override
     public String toString() {
@@ -172,6 +185,7 @@ public class Pedido {
                 ", estado=" + estado +
                 ", direccionentrega='" + direccionentrega + '\'' +
                 ", fechaEntrega=" + fechaEntrega +
+                ", dedicatoria='" + dedicatoria + '\'' +
                 '}';
     }
 }

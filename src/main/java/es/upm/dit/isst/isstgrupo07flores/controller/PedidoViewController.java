@@ -82,6 +82,7 @@ public class PedidoViewController {
     public String crearPedido(@RequestParam(value = "entregaUrgente", required = false, defaultValue = "false") Boolean entregaUrgente, 
                               @RequestParam(value = "fechaEntrega", required = false) LocalDate fechaEntrega, 
                               @RequestParam(value = "direccionEntrega", required = false) String direccionEntrega, 
+                              @RequestParam(value = "dedicatoria", required = false) String dedicatoria,
                               @RequestParam("entregaEnLocal") Boolean entregaEnLocal, Authentication authentication, 
                               HttpSession session, 
                               RedirectAttributes redirectAttributes) {
@@ -100,7 +101,7 @@ public class PedidoViewController {
         pedido.setUrlTracking("https://example.com/tracking");
         pedido.setEstado(Pedido.Estados.SOLICITADO);
         pedido.setValoracion(null);
-
+        pedido.setDedicatoria(dedicatoria);
 
         Cliente cliente = clienteOpt.get();
         pedido.setClienteId(cliente.getId()); // Usa el UUID del cliente

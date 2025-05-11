@@ -33,6 +33,7 @@
                 <input type="checkbox" id="entregaUrgente" name="entregaUrgente" style="display: none;"/>
                 <input type="hidden" id="entregaUrgenteHidden" name="entregaUrgente" disabled value="false" />
             </div>
+
             <script>
                 const hoy = new Date().toISOString().split('T')[0];
                 document.getElementById("fechaEntrega").setAttribute('min', hoy);
@@ -58,6 +59,10 @@
             <div class="form-group">
                 <label for="direccionEntrega">Dirección de Entrega:</label>
                 <input type="text" id="direccionEntrega" name="direccionEntrega" required />
+            </div>
+            <div class="form-group">
+                <label for="dedicatoria">Dedicatoria:</label>
+                <textarea id="dedicatoria" name="dedicatoria" rows="3" placeholder="Escribe tu dedicatoria o instrucciones para el pedido aquí..."></textarea>
             </div>
             <div class="form-group">
                 <button type="submit" class="submit-button" style="width:130px; margin-top:10px;">Confirmar Pedido</button>
