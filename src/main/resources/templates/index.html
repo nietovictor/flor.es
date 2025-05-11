@@ -111,11 +111,12 @@
             <button onclick="location.href='/pedido/cliente'" th:if="${rol.contains('CLIENTE')}" class="btn btn-success btn-hero">Mis pedidos</button>
         </div>
         <div th:if="${rol.contains('FLORICULTOR')}">
-            <form th:action="@{/mycatalog}" method="post" style="display:inline-block">
+            <form th:action="@{/mycatalog}" method="get" style="display:inline-block">
                 <button type="submit" class="btn btn-success btn-hero">Mi Catálogo</button>
             </form>
             <button onclick="location.href='/pedido/floricultor'" class="btn btn-success btn-hero">Mis pedidos</button>
             <button onclick="location.href='/producto/add'" class="btn btn-success btn-hero">Agregar Productos</button>
+            <button onclick="location.href='/flor/add'" class="btn btn-success btn-hero">Agregar Flores</button>
         </div>
         <button onclick="location.href='/practicas_sostenibles'" class="btn btn-success btn-hero">Buenas prácticas</button>
 

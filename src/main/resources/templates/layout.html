@@ -9,7 +9,7 @@
     <header th:fragment="header" style="background-color: #3d760d; padding: 20px; display: flex; justify-content: space-between; align-items: center;">
         <img th:src="@{/img/flor.es_logo.png}" alt="Flor.es Logo" style="height: 70px; cursor: pointer;" onclick="location.href='/'" />
         <nav>
-            <button onclick="location.href='/catalog/search'" type="button" style="background-color: #d0eac4; color: #3d760d; border: none; padding: 10px 20px; margin: 5px; cursor: pointer; border-radius: 5px;">Buscar</button>
+            <button onclick="location.href='/catalog/search'" th:if="${(rol != null and rol.contains('CLIENTE')) or #authentication.name == 'anonymousUser'}" type="button" style="background-color: #d0eac4; color: #3d760d; border: none; padding: 10px 20px; margin: 5px; cursor: pointer; border-radius: 5px;">Buscar</button>
             <button onclick="location.href='/cart/view'" th:if="${rol != null and rol.contains('CLIENTE')}" type="button" style="background-color: #d0eac4; color: #3d760d; border: none; padding: 10px 20px; margin: 5px; cursor: pointer; border-radius: 5px;">
                 <i class="bi bi-cart"></i> Carro
             </button>

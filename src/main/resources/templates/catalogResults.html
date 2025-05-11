@@ -1,40 +1,96 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Flor.es</title>
-    <link rel="stylesheet" href="/css/style.css" />
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-        function toggleAll(view) {
-            const productosSections = document.querySelectorAll("[id^='productos-']");
-            const floresSections = document.querySelectorAll("[id^='flores-']");
-
-            if (view === 'productos') {
-                productosSections.forEach(section => section.style.display = 'block');
-                floresSections.forEach(section => section.style.display = 'none');
-            } else {
-                productosSections.forEach(section => section.style.display = 'none');
-                floresSections.forEach(section => section.style.display = 'block');
-            }
-        }
-
-        window.toggleAll = toggleAll; // Hacer la función accesible globalmente
-        });
-    </script>
+  <meta charset="UTF-8">
+  <title>Flor.es - Catálogo</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <style>
+    body {
+      background-color: #d4f4d1;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 2rem;
+    }
+    .filters-wrapper {
+      background-color: #ffffff;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 2rem;
+      position: relative;
+      transition: all 0.3s ease-in-out;
+    }
+    .filters-toggle {
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #ffffff;
+      border: 2px solid #a5d6a7;
+      border-radius: 20px;
+      padding: 0.2rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      z-index: 10;
+    }
+    .filters-wrapper.collapsed form {
+      display: none;
+    }
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+    .product-card {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 1rem;
+      text-align: center;
+      transition: transform 0.2s;
+    }
+    .product-card:hover {
+      transform: translateY(-5px);
+    }
+    .product-img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+    .star-rating {
+      display: flex;
+      justify-content: center;
+      color: #ffc107;
+      font-size: 1.2rem;
+    }
+  </style>
+  <script>
+    function toggleFilters() {
+      const wrapper = document.querySelector('.filters-wrapper');
+      const icon = document.getElementById('filters-icon');
+      const label = document.getElementById('filters-label');
+      wrapper.classList.toggle('collapsed');
+      icon.classList.toggle('bi-chevron-down');
+      icon.classList.toggle('bi-chevron-up');
+      label.innerText = wrapper.classList.contains('collapsed') ? 'Filtros' : '';
+    }
+  </script>
 </head>
 <body>
-    <!-- Notificación -->
-    <div th:if="${successMessage}" class="notification success">
-        <p th:text="${successMessage}"></p>
-    </div>
-    <div th:if="${errorMessage}" class="notification error">
-        <p th:text="${errorMessage}"></p>
-    </div>
+<header th:replace="layout :: header"></header>
+<div class="container">
+  <h1 class="text-success" th:text="'Resultados para el código postal: ' + ${postalCode}"></h1>
 
-    <h1 th:text="'Resultados para el código postal: ' + ${postalCode}"></h1>
-
-  <div class="mt-5 filters-wrapper">
+  <div class="filters-wrapper">
     <div class="filters-toggle" onclick="toggleFilters()">
       <i class="bi bi-chevron-up" id="filters-icon"></i>
       <span id="filters-label"></span>
@@ -57,58 +113,10 @@
             <input type="number" name="price_min" min="0" step="1" placeholder="Mín" class="form-control">
             <input type="number" name="price_max" min="0" step="1" placeholder="Máx" class="form-control">
           </div>
-      
-        </form>
-      </details>
-
-    <!-- Botones globales para alternar entre productos y flores -->
-    <div style="margin-bottom: 20px;">
-        <button onclick="toggleAll('productos')">Ver productos</button>
-        <button onclick="toggleAll('flores')">Ver flores</button>
-    </div>
-
-    <div th:each="floricultor : ${floricultores}">
-        <h2 th:text="${floricultor.nombre}">Nombre Floricultor</h2>
-        <span th:text="${floricultor.mediaValoraciones}"></span>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-        <div class="star-rating" id ="star-rating-values">
-            <label class="bi bi-star-fill" th:classappend="${floricultor.mediaValoraciones >= 5 ? 'checked' : ''}"></label>
-            <label class="bi bi-star-fill" th:classappend="${floricultor.mediaValoraciones >= 4 ? 'checked' : ''}"></label>
-            <label class="bi bi-star-fill" th:classappend="${floricultor.mediaValoraciones >= 3 ? 'checked' : ''}"></label>
-            <label class="bi bi-star-fill" th:classappend="${floricultor.mediaValoraciones >= 2 ? 'checked' : ''}"></label>
-            <label class="bi bi-star-fill" th:classappend="${floricultor.mediaValoraciones >= 1 ? 'checked' : ''}"></label>
-            
         </div>
-        <span th:text="'(' + ${valoracionesPorFloricultor[floricultor.id]} + ')'"></span>
-        <p>Código Postal: <span th:text="${floricultor.cp}"></span></p>
-
-
-        <!-- Sección de productos -->
-        <div id="productos-[[${floricultor.id}]]" class="producto_lista" style="display: none;">
-            <h3>Productos</h3>
-            <div th:each="producto : ${productosPorFloricultor[floricultor.id]}">
-                <h4 th:text="${producto.nombre}">Nombre Producto</h4>
-                <p>Descripción: <span th:text="${producto.descripcion}"></span></p>
-                <p>Precio: <span th:text="${producto.precio}"></span> €</p>
-                <p>Stock: <span th:text="${producto.stock}"></span></p>
-                <img th:src="@{/producto/image/{id}(id=${producto.id})}" class="product-img" alt="Imagen del producto" style="max-width: 100px; height: auto;" />
-                <button th:attr="onclick='location.href=\'/producto/' + ${producto.id} + '\''" type="button">Ver producto</button>
-            </div>
-        </div>
-
-        <!-- Sección de flores -->
-        <div id="flores-[[${floricultor.id}]]" class="flor_lista" style="display: block;">
-            <h3>Flores</h3>
-            <div th:each="flor : ${floresPorFloricultor[floricultor.id]}">
-                <h4 th:text="${flor.nombre}">Nombre Flor</h4>
-                <p>Descripción: <span th:text="${flor.descripcion}"></span></p>
-                <p>Precio: <span th:text="${flor.precio}"></span> €</p>
-                <p>Stock: <span th:text="${flor.stock}"></span></p>
-                <img th:src="@{/flores/image/{id}(id=${flor.id})}" class="flor-img" alt="Imagen de la flor" style="max-width: 100px; height: auto;" />
-                <form th:action="@{/cart/addFlower/{florId}(florId=${flor.id})}" method="post">
-                    <button type="submit" class="btn">Añadir a la cesta</button>
-                </form>
-            </div>
+        <div class="col-md-4 mb-3">
+          <label>Disponibilidad</label><br>
+          <input type="checkbox" name="availability" value="in_stock"> En stock
         </div>
       </div>
       <div class="text-center">
@@ -119,13 +127,8 @@
     </form>
   </div>
 
-  <div class="my-4 text-center">
-    <input type="checkbox" id="toggle-producto" hidden onchange="toggleTipo()">
-    <label class="toggle-slider" for="toggle-producto">
-      <span class="toggle-option productos">Productos</span>
-      <span class="toggle-option flores">Flores</span>
-      <span class="toggle-indicator"></span>
-    </label>
+  <div th:if="${#lists.isEmpty(floricultores)}">
+    <p>No se encontraron floricultores en tu zona.</p>
   </div>
 
   <div th:each="floricultor : ${floricultores}" class="floricultor-section">
@@ -142,6 +145,7 @@
       <p>Código Postal: <span th:text="${floricultor.cp}"></span></p>
     </div>
 
+    <h4 class="mt-4">Productos</h4>
     <div class="product-grid">
       <div th:each="producto : ${productosPorFloricultor[floricultor.id]}" class="product-card">
         <img th:src="@{/producto/image/{id}(id=${producto.id})}" alt="Imagen" class="product-img">
@@ -152,44 +156,21 @@
         <button class="btn btn-success w-100 mt-2" th:attr="onclick='location.href=\'/producto/' + ${producto.id} + '\''">Ver producto</button>
       </div>
     </div>
+
+    <h4 class="mt-4">Flores</h4>
+    <div class="product-grid">
+      <div th:each="flor : ${floresPorFloricultor[floricultor.id]}" class="product-card">
+        <img th:src="@{/flores/image/{id}(id=${flor.id})}" alt="Imagen" class="product-img">
+        <h4 th:text="${flor.nombre}"></h4>
+        <p th:text="${flor.descripcion}"></p>
+        <p><strong th:text="${flor.precio} + ' €'"></strong></p>
+        <p>Stock: <span th:text="${flor.stock}"></span></p>
+        <form th:action="@{/cart/addFlower/{florId}(florId=${flor.id})}" method="post">
+          <button type="submit" class="btn btn-outline-success w-100">Añadir a la cesta</button>
+        </form>
+      </div>
+    </div>
   </div>
 </div>
 </body>
 </html>
-
-<style>
-    .star-rating {
-        direction: rtl;
-        display: inline-block;
-        cursor: pointer;
-    }
-    .star-rating input {
-        display: none;
-    }
-    .star-rating label {
-        color: #ddd;
-        font-size: 24px;
-        padding: 0 2px;
-        cursor: pointer;
-        transition: all 0.2s ease;
-    }
-    .star-rating label.checked {
-        color: #ffc107; /* Color de las estrellas seleccionadas */
-    }
-    .notification {
-        padding: 10px;
-        margin: 10px 0;
-        border-radius: 5px;
-        font-size: 16px;
-    }
-    .notification.success {
-        background-color: #d4edda;
-        color: #155724;
-        border: 1px solid #c3e6cb;
-    }
-    .notification.error {
-        background-color: #f8d7da;
-        color: #721c24;
-        border: 1px solid #f5c6cb;
-    }
-</style>

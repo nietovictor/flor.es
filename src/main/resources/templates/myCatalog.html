@@ -83,8 +83,10 @@
       <p class="mt-2">Código Postal: <span th:text="${floricultor.cp}"></span></p>
 
       <button onclick="location.href='/producto/add'" class="btn btn-success w-100 mt-3">Agregar productos</button>
+      <button onclick="location.href='/flor/add'" class="btn btn-success w-100 mt-3">Agregar flores</button>
     </div>
 
+    <!-- PRODUCTOS -->
     <div class="product-grid">
       <div th:each="producto : ${productos}" class="product-card">
         <img th:src="@{/producto/image/{id}(id=${producto.id})}" class="product-img" alt="Imagen del producto" />
@@ -96,17 +98,18 @@
       </div>
     </div>
 
-    <!-- Mostrar flores -->
-    <h3>Flores</h3>
-    <div th:each="flor : ${flores}" class="flor_lista">
-        <h3 th:text="${flor.nombre}">Nombre Flor</h3>
-        <p>Descripción: <span th:text="${flor.descripcion}"></span></p>
-        <p>Precio: <span th:text="${flor.precio}"></span> €</p>
+    <!-- FLORES -->
+    <h3 class="mt-5 text-center">Flores</h3>
+    <div class="product-grid">
+      <div th:each="flor : ${flores}" class="product-card">
+        <img th:src="@{/flores/image/{id}(id=${flor.id})}" class="product-img" alt="Imagen de la flor" />
+        <h5 th:text="${flor.nombre}">Nombre Flor</h5>
+        <p th:text="${flor.descripcion}">Descripción</p>
+        <p><strong th:text="${flor.precio} + ' €'"></strong></p>
         <p>Stock: <span th:text="${flor.stock}"></span></p>
-        <img th:src="@{/flores/image/{id}(id=${flor.id})}" class="flor-img" alt="Imagen de la flor" style="max-width: 100px; height: auto;" />
-        <a th:href="@{/flor/editar/{id}(id=${flor.id})}">
-            <button>Editar</button>
-        </a>
+        <a th:href="@{/flor/editar/{id}(id=${flor.id})}" class="btn btn-outline-success mt-auto">Editar</a>
+      </div>
     </div>
+  </div>
 </body>
 </html>

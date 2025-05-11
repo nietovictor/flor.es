@@ -1,55 +1,117 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
-    <title>Agregar flor</title>
-    <link rel="stylesheet" href="../css/style.css" />
+  <meta charset="UTF-8">
+  <title>Agregar Flor</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #d4f4d1;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .form-container {
+      max-width: 600px;
+      background-color: #ffffff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      margin: 2rem auto;
+    }
+
+    .form-title {
+      text-align: center;
+      font-weight: bold;
+      color: #2e7d32;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+      display: block;
+    }
+
+    .form-control {
+      border-radius: 6px;
+      padding: 0.5rem;
+    }
+
+    .submit-button {
+      width: 100%;
+      background-color: #4caf50;
+      color: white;
+      padding: 0.7rem;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+
+    .submit-button:hover {
+      background-color: #388e3c;
+    }
+
+    .btn-home {
+      display: block;
+      margin: 1.5rem auto 0;
+      padding: 0.5rem 1.5rem;
+      background-color: #a5d6a7;
+      border: none;
+      border-radius: 6px;
+    }
+
+    .btn-home:hover {
+      background-color: #8bc34a;
+    }
+
+    .error-message {
+      text-align: center;
+      margin-top: 1rem;
+      color: red;
+      font-weight: bold;
+    }
+  </style>
 </head>
-
 <body>
-    <header>
-        <h1>Agregar una nueva flor</h1>
-    </header>
-    <main>
-        <!-- Mostrar mensaje de error si existe -->
-        <div th:if="${error}" class="error-message">
-            <p th:text="${error}"></p>
-        </div>
+  <header th:replace="layout :: header"></header>
 
-        <form th:action="@{/flor/add}" th:object="${flor}" method="post" class="product-form" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="nombre">Nombre:</label>
-                <input type="text" id="nombre" name="nombre" th:field="*{nombre}" required />
-            </div>
+  <main>
+    <div class="container">
+      <div class="form-container">
+        <h2 class="form-title">Agregar una nueva flor</h2>
 
-            <div class="form-group">
-                <label for="descripcion" class="textarea-label">Descripción:</label>
-                <textarea id="descripcion" name="descripcion" th:field="*{descripcion}"></textarea>
-            </div>
+        <div th:if="${error}" class="error-message" th:text="${error}"></div>
 
-            <div class="form-group">
-                <label for="precio">Precio:</label>
-                <input type="number" id="precio" name="precio" th:field="*{precio}" step="0.01" required />
-            </div>
+        <form th:action="@{/flor/add}" th:object="${flor}" method="post" enctype="multipart/form-data">
+          <div class="mb-3">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" class="form-control" th:field="*{nombre}" required />
+          </div>
 
-            <div class="form-group">
-                <label for="stock">Stock:</label>
-                <input type="number" id="stock" name="stock" th:field="*{stock}" required />
-            </div>
+          <div class="mb-3">
+            <label for="descripcion">Descripción:</label>
+            <textarea id="descripcion" name="descripcion" rows="3" class="form-control" th:field="*{descripcion}" required></textarea>
+          </div>
 
+          <div class="mb-3">
+            <label for="precio">Precio:</label>
+            <input type="number" id="precio" name="precio" class="form-control" th:field="*{precio}" step="0.01" required />
+          </div>
 
-            <div class="form-group">
-                <label for="imagenArchivo">Imagen de la flor:</label>
-                <input type="file" id="imagenArchivo" name="imagenArchivo" accept="image/*" />
-            </div>
+          <div class="mb-3">
+            <label for="stock">Stock:</label>
+            <input type="number" id="stock" name="stock" class="form-control" th:field="*{stock}" required />
+          </div>
 
-            <br/>
-            <div class="form-group">
-                <button type="submit" class="submit-button">Guardar Producto</button>
-            </div>
+          <div class="mb-3">
+            <label for="imagenArchivo">Imagen de la flor:</label>
+            <input type="file" id="imagenArchivo" name="imagenArchivo" class="form-control" accept="image/*" />
+          </div>
+
+          <button type="submit" class="submit-button">Guardar Producto</button>
         </form>
-        <button onclick="location.href='/'" type="button">Home</button>
-    </main>
+      </div>
+    </div>
+  </main>
 </body>
-
 </html>
