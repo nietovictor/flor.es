@@ -41,7 +41,7 @@ public class Flor {
     @Lob
     private byte[] imagen; // URL o ruta de la imagen
 
-    @OneToMany(mappedBy = "florId", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "florId")
     private List<FloresEnPersonalizado> floresEnPersonalizados;
 
     // Constructor vacío

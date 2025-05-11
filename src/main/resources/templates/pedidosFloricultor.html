@@ -20,11 +20,14 @@
             </div>
             <div th:each="pedido : ${pedidos}" th:if="${pedido.estado.toString() == 'SOLICITADO'}">
             <h3 th:text="'Pedido ID: ' + ${pedido.id}"></h3>
-            <p><strong>Producto ID:</strong> <span th:text="${pedido.productoId}"></span></p>
+            <p>
+                <strong th:text="${#strings.contains(nombresProductos[pedido.id], '(') || #strings.contains(nombresProductos[pedido.id], ')') ? 'Producto personalizado:' : 'Producto:'}"></strong>
+                <span th:text="${nombresProductos[pedido.id]}"></span>
+            </p>
             <p><strong>Coste:</strong> <span th:text="${pedido.coste}"></span> €</p>
             <p><strong>Dirección de Entrega:</strong> <span th:text="${pedido.direccionentrega}"></span></p>
             <p><strong>Estado:</strong> <span th:text="${pedido.estado}"></span></p>
-            <p><strong>Fecha:</strong> <span th:text="${pedido.fecha}"></span></p>
+            <p><strong>Fecha:</strong> <span th:text="${#dates.format(pedido.fecha, 'dd/MM/YYYY hh:mm:ss')}"></span></p>
             <form th:action="@{/pedido/aceptar/{id}(id=${pedido.id})}" method="post" style="display: inline;">
                 <button type="submit" style="background-color: green; color: white;">Aceptar</button>
             </form>
@@ -46,11 +49,14 @@
             </div>
             <div th:each="pedido : ${pedidos}" th:if="${pedido.estado.toString() == 'ACEPTADO'}">
             <h3 th:text="'Pedido ID: ' + ${pedido.id}"></h3>
-            <p><strong>Producto ID:</strong> <span th:text="${pedido.productoId}"></span></p>
+            <p>
+                <strong th:text="${#strings.contains(nombresProductos[pedido.id], '(') || #strings.contains(nombresProductos[pedido.id], ')') ? 'Producto personalizado:' : 'Producto:'}"></strong>
+                <span th:text="${nombresProductos[pedido.id]}"></span>
+            </p>
             <p><strong>Coste:</strong> <span th:text="${pedido.coste}"></span> €</p>
             <p><strong>Dirección de Entrega:</strong> <span th:text="${pedido.direccionentrega}"></span></p>
             <p><strong>Estado:</strong> <span th:text="${pedido.estado}"></span></p>
-            <p><strong>Fecha:</strong> <span th:text="${pedido.fecha}"></span></p>
+            <p><strong>Fecha:</strong> <span th:text="${#dates.format(pedido.fecha, 'dd/MM/YYYY hh:mm:ss')}"></span></p>
             <form th:action="@{/pedido/listo_para_recoger/{id}(id=${pedido.id})}" method="post" style="display: inline;">
                 <button type="submit" style="background-color: green; color: white;">Listo para recogida</button>
             </form>
@@ -68,11 +74,14 @@
             </div>
             <div th:each="pedido : ${pedidos}" th:if="${pedido.estado.toString() == 'DENEGADO'}">
             <h3 th:text="'Pedido ID: ' + ${pedido.id}"></h3>
-            <p><strong>Producto ID:</strong> <span th:text="${pedido.productoId}"></span></p>
+            <p>
+                <strong th:text="${#strings.contains(nombresProductos[pedido.id], '(') || #strings.contains(nombresProductos[pedido.id], ')') ? 'Producto personalizado:' : 'Producto:'}"></strong>
+                <span th:text="${nombresProductos[pedido.id]}"></span>
+            </p>
             <p><strong>Coste:</strong> <span th:text="${pedido.coste}"></span> €</p>
             <p><strong>Dirección de Entrega:</strong> <span th:text="${pedido.direccionentrega}"></span></p>
             <p><strong>Estado:</strong> <span th:text="${pedido.estado}"></span></p>
-            <p><strong>Fecha:</strong> <span th:text="${pedido.fecha}"></span></p>
+            <p><strong>Fecha:</strong> <span th:text="${#dates.format(pedido.fecha, 'dd/MM/YYYY hh:mm:ss')}"></span></p>
             <hr/>
             </div>
         </div>
@@ -87,11 +96,14 @@
             </div>
             <div th:each="pedido : ${pedidos}" th:if="${pedido.estado.toString() == 'LISTO_PARA_RECOGIDA'}">
             <h3 th:text="'Pedido ID: ' + ${pedido.id}"></h3>
-            <p><strong>Producto ID:</strong> <span th:text="${pedido.productoId}"></span></p>
+            <p>
+                <strong th:text="${#strings.contains(nombresProductos[pedido.id], '(') || #strings.contains(nombresProductos[pedido.id], ')') ? 'Producto personalizado:' : 'Producto:'}"></strong>
+                <span th:text="${nombresProductos[pedido.id]}"></span>
+            </p>
             <p><strong>Coste:</strong> <span th:text="${pedido.coste}"></span> €</p>
             <p><strong>Dirección de Entrega:</strong> <span th:text="${pedido.direccionentrega}"></span></p>
             <p><strong>Estado:</strong> <span th:text="${pedido.estado}"></span></p>
-            <p><strong>Fecha:</strong> <span th:text="${pedido.fecha}"></span></p>
+            <p><strong>Fecha:</strong> <span th:text="${#dates.format(pedido.fecha, 'dd/MM/YYYY hh:mm:ss')}"></span></p>
             <form th:action="@{/pedido/entregar/{id}(id=${pedido.id})}" method="post" style="display: inline;">
                 <button type="submit" style="background-color: green; color: white;">Entregado</button>
             </form>
@@ -109,11 +121,14 @@
             </div>
             <div th:each="pedido : ${pedidos}" th:if="${pedido.estado.toString() == 'RECOGIDO'}">
             <h3 th:text="'Pedido ID: ' + ${pedido.id}"></h3>
-            <p><strong>Producto ID:</strong> <span th:text="${pedido.productoId}"></span></p>
+            <p>
+                <strong th:text="${#strings.contains(nombresProductos[pedido.id], '(') || #strings.contains(nombresProductos[pedido.id], ')') ? 'Producto personalizado:' : 'Producto:'}"></strong>
+                <span th:text="${nombresProductos[pedido.id]}"></span>
+            </p>
             <p><strong>Coste:</strong> <span th:text="${pedido.coste}"></span> €</p>
             <p><strong>Dirección de Entrega:</strong> <span th:text="${pedido.direccionentrega}"></span></p>
             <p><strong>Estado:</strong> <span th:text="${pedido.estado}"></span></p>
-            <p><strong>Fecha:</strong> <span th:text="${pedido.fecha}"></span></p>
+            <p><strong>Fecha:</strong> <span th:text="${#dates.format(pedido.fecha, 'dd/MM/YYYY hh:mm:ss')}"></span></p>
             <p>
                 <div th:if="${pedido.valoracion != null}">
                 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">

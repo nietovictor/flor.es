@@ -6,7 +6,7 @@ import es.upm.dit.isst.isstgrupo07flores.model.Producto;
 import es.upm.dit.isst.isstgrupo07flores.repository.FlorRepository;
 import es.upm.dit.isst.isstgrupo07flores.repository.FloricultorRepository;
 
-
+import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -15,6 +15,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -75,5 +77,38 @@ public class FlorViewController {
             redirectAttributes.addFlashAttribute("flor", flor); // Mantener los datos del formulario
             return "redirect:/flor/add";
         }
+    }
+
+    @GetMapping("/editar/{id}")
+    public String mostrarFormularioEdicion(@PathVariable UUID id, Model model) {
+        // Buscar la flor por su ID
+        Flor flor = florRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Flor no encontrada"));
+        model.addAttribute("flor", flor); // Añadir la flor al modelo
+        return "editFlorForm"; // Nombre del archivo HTML para editar flores
+    }
+
+    @PostMapping("/editar/guardar")
+    public String guardarFlorEditada(@ModelAttribute Flor florEditada, @RequestParam("imagenArchivo") MultipartFile imagenArchivo, RedirectAttributes redirectAttributes) {
+        // Buscar la flor existente en la base de datos
+        Flor florExistente = florRepository.findById(florEditada.getId()).orElseThrow(() -> new IllegalArgumentException("Flor no encontrada"));
+
+        // Mantener el ID del floricultor
+        florEditada.setFloricultorId(florExistente.getFloricultorId());
+
+        // Procesar la imagen
+        if (!imagenArchivo.isEmpty()) {
+            try {
+                florEditada.setImagen(imagenArchivo.getBytes()); // Guardar la nueva imagen como un array de bytes
+            } catch (IOException e) {
+                throw new RuntimeException("Error al procesar la imagen", e);
+            }
+        } 
+
+        // Guardar la flor editada en la base de datos
+        florRepository.save(florEditada);
+
+        // Añadir un mensaje de éxito
+        redirectAttributes.addFlashAttribute("success", "Flor editada exitosamente.");
+        return "redirect:/mycatalog"; // Redirigir al catálogo
     }
 }

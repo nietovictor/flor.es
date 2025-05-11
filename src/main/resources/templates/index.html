@@ -72,7 +72,7 @@
         <p>Explora nuestras flores y realiza tu pedido fácilmente.</p>
         <button onclick="location.href='/catalog/search'" th:if="${rol.contains('CLIENTE') or #authentication.name == 'anonymousUser'}" type="button">Buscar en catálogo</button>
         <div style="display: inline-block;"></div>
-            <form th:if="${rol.contains('FLORICULTOR')}" th:action="@{/mycatalog}" method="post" style="display: inline;">
+            <form th:if="${rol.contains('FLORICULTOR')}" th:action="@{/mycatalog}" method="get" style="display: inline;">
             <button type="submit">Mi catálogo</button>
             </form>
             <button onclick="location.href='/producto/add'" th:if="${rol.contains('FLORICULTOR')}" type="button" style="display: inline;">Agregar producto</button>

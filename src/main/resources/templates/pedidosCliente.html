@@ -15,11 +15,14 @@
         </div>
         <div th:each="pedido : ${pedidos}">
             <h3 th:text="'Pedido ID: ' + ${pedido.id}"></h3>
-            <p><strong>Producto ID:</strong> <span th:text="${pedido.productoId}"></span></p>
+            <p>
+                <strong th:text="${#strings.contains(nombresProductos[pedido.id], '(') || #strings.contains(nombresProductos[pedido.id], ')') ? 'Producto personalizado:' : 'Producto:'}"></strong>
+                <span th:text="${nombresProductos[pedido.id]}"></span>
+            </p>
             <p><strong>Coste:</strong> <span th:text="${pedido.coste}"></span> €</p>
             <p><strong>Dirección de Entrega:</strong> <span th:text="${pedido.direccionentrega}"></span></p>
             <p><strong>Estado:</strong> <span th:text="${pedido.estado}"></span></p>
-            <p><strong>Fecha:</strong> <span th:text="${pedido.fecha}"></span></p>
+            <p><strong>Fecha:</strong> <span th:text="${#dates.format(pedido.fecha, 'dd/MM/YYYY')}"></span></p>
             <p>
                 <!-- Mostrar las estrellas si la valoración no es null -->
                 <div th:if="${pedido.valoracion != null and pedido.estado.toString() == 'RECOGIDO'}">

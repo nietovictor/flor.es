@@ -10,6 +10,12 @@ import java.util.UUID;
 public interface PedidoRepository extends JpaRepository<Pedido, UUID> {
     List<Pedido> findByClienteId(UUID clienteId);
     
-    @Query("SELECT p FROM Pedido p JOIN Producto pr ON p.productoId = pr.id WHERE pr.floricultorId = :floricultorId")
+    @Query("""
+    SELECT p 
+    FROM Pedido p 
+    LEFT JOIN Producto pr ON p.productoId = pr.id 
+    LEFT JOIN ProductoPersonalizado pp ON p.productoId = pp.id 
+    WHERE pr.floricultorId = :floricultorId OR pp.floricultorId = :floricultorId
+    """)
     List<Pedido> findByFloricultorId(UUID floricultorId);
 }
