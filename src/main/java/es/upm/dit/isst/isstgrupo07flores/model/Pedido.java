@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import io.micrometer.common.lang.Nullable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -49,6 +50,9 @@ public class Pedido {
     @Enumerated(EnumType.ORDINAL) // Guardar como TINYINT (ordinal del enum)
     private Estados estado = Estados.SOLICITADO; // Default state
 
+    @Column(nullable = true)
+    private String informacionPedido;
+
 
     // Enum para los estados
     public enum Estados {
@@ -69,6 +73,7 @@ public class Pedido {
         this.valoracion = valoracion;
         this.estado = estado;
         this.direccionentrega = direccionentrega;
+        this.informacionPedido = informacionPedido;
     }
 
     // Getters y Setters
@@ -143,6 +148,14 @@ public class Pedido {
 
     public void setDireccionentrega(String direccionentrega) {
         this.direccionentrega = direccionentrega;
+    }
+
+    public String getInformacionPedido() {
+        return informacionPedido;
+    }
+
+    public void setInformacionPedido(String informacionPedido) {
+        this.informacionPedido = informacionPedido;
     }
 
     

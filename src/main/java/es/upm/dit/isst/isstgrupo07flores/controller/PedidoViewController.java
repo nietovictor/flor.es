@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -25,7 +26,10 @@ import es.upm.dit.isst.isstgrupo07flores.repository.FloricultorRepository;
 import es.upm.dit.isst.isstgrupo07flores.repository.PedidoRepository;
 import es.upm.dit.isst.isstgrupo07flores.repository.ProductoRepository;
 import es.upm.dit.isst.isstgrupo07flores.service.CartService;
+import es.upm.dit.isst.isstgrupo07flores.model.Cart; // Import the Cart class
+import es.upm.dit.isst.isstgrupo07flores.model.Flor; // Import the Flor class
 import jakarta.servlet.http.HttpSession;
+import java.math.BigDecimal;
 
 
 
@@ -54,10 +58,7 @@ public class PedidoViewController {
 
     @PostMapping("/create")
     public String crearPedido(@RequestParam("direccionEntrega") String direccionEntrega, Authentication authentication, HttpSession session, RedirectAttributes redirectAttributes) {
-        Producto producto = cartService.getCartProduct(session);
-        if (producto == null) {
-            throw new IllegalStateException("No hay producto en la cesta.");
-        }
+        Cart cart = cartService.getCart(session);
 
         // Buscar el cliente por correo electrónico
         String email = authentication.getName();
@@ -69,18 +70,61 @@ public class PedidoViewController {
         Cliente cliente = clienteOpt.get();
 
         Pedido pedido = new Pedido();
-
         pedido.setClienteId(cliente.getId()); // Usa el UUID del cliente
-        pedido.setProductoId(producto.getId());
-        pedido.setCoste(producto.getPrecio());
         pedido.setDireccionentrega(direccionEntrega);
         pedido.setUrlTracking("https://example.com/tracking");
         pedido.setEstado(Pedido.Estados.SOLICITADO);
         pedido.setValoracion(null);
 
-        pedidoRepository.save(pedido);
-        cartService.clearCart(session); // Limpia la cesta después de crear el pedido
+        // Verificar si hay flores en el carrito
+        if (cart.getFlores() != null && !cart.getFlores().isEmpty() && cart.getProducto() == null) {
+            // Crear un pedido con nombre "Producto personalizado"
+            pedido.setProductoId(UUID.fromString("00000000-0000-0000-0000-000000000000"));
+            // Calcular el precio como la suma de los precios de las flores
+            pedido.setCoste(cart.getPrecioTotal());
 
+            // Crear una cadena con la información de las flores únicas y sus cantidades
+            StringBuilder informacionPedido = new StringBuilder();
+            cart.getFlores().stream()
+                .collect(Collectors.groupingBy(Flor::getNombre, Collectors.counting())) // Agrupar por nombre y contar
+                .forEach((nombre, cantidad) -> {
+                    informacionPedido.append(nombre)
+                                     .append(" (x")
+                                     .append(cantidad)
+                                     .append("), ");
+                });
+            
+            // Eliminar la última coma y espacio si hay flores en el carrito
+            if (informacionPedido.length() > 0) {
+                informacionPedido.setLength(informacionPedido.length() - 2);
+            }
+
+            // Eliminar la última coma y espacio si hay flores en el carrito
+            /* if (informacionPedido.length() > 0) {
+                informacionPedido.setLength(informacionPedido.length() - 2);
+            } */
+
+            // Establecer la información del pedido
+            pedido.setInformacionPedido(informacionPedido.toString());
+
+        } else if (cart.getProducto() != null) {
+            // Si hay un producto en el carrito, usar sus datos
+            Producto producto = cart.getProducto();
+            pedido.setCoste(producto.getPrecio());
+            pedido.setProductoId(producto.getId());
+        } else {
+            // Si no hay nada en el carrito, redirigir con un mensaje de error
+            redirectAttributes.addFlashAttribute("error", "No hay productos ni flores en el carrito.");
+            return "redirect:/cart";
+        }
+
+        // Guardar el pedido
+        pedidoRepository.save(pedido);
+
+        // Limpiar el carrito después de crear el pedido
+        cartService.clearCart(session);
+
+        // Agregar un mensaje de éxito
         redirectAttributes.addFlashAttribute("successMessage", "Tu pedido se ha realizado correctamente");
         return "redirect:/"; // Redirige a la página principal
     }

@@ -4,16 +4,47 @@
     <meta charset="UTF-8">
     <title>Flor.es</title>
     <link rel="stylesheet" href="../css/style.css" />
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+        function toggleAll(view) {
+            const productosSections = document.querySelectorAll("[id^='productos-']");
+            const floresSections = document.querySelectorAll("[id^='flores-']");
+
+            if (view === 'productos') {
+                productosSections.forEach(section => section.style.display = 'block');
+                floresSections.forEach(section => section.style.display = 'none');
+            } else {
+                productosSections.forEach(section => section.style.display = 'none');
+                floresSections.forEach(section => section.style.display = 'block');
+            }
+        }
+
+        window.toggleAll = toggleAll; // Hacer la función accesible globalmente
+        });
+    </script>
 </head>
 <body>
+    <!-- Notificación -->
+    <div th:if="${successMessage}" class="notification success">
+        <p th:text="${successMessage}"></p>
+    </div>
+    <div th:if="${errorMessage}" class="notification error">
+        <p th:text="${errorMessage}"></p>
+    </div>
+
     <h1 th:text="'Resultados para el código postal: ' + ${postalCode}"></h1>
 
     <div th:if="${#lists.isEmpty(floricultores)}">
         <p>No se encontraron floricultores en tu zona.</p>
     </div>
 
+    <!-- Botones globales para alternar entre productos y flores -->
+    <div style="margin-bottom: 20px;">
+        <button onclick="toggleAll('productos')">Ver productos</button>
+        <button onclick="toggleAll('flores')">Ver flores</button>
+    </div>
+
     <div th:each="floricultor : ${floricultores}">
-        
         <h2 th:text="${floricultor.nombre}">Nombre Floricultor</h2>
         <span th:text="${floricultor.mediaValoraciones}"></span>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
@@ -27,13 +58,34 @@
         </div>
         <span th:text="'(' + ${valoracionesPorFloricultor[floricultor.id]} + ')'"></span>
         <p>Código Postal: <span th:text="${floricultor.cp}"></span></p>
-        <div th:each="producto : ${productosPorFloricultor[floricultor.id]}" class="producto_lista">
-            <h3 th:text="${producto.nombre}">Nombre Producto</h3>
-            <p>Descripción: <span th:text="${producto.descripcion}"></span></p>
-            <p>Precio: <span th:text="${producto.precio}"></span> €</p>
-            <p>Stock: <span th:text="${producto.stock}"></span></p>
-            <img th:src="@{/producto/image/{id}(id=${producto.id})}" class="product-img" alt="Imagen del producto" style="max-width: 100px; height: auto;" />
-            <button th:attr="onclick='location.href=\'/producto/' + ${producto.id} + '\''" type="button">Ver producto</button>
+
+
+        <!-- Sección de productos -->
+        <div id="productos-[[${floricultor.id}]]" class="producto_lista" style="display: none;">
+            <h3>Productos</h3>
+            <div th:each="producto : ${productosPorFloricultor[floricultor.id]}">
+                <h4 th:text="${producto.nombre}">Nombre Producto</h4>
+                <p>Descripción: <span th:text="${producto.descripcion}"></span></p>
+                <p>Precio: <span th:text="${producto.precio}"></span> €</p>
+                <p>Stock: <span th:text="${producto.stock}"></span></p>
+                <img th:src="@{/producto/image/{id}(id=${producto.id})}" class="product-img" alt="Imagen del producto" style="max-width: 100px; height: auto;" />
+                <button th:attr="onclick='location.href=\'/producto/' + ${producto.id} + '\''" type="button">Ver producto</button>
+            </div>
+        </div>
+
+        <!-- Sección de flores -->
+        <div id="flores-[[${floricultor.id}]]" class="flor_lista" style="display: block;">
+            <h3>Flores</h3>
+            <div th:each="flor : ${floresPorFloricultor[floricultor.id]}">
+                <h4 th:text="${flor.nombre}">Nombre Flor</h4>
+                <p>Descripción: <span th:text="${flor.descripcion}"></span></p>
+                <p>Precio: <span th:text="${flor.precio}"></span> €</p>
+                <p>Stock: <span th:text="${flor.stock}"></span></p>
+                <img th:src="@{/flores/image/{id}(id=${flor.id})}" class="flor-img" alt="Imagen de la flor" style="max-width: 100px; height: auto;" />
+                <form th:action="@{/cart/addFlower/{florId}(florId=${flor.id})}" method="post">
+                    <button type="submit" class="btn">Añadir a la cesta</button>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -62,5 +114,21 @@
     }
     .star-rating label.checked {
         color: #ffc107; /* Color de las estrellas seleccionadas */
+    }
+    .notification {
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+    .notification.success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+    .notification.error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
     }
 </style>
