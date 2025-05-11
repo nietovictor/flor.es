@@ -1,182 +1,179 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8">
-        <title>Registro de Usuario</title>
-        <link rel="stylesheet" href="../css/style.css" />
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7D4prO8sP1h9PjWlEy9sw5yTIBKec2b1Y4" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AgiA2QtRP1RgtW6Qp2iM7QwYBfNWPI76E5rKhF0zJpEV2w+6X9KZ8pc861i9K" crossorigin="anonymous"></script>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Registro - Flor.es</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <style>
+    body {
+      background-color: #d4f4d1;
+      background-image: url('/img/hojas-fondo.png');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', sans-serif;
+    }
 
-        <style>
-            .toggle-container {
-            display: flex;
-            margin-top: 20px;
-            }
+    .registro-container {
+      background: linear-gradient(to bottom, #78c041, #60a832);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      max-width: 500px;
+      width: 100%;
+    }
 
-            .toggle-slider {
-            display: flex;
-            align-items: center;
-            position: relative;
-            width: 240px;
-            height: 60px;
-            background-color: #d4e9d4;
-            border-radius: 30px;
-            cursor: pointer;
-            font-family: sans-serif;
-            user-select: none;
-            transition: background 0.3s;
-            }
+    .registro-container h2 {
+      text-align: center;
+      color: white;
+      margin-bottom: 1rem;
+    }
 
-            .toggle-option {
-            width: 50%;
-            text-align: center;
-            z-index: 2;
-            font-size: 18px;
-            font-weight: bold;
-            color: #2e7d32;
-            transition: color 0.3s;
-            }
+    .form-control {
+      border-radius: 30px;
+      background-color: #c8e6b9;
+      border: none;
+      padding-left: 1rem;
+      margin-bottom: 1rem;
+    }
 
-            .toggle-indicator {
-            position: absolute;
-            height: 52px;
-            width: 120px;
-            background-color: #a5d6a7;
-            border-radius: 26px;
-            top: 4px;
-            left: 4px;
-            transition: left 0.3s;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            z-index: 1;
-            }
+    .btn-primary, .btn-light {
+      border-radius: 30px;
+      width: 100%;
+      margin-top: 0.5rem;
+    }
 
-            /* When checkbox is checked, move the indicator */
-            #toggle-role:checked + .toggle-slider .toggle-indicator {
-            left: 116px;
-            }
+    .toggle-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
 
-            #toggle-role:checked + .toggle-slider .cliente {
-            color: #81c784;
-            }
+    .toggle-slider {
+      display: flex;
+      align-items: center;
+      position: relative;
+      width: 240px;
+      height: 60px;
+      background-color: #d4e9d4;
+      border-radius: 30px;
+      cursor: pointer;
+      font-family: sans-serif;
+      user-select: none;
+      transition: background 0.3s;
+    }
 
-            #toggle-role:not(:checked) + .toggle-slider .floricultor {
-            color: #81c784;
-            }
+    .toggle-option {
+      width: 50%;
+      text-align: center;
+      z-index: 2;
+      font-size: 18px;
+      font-weight: bold;
+      color: #2e7d32;
+      transition: color 0.3s;
+    }
 
-            @keyframes slideIn {
-                from {
-                    opacity: 0;
-                    transform: translateX(100%);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateX(0);
-                }
-            }
-    
-            .notification {
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background-color: #af4c4c;
-                color: white;
-                padding: 15px;
-                border-radius: 5px;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-                z-index: 1000;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                animation: slideIn 0.5s ease-out;
-            }
-    
-            .notification button {
-                background: none;
-                border: none;
-                color: white;
-                font-size: 16px;
-                cursor: pointer;
-            }
-        </style>
-        <script>
-            function mostrarFormulario() {
-                const tipoCliente = document.getElementById("toggle-role").checked;
-                document.getElementById("formCliente").style.display = tipoCliente ? "none" : "block";
-                document.getElementById("formFloricultor").style.display = tipoCliente ? "block" : "none";
-            }
+    .toggle-indicator {
+      position: absolute;
+      height: 52px;
+      width: 120px;
+      background-color: #a5d6a7;
+      border-radius: 26px;
+      top: 4px;
+      left: 4px;
+      transition: left 0.3s;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      z-index: 1;
+    }
 
-            window.onload = mostrarFormulario;
-        </script>
-    </head>
-    
+    #toggle-role:checked + .toggle-slider .toggle-indicator {
+      left: 116px;
+    }
+    #toggle-role:checked + .toggle-slider .cliente {
+      color: #81c784;
+    }
+    #toggle-role:not(:checked) + .toggle-slider .floricultor {
+      color: #81c784;
+    }
+
+    .login-btn {
+      width: 100%;
+      border-radius: 30px;
+      background-color: #336600;
+      color: white;
+      font-weight: bold;
+      margin-top: 1rem;
+    }
+
+    .notification {
+      background-color: #af4c4c;
+      color: white;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .notification button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+  <script>
+    function mostrarFormulario() {
+      const tipoCliente = document.getElementById("toggle-role").checked;
+      document.getElementById("formCliente").style.display = tipoCliente ? "none" : "block";
+      document.getElementById("formFloricultor").style.display = tipoCliente ? "block" : "none";
+    }
+    window.onload = mostrarFormulario;
+  </script>
+</head>
 <body>
-    <header th:replace="layout :: header"></header>
-    <div class="registro_container">
-        <h2>Registro de Usuario</h2>
+  <div class="registro-container">
+    <h2>Registro de Usuario</h2>
 
-        <div th:if="${errorMessage}" class="notification" id="notification">
-            <p th:text="${errorMessage}"></p>
-            <button onclick="document.getElementById('notification').style.display='none'">&times;</button>
-        </div>
-
-        <div class="toggle-container">
-            <input type="checkbox" id="toggle-role" hidden onchange="mostrarFormulario()">
-            <label class="toggle-slider" for="toggle-role">
-              <span class="toggle-option cliente">Cliente</span>
-              <span class="toggle-option floricultor">Floricultor</span>
-              <span class="toggle-indicator"></span>
-            </label>
-        </div>
-
-        
-
-        <!-- Formulario Cliente -->
-        <form id="formCliente" th:action="@{/registro/cliente}" method="post" style="display:none;">
-            <div>
-                <label for="correoCliente">Correo Electrónico:</label>
-                <input type="email" id="correoCliente" name="correoElectronico" required />
-            </div>
-            <div>
-                <label for="contrasenaCliente">Contraseña:</label>
-                <input type="password" id="contrasenaCliente" name="contrasena" required />
-            </div>
-            <div>
-                <label for="telefono">Teléfono:</label>
-                <input type="tel" id="telefono" name="telefono" required />
-            </div>
-            <button type="submit">Registrar Cliente</button>
-        </form>
-
-        <!-- Formulario Floricultor -->
-        <form id="formFloricultor" th:action="@{/registro/floricultor}" method="post" style="display:none;">
-            <div>
-                <label for="correoFlor">Correo Electrónico:</label>
-                <input type="email" id="correoFlor" name="correoElectronico" required />
-            </div>
-            <div>
-                <label for="contrasenaFlor">Contraseña:</label>
-                <input type="password" id="contrasenaFlor" name="contrasena" required />
-            </div>
-            <div>
-                <label for="nombreFlor">Nombre:</label>
-                <input type="text" id="nombreFlor" name="nombre" required />
-            </div>
-            <div>
-                <label for="direccion">Dirección:</label>
-                <input type="text" id="direccion" name="direccion" required />
-            </div>
-            <div>
-                <label for="cp">Código Postal:</label>
-                <input type="text" id="cp" name="cp" required />
-            </div>
-            <div>
-                <label for="nif">NIF:</label>
-                <input type="text" id="nif" name="nif" required />
-            </div>
-            <button type="submit">Registrar Floricultor</button>
-        </form>
-        <button class="btn-back" onclick="location.href='/login'">Login</button>
-        <button class="btn-back" onclick="location.href='/'">Home</button>
+    <div th:if="${errorMessage}" class="notification" id="notification">
+      <p th:text="${errorMessage}"></p>
+      <button onclick="document.getElementById('notification').style.display='none'">&times;</button>
     </div>
+
+    <div class="toggle-container">
+      <input type="checkbox" id="toggle-role" hidden onchange="mostrarFormulario()">
+      <label class="toggle-slider" for="toggle-role">
+        <span class="toggle-option cliente">Cliente</span>
+        <span class="toggle-option floricultor">Floricultor</span>
+        <span class="toggle-indicator"></span>
+      </label>
+    </div>
+
+    <form id="formCliente" th:action="@{/registro/cliente}" method="post" style="display:none;">
+      <input type="email" id="correoCliente" name="correoElectronico" class="form-control" placeholder="Correo Electrónico" required />
+      <input type="password" id="contrasenaCliente" name="contrasena" class="form-control" placeholder="Contraseña" required />
+      <input type="tel" id="telefono" name="telefono" class="form-control" placeholder="Teléfono" required />
+      <button type="submit" class="btn login-btn">Registrar Cliente</button>
+    </form>
+
+    <form id="formFloricultor" th:action="@{/registro/floricultor}" method="post" style="display:none;">
+      <input type="email" id="correoFlor" name="correoElectronico" class="form-control" placeholder="Correo Electrónico" required />
+      <input type="password" id="contrasenaFlor" name="contrasena" class="form-control" placeholder="Contraseña" required />
+      <input type="text" id="nombreFlor" name="nombre" class="form-control" placeholder="Nombre" required />
+      <input type="text" id="direccion" name="direccion" class="form-control" placeholder="Dirección" required />
+      <input type="text" id="cp" name="cp" class="form-control" placeholder="Código Postal" required />
+      <input type="text" id="nif" name="nif" class="form-control" placeholder="NIF" required />
+      <button type="submit" class="btn login-btn">Registrar Floricultor</button>
+    </form>
+
+    <button class="btn btn-light" onclick="location.href='/login'">Volver al Login</button>
+    <button class="btn btn-light" onclick="location.href='/'">Inicio</button>
+  </div>
 </body>
 </html>

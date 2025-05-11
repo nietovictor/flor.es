@@ -38,7 +38,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/h2-console/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll() // Permite acceder a la base de datos H2 y Swagger
                 .requestMatchers("/catalog/**", "/producto/**").permitAll() // Permite acceso al catalogo y a las imagenes de los productos
-                .requestMatchers("/","/login", "/registro/**", "/css/**", "/js/**", "/registro").permitAll() // Permitir login y registro
+                .requestMatchers("/","/login", "/registro/**", "/css/**", "/js/**", "/registro", "/practicas_sostenibles").permitAll() // Permitir login y registro
                 .requestMatchers("/.well-known/**", "/img/**").permitAll() // Permitir acceso a esta ruta
                 .anyRequest().authenticated() // Todo lo demás requiere autenticación
             )
