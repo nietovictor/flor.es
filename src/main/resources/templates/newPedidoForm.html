@@ -11,6 +11,16 @@
     <main>
         <form th:action="@{/pedido/create}" method="post" class="pedido-form">
             <div class="form-group">
+                <label for="toggleDireccion">Entrega en local:</label>
+                <input type="checkbox" id="entregaEnLocal" onclick="toggleDireccionEntrega()" />
+            </div>
+            <script>
+                function toggleDireccionEntrega() {
+                    const direccionInput = document.getElementById('direccionEntrega');
+                    direccionInput.disabled = !direccionInput.disabled;
+                }
+            </script>
+            <div class="form-group">
                 <label for="direccionEntrega">Dirección de Entrega:</label>
                 <input type="text" id="direccionEntrega" name="direccionEntrega" required />
             </div>
