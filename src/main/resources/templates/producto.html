@@ -71,7 +71,7 @@
             <p><strong>Descripción:</strong> <span th:text="${producto.descripcion}"></span></p>
             <p><strong>Precio:</strong> <span th:text="${producto.precio}"></span> €</p>
             <p><strong>Stock disponible:</strong> <span th:text="${producto.stock}"></span></p>
-            <form th:action="@{/cart/add/{productId}(productId=${producto.id})}" method="post">
+            <form th:action="@{/cart/addProduct/{productId}(productId=${producto.id})}" method="post">
                 <button type="submit" class="btn btn-success">Añadir a la cesta</button>
             </form>
             <button onclick="location.href='/catalog/search'" class="btn btn-outline-secondary">Volver a buscar</button>

@@ -72,6 +72,35 @@
       color: #ffc107;
       font-size: 1.2rem;
     }
+
+    .notification {
+        position: fixed;
+        top: 130px;
+        right: -300px; /* Inicialmente fuera de la pantalla */
+        background-color: #4CAF50;
+        color: white;
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 250px; /* Ajusta el ancho según sea necesario */
+        transition: right 0.5s ease; /* Animación para que entre suavemente */
+    }
+
+    .notification.show {
+        right: 20px; /* Posición final cuando se muestra */
+    }
+
+    .notification button {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+    }
   </style>
   <script>
     function toggleFilters() {
@@ -83,14 +112,40 @@
       icon.classList.toggle('bi-chevron-up');
       label.innerText = wrapper.classList.contains('collapsed') ? 'Filtros' : '';
     }
+
+    function showNotification() {
+        const notification = document.getElementById('notification');
+        notification.classList.add('show'); // Agrega la clase para mostrar la notificación
+        setTimeout(() => {
+            hideNotification(); // Oculta la notificación después de 5 segundos
+        }, 3000);
+    }
+
+    function hideNotification() {
+        const notification = document.getElementById('notification');
+        notification.classList.remove('show'); // Elimina la clase para ocultar la notificación
+    }
+
+    // Llama a showNotification() cuando la página cargue si hay un mensaje
+    window.onload = () => {
+        const notification = document.getElementById('notification');
+        if (notification && notification.querySelector('p').innerText.trim() !== '') {
+            showNotification();
+        }
+    };
   </script>
 </head>
 <body>
 <header th:replace="layout :: header"></header>
 <div class="container">
+
+  <div th:if="${successMessage}" class="notification" id="notification">
+    <p th:text="${successMessage}"></p>
+    <button onclick="hideNotification()">&times;</button>
+  </div>
   <h1 class="text-success" th:text="'Resultados para el código postal: ' + ${postalCode}"></h1>
 
-  <div class="filters-wrapper">
+  <div class="mt-5 filters-wrapper">
     <div class="filters-toggle" onclick="toggleFilters()">
       <i class="bi bi-chevron-up" id="filters-icon"></i>
       <span id="filters-label"></span>
@@ -126,12 +181,13 @@
       </div>
     </form>
   </div>
+  <button onclick="location.href='/cart/view'" class="btn btn-success w-100 mt-2"><i class="bi bi-cart"></i> Ver Carro</button>
 
   <div th:if="${#lists.isEmpty(floricultores)}">
     <p>No se encontraron floricultores en tu zona.</p>
   </div>
 
-  <div th:each="floricultor : ${floricultores}" class="floricultor-section">
+  <div th:each="floricultor : ${floricultores}" class="floricultor-section mt-4">
     <div class="floricultor-header">
       <h2 th:text="${floricultor.nombre}"></h2>
       <div class="star-rating">
