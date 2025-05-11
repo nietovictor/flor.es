@@ -1,5 +1,6 @@
 package es.upm.dit.isst.isstgrupo07flores.controller;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -53,7 +54,7 @@ public class PedidoViewController {
     
 
     @PostMapping("/create")
-    public String crearPedido(@RequestParam(value = "direccionEntrega", required = false) String direccionEntrega, @RequestParam("entregaEnLocal") Boolean entregaEnLocal, Authentication authentication, HttpSession session, RedirectAttributes redirectAttributes) {
+    public String crearPedido(@RequestParam(value = "fechaEntrega", required = false) LocalDate fechaEntrega, @RequestParam(value = "direccionEntrega", required = false) String direccionEntrega, @RequestParam("entregaEnLocal") Boolean entregaEnLocal, Authentication authentication, HttpSession session, RedirectAttributes redirectAttributes) {
         Producto producto = cartService.getCartProduct(session);
         if (producto == null) {
             throw new IllegalStateException("No hay producto en la cesta.");
@@ -82,6 +83,9 @@ public class PedidoViewController {
             return "redirect:/pedido/new"; // Redirige al formulario si la dirección está vacía
         }
         pedido.setDireccionentrega(direccionEntrega);
+        if (fechaEntrega != null) {
+            pedido.setFechaEntrega(fechaEntrega);
+        }
         pedido.setUrlTracking("https://example.com/tracking");
         pedido.setEstado(Pedido.Estados.SOLICITADO);
         pedido.setValoracion(null);

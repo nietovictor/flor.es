@@ -3,6 +3,7 @@ package es.upm.dit.isst.isstgrupo07flores.model;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.UUID;
+import java.time.LocalDate;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -49,6 +50,7 @@ public class Pedido {
     @Enumerated(EnumType.ORDINAL) // Guardar como TINYINT (ordinal del enum)
     private Estados estado = Estados.SOLICITADO; // Default state
 
+    private LocalDate fechaEntrega;
 
     // Enum para los estados
     public enum Estados {
@@ -59,7 +61,7 @@ public class Pedido {
     public Pedido() {}
 
     // Constructor con parámetros
-    public Pedido(UUID id, UUID clienteId, UUID productoId, BigDecimal coste, Timestamp fecha, String urlTracking, Integer valoracion, Estados estado, String direccionentrega) {
+    public Pedido(UUID id, UUID clienteId, UUID productoId, BigDecimal coste, Timestamp fecha, String urlTracking, Integer valoracion, Estados estado, String direccionentrega, LocalDate fechaEntrega) {
         this.id = id;
         this.clienteId = clienteId;
         this.productoId = productoId;
@@ -69,6 +71,7 @@ public class Pedido {
         this.valoracion = valoracion;
         this.estado = estado;
         this.direccionentrega = direccionentrega;
+        this.fechaEntrega = fechaEntrega;
     }
 
     // Getters y Setters
@@ -145,6 +148,14 @@ public class Pedido {
         this.direccionentrega = direccionentrega;
     }
 
+    public LocalDate getFechaEntrega() {
+        return fechaEntrega;
+    }   
+
+    public void setFechaEntrega(LocalDate fechaEntrega) {
+        this.fechaEntrega = fechaEntrega;
+    }
+
     
     @Override
     public String toString() {
@@ -156,6 +167,9 @@ public class Pedido {
                 ", fecha=" + fecha +
                 ", urlTracking='" + urlTracking + '\'' +
                 ", valoracion=" + valoracion +
+                ", estado=" + estado +
+                ", direccionentrega='" + direccionentrega + '\'' +
+                ", fechaEntrega=" + fechaEntrega +
                 '}';
     }
 }

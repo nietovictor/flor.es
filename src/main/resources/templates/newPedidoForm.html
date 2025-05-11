@@ -26,6 +26,25 @@
                 }
             </script>
             <div class="form-group">
+                <label for="entregaEnFecha">Programar entrega en fecha específica:</label>
+                <input type="checkbox" id="entregaEnFecha" name="entregaEnFecha" onclick="toggleFechaEntrega()" />
+                <input type="date" id="fechaEntrega" name="fechaEntrega" disabled style="display: none;"/>
+            </div>
+            <script>
+                const hoy = new Date().toISOString().split('T')[0];
+                document.getElementById("fechaEntrega").setAttribute('min', hoy);
+
+                function toggleFechaEntrega() {
+                    const fechaEntrega = document.getElementById('fechaEntrega');
+                    fechaEntrega.disabled = !fechaEntrega.disabled;
+                    if (document.getElementById('entregaEnFecha').checked) {
+                        fechaEntrega.style.display = 'inline'; // Muestra el campo
+                    } else {
+                        fechaEntrega.style.display = 'none'; // Oculta el campo
+                    }
+                }
+            </script>
+            <div class="form-group">
                 <label for="direccionEntrega">Dirección de Entrega:</label>
                 <input type="text" id="direccionEntrega" name="direccionEntrega" required />
             </div>
