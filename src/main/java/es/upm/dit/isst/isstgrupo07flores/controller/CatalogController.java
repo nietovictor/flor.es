@@ -17,10 +17,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import es.upm.dit.isst.isstgrupo07flores.model.Flor;
 import es.upm.dit.isst.isstgrupo07flores.model.Floricultor;
 import es.upm.dit.isst.isstgrupo07flores.model.Producto;
 import es.upm.dit.isst.isstgrupo07flores.repository.FloricultorRepository;
 import es.upm.dit.isst.isstgrupo07flores.repository.PedidoRepository;
+import es.upm.dit.isst.isstgrupo07flores.repository.FlorRepository;
 import es.upm.dit.isst.isstgrupo07flores.service.CatalogService;
 import es.upm.dit.isst.isstgrupo07flores.service.ProductoService;
 
@@ -33,6 +35,9 @@ public class CatalogController {
     private final ProductoService productoService;
     private final PedidoRepository pedidoRepository;
 
+    @Autowired
+    private FlorRepository florRepository;
+
     public CatalogController(CatalogService catalogService, ProductoService productoService, PedidoRepository pedidoRepository) {
         this.catalogService = catalogService;
         this.productoService = productoService;
@@ -41,23 +46,27 @@ public class CatalogController {
 
     // Página inicial para introducir código postal
     @GetMapping("/catalog/search")
-    public String postalCodeForm(){
-        return "postalCodeForm";
-    }
+    public String searchByPostalCode(@RequestParam(value = "cp", required = false) String postalCode, Model model) {
+        if (postalCode == null || postalCode.isEmpty()) {
+            return "postalCodeForm"; // Si no se proporciona un código postal, m uestra el formulario
+        }
 
-    // Procesar búsqueda de floricultores por CP
-    @PostMapping("/catalog/search")
-    public String searchByPostalCode(@RequestParam("cp") String postalCode, Model model) {
         try {
+            // Obtener floricultores por código postal
             List<Floricultor> floricultores = catalogService.getFloricultoresByPostalCode(postalCode);
 
             Map<UUID, List<Producto>> productosPorFloricultor = new HashMap<>();
+            Map<UUID, List<Flor>> floresPorFloricultor = new HashMap<>();
             Map<UUID, Long> valoracionesPorFloricultor = new HashMap<>();
 
             for (Floricultor f : floricultores) {
                 // Obtener productos del floricultor
                 List<Producto> productos = productoService.getProductosByFloricultor(f.getId());
                 productosPorFloricultor.put(f.getId(), productos != null ? productos : new ArrayList<>());
+
+                // Obtener flores del floricultor
+                List<Flor> flores = florRepository.findByFloricultorId(f.getId());
+                floresPorFloricultor.put(f.getId(), flores != null ? flores : new ArrayList<>());
 
                 // Contar pedidos valorados del floricultor
                 long valoraciones = pedidoRepository.findByFloricultorId(f.getId()).stream()
@@ -66,8 +75,10 @@ public class CatalogController {
                 valoracionesPorFloricultor.put(f.getId(), valoraciones);
             }
 
+            // Agregar datos al modelo
             model.addAttribute("floricultores", floricultores);
             model.addAttribute("productosPorFloricultor", productosPorFloricultor);
+            model.addAttribute("floresPorFloricultor", floresPorFloricultor);
             model.addAttribute("valoracionesPorFloricultor", valoracionesPorFloricultor);
             model.addAttribute("postalCode", postalCode);
 
@@ -89,18 +100,20 @@ public class CatalogController {
             if (floricultor.isEmpty()) {
                 throw new IllegalArgumentException("Floricultor no encontrado con el correo: " + email);
             }
+
             Floricultor floricultorObj = floricultor.get();
+
             List<Producto> productos = productoService.getProductosByFloricultor(floricultorObj.getId());
             if (productos == null || productos.isEmpty()) {
                 productos = new ArrayList<>(); // lista vacía en vez de null
             }
-            for (Producto p : productos) {
-                System.out.println("Producto ID: " + p.getId());
-                System.out.println("Nombre: " + p.getNombre());
-                System.out.println("Descripción: " + p.getDescripcion());
-                System.out.println("Precio: " + p.getPrecio());
-                System.out.println("Stock: " + p.getStock());
+
+             // Obtener flores del floricultor
+            List<Flor> flores = florRepository.findByFloricultorId(floricultorObj.getId());
+            if (flores == null || flores.isEmpty()) {
+                flores = new ArrayList<>(); // Lista vacía en lugar de null
             }
+
 
             long valoracionesPorFloricultor = pedidoRepository.findByFloricultorId(floricultorObj.getId()).stream()
                     .filter(p -> p.getValoracion() != null)
@@ -108,6 +121,7 @@ public class CatalogController {
 
         model.addAttribute("floricultor", floricultorObj);
         model.addAttribute("productos", productos);
+        model.addAttribute("flores", flores);
         model.addAttribute("valoracionesPorFloricultor", valoracionesPorFloricultor);
 
         return "myCatalog";

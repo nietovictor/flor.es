@@ -37,6 +37,19 @@
         </a>
     </div>
 
+    <!-- Mostrar flores -->
+    <h3>Flores</h3>
+    <div th:each="flor : ${flores}" class="flor_lista">
+        <h3 th:text="${flor.nombre}">Nombre Flor</h3>
+        <p>Descripción: <span th:text="${flor.descripcion}"></span></p>
+        <p>Precio: <span th:text="${flor.precio}"></span> €</p>
+        <p>Stock: <span th:text="${flor.stock}"></span></p>
+        <img th:src="@{/flores/image/{id}(id=${flor.id})}" class="flor-img" alt="Imagen de la flor" style="max-width: 100px; height: auto;" />
+        <a th:href="@{/flores/editar/{id}(id=${flor.id})}">
+            <button>Editar</button>
+        </a>
+    </div>
+
     <button onclick="location.href='/'" type="button">Home</button>
 </body>
 </html>

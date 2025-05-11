@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.HashSet;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -26,7 +28,15 @@ import es.upm.dit.isst.isstgrupo07flores.repository.FloricultorRepository;
 import es.upm.dit.isst.isstgrupo07flores.repository.PedidoRepository;
 import es.upm.dit.isst.isstgrupo07flores.repository.ProductoRepository;
 import es.upm.dit.isst.isstgrupo07flores.service.CartService;
+import es.upm.dit.isst.isstgrupo07flores.model.Cart; // Import the Cart class
+import es.upm.dit.isst.isstgrupo07flores.model.Flor; // Import the Flor class
+import es.upm.dit.isst.isstgrupo07flores.model.ProductoPersonalizado; // Import the ProductoPersonalizado class
 import jakarta.servlet.http.HttpSession;
+import java.math.BigDecimal;
+import es.upm.dit.isst.isstgrupo07flores.model.FloresEnPersonalizado;
+import es.upm.dit.isst.isstgrupo07flores.repository.ProductoPersonalizadoRepository; // Ensure this repository is correctly defined for ProductoPersonalizado
+import es.upm.dit.isst.isstgrupo07flores.service.FlorService; // Import FlorService
+import es.upm.dit.isst.isstgrupo07flores.repository.FloresEnPersonalizadoRepository; // Import FloresEnPersonalizadoRepository
 
 
 
@@ -47,6 +57,12 @@ public class PedidoViewController {
     @Autowired
     private ProductoRepository productoRepository;
 
+    @Autowired
+    private FloresEnPersonalizadoRepository relacionRepository; // Inject FloresEnPersonalizadoRepository
+
+    @Autowired
+    private ProductoPersonalizadoRepository productoPersonalizadoRepository; // Inject ProductoPersonalizadoRepository
+
     @GetMapping("/new")
     public String mostrarFormularioNuevoPedido() {
         return "newPedidoForm"; 
@@ -54,11 +70,14 @@ public class PedidoViewController {
     
 
     @PostMapping("/create")
-    public String crearPedido(@RequestParam(value = "entregaUrgente", required = false) Boolean entregaUrgente, @RequestParam(value = "fechaEntrega", required = false) LocalDate fechaEntrega, @RequestParam(value = "direccionEntrega", required = false) String direccionEntrega, @RequestParam("entregaEnLocal") Boolean entregaEnLocal, Authentication authentication, HttpSession session, RedirectAttributes redirectAttributes) {
-        Producto producto = cartService.getCartProduct(session);
-        if (producto == null) {
-            throw new IllegalStateException("No hay producto en la cesta.");
-        }
+    public String crearPedido(@RequestParam(value = "entregaUrgente", required = false, defaultValue = "false") Boolean entregaUrgente, 
+                              @RequestParam(value = "fechaEntrega", required = false) LocalDate fechaEntrega, 
+                              @RequestParam(value = "direccionEntrega", required = false) String direccionEntrega, 
+                              @RequestParam("entregaEnLocal") Boolean entregaEnLocal, Authentication authentication, 
+                              HttpSession session, 
+                              RedirectAttributes redirectAttributes) {
+   
+        Cart cart = cartService.getCart(session);
 
         // Buscar el cliente por correo electrónico
         String email = authentication.getName();
@@ -67,36 +86,84 @@ public class PedidoViewController {
             throw new IllegalArgumentException("Cliente no encontrado con el correo: " + email);
         }
 
-        Cliente cliente = clienteOpt.get();
-
+        // Crear Pedido
         Pedido pedido = new Pedido();
+        pedido.setUrlTracking("https://example.com/tracking");
+        pedido.setEstado(Pedido.Estados.SOLICITADO);
+        pedido.setValoracion(null);
 
-        Floricultor floricultor = floricultorRepository.findById(producto.getFloricultorId()).orElseThrow(() -> new IllegalArgumentException("Floricultor no encontrado"));
 
+        Cliente cliente = clienteOpt.get();
         pedido.setClienteId(cliente.getId()); // Usa el UUID del cliente
-        pedido.setProductoId(producto.getId());
-        pedido.setCoste(producto.getPrecio());
-        if (entregaEnLocal) {
-            direccionEntrega = floricultor.getDireccion();
-        } else if (direccionEntrega == null || direccionEntrega.isEmpty()) {
-            redirectAttributes.addFlashAttribute("errorMessage", "La dirección de entrega no puede estar vacía");
-            return "redirect:/pedido/new"; // Redirige al formulario si la dirección está vacía
-        }
 
-        pedido.setDireccionentrega(direccionEntrega);
         if (entregaUrgente) {
             pedido.setFechaEntrega(LocalDate.now().plusDays(1)); // Entrega urgente para el día siguiente
         }else if (fechaEntrega != null){
             pedido.setFechaEntrega(fechaEntrega);
         }
         
-        pedido.setUrlTracking("https://example.com/tracking");
-        pedido.setEstado(Pedido.Estados.SOLICITADO);
-        pedido.setValoracion(null);
 
+        // Verificar si hay flores en el carrito
+        if (cart.getFlores() != null && !cart.getFlores().isEmpty() && cart.getProducto() == null) {
+            // Crear ProductoPersonalizado
+            ProductoPersonalizado productoPersonalizado = new ProductoPersonalizado();
+            productoPersonalizado.setFloricultorId(cart.getFlores().get(0).getFloricultorId());
+            Optional<Floricultor> floricultor = floricultorRepository.findById(productoPersonalizado.getFloricultorId());
+            productoPersonalizado.setCosteTotal(cart.getPrecioTotal());
+            productoPersonalizadoRepository.save(productoPersonalizado);
+            
+            if (entregaEnLocal) {
+            direccionEntrega = floricultor.get().getDireccion();
+            } else if (direccionEntrega == null || direccionEntrega.isEmpty()) {
+                redirectAttributes.addFlashAttribute("errorMessage", "La dirección de entrega no puede estar vacía");
+                return "redirect:/pedido/new"; // Redirige al formulario si la dirección está vacía
+            }
+
+            // Establecer relación entre ProductoPersonalizado y Pedido
+            pedido.setProductoId(productoPersonalizado.getId());
+            pedido.setCoste(cart.getPrecioTotal());
+
+            // Crear relaciones FloresEnPersonalizado
+            cart.getFlores().stream()
+                .collect(Collectors.groupingBy(Flor::getId, Collectors.counting()))
+                .forEach((florId, cantidad) -> {
+                    FloresEnPersonalizado relacion = new FloresEnPersonalizado();
+                    relacion.setFlorId(florId);
+                    relacion.setProductoPersonalizadoId(productoPersonalizado.getId());
+                    relacion.setCantidad(cantidad.intValue());
+                    relacionRepository.save(relacion);
+                });
+
+        } else if (cart.getProducto() != null) {
+            // Si hay un producto en el carrito, usar sus datos
+            Producto producto = cart.getProducto();
+            Optional<Floricultor> floricultor = floricultorRepository.findById(producto.getFloricultorId());
+            pedido.setCoste(producto.getPrecio());
+            pedido.setProductoId(producto.getId());
+            
+            if (entregaEnLocal) {
+            direccionEntrega = floricultor.get().getDireccion();
+            } else if (direccionEntrega == null || direccionEntrega.isEmpty()) {
+                redirectAttributes.addFlashAttribute("errorMessage", "La dirección de entrega no puede estar vacía");
+                return "redirect:/pedido/new"; // Redirige al formulario si la dirección está vacía
+            }
+        } else {
+            // Si no hay nada en el carrito, redirigir con un mensaje de error
+            redirectAttributes.addFlashAttribute("error", "No hay productos ni flores en el carrito.");
+            return "redirect:/cart";
+        }
+
+        
+
+        pedido.setDireccionentrega(direccionEntrega);
+
+        // Guardar el pedido
         pedidoRepository.save(pedido);
-        cartService.clearCart(session); // Limpia la cesta después de crear el pedido
 
+        // Limpiar el carrito después de crear el pedido
+        cartService.clearCart(session);
+
+        // Agregar un mensaje de éxito
         redirectAttributes.addFlashAttribute("successMessage", "Tu pedido se ha realizado correctamente");
         return "redirect:/"; // Redirige a la página principal
     }

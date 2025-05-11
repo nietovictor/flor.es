@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Agregar flor</title>
+    <link rel="stylesheet" href="../css/style.css" />
+</head>
+
+<body>
+    <header>
+        <h1>Agregar una nueva flor</h1>
+    </header>
+    <main>
+        <!-- Mostrar mensaje de error si existe -->
+        <div th:if="${error}" class="error-message">
+            <p th:text="${error}"></p>
+        </div>
+
+        <form th:action="@{/flor/add}" th:object="${flor}" method="post" class="product-form" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" th:field="*{nombre}" required />
+            </div>
+
+            <div class="form-group">
+                <label for="descripcion" class="textarea-label">Descripción:</label>
+                <textarea id="descripcion" name="descripcion" th:field="*{descripcion}"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="precio">Precio:</label>
+                <input type="number" id="precio" name="precio" th:field="*{precio}" step="0.01" required />
+            </div>
+
+            <div class="form-group">
+                <label for="stock">Stock:</label>
+                <input type="number" id="stock" name="stock" th:field="*{stock}" required />
+            </div>
+
+
+            <div class="form-group">
+                <label for="imagenArchivo">Imagen de la flor:</label>
+                <input type="file" id="imagenArchivo" name="imagenArchivo" accept="image/*" />
+            </div>
+
+            <br/>
+            <div class="form-group">
+                <button type="submit" class="submit-button">Guardar Producto</button>
+            </div>
+        </form>
+        <button onclick="location.href='/'" type="button">Home</button>
+    </main>
+</body>
+
+</html>
