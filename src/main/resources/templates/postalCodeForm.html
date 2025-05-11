@@ -1,23 +1,70 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Búsqueda por código postal</title>
-    <link rel="stylesheet" href="../css/style.css" />
+  <meta charset="UTF-8">
+  <title>Flor.es - Buscar Floricultores</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #d4f4d1;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .search-section {
+      max-width: 600px;
+      background-color: #ffffff;
+      margin: 3rem auto;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-title {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #2e7d32;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn-custom {
+      background-color: #4caf50;
+      color: white;
+      border: none;
+    }
+
+    .btn-custom:hover {
+      background-color: #388e3c;
+    }
+
+    .error-text {
+      color: red;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
-    <header th:replace="layout :: header"></header>
-    <h1>Buscar floricultores en tu zona</h1>
-    
-    <div th:if="${error}">
-        <p style="color:red;" th:text="${error}"></p>
-    </div>
+  <header th:replace="layout :: header"></header>
 
-    <form th:action="@{/catalog/search}" method="post">
-        <label for="postalCode">Código Postal:</label>
-        <input type="text" id="cp" name="cp" required maxlength="5"/>
-        <button type="submit">Buscar</button>
-    </form>
-    <button onclick="location.href='/'" type="button" style="width:100px;">Home</button>
+  <div class="container">
+    <div class="search-section">
+      <h1 class="search-title">Buscar floricultores en tu zona</h1>
+
+      <div th:if="${error}" class="error-text">
+        <p th:text="${error}"></p>
+      </div>
+
+      <form th:action="@{/catalog/search}" method="post">
+        <div class="mb-3">
+          <label for="cp" class="form-label">Código Postal</label>
+          <input type="text" id="cp" name="cp" class="form-control" required maxlength="5" placeholder="Ej. 28001" />
+        </div>
+        <div class="d-grid gap-2">
+          <button type="submit" class="btn btn-custom">Buscar</button>
+          <button type="button" class="btn btn-secondary" onclick="location.href='/'">Volver al inicio</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </body>
 </html>

@@ -1,110 +1,98 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Mis Pedidos</title>
-    <link rel="stylesheet" href="../css/style.css" />
+  <meta charset="UTF-8">
+  <title>Mis Pedidos</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <style>
+    body {
+      background-color: #d4f4d1;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .pedido-card {
+      background-color: #ffffff;
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .pedido-id {
+      color: #2e7d32;
+      font-weight: bold;
+    }
+    .star-rating label,
+    .star-rating-rate label {
+      color: #ccc;
+      font-size: 22px;
+      cursor: pointer;
+    }
+    .star-rating label.checked {
+      color: #ffc107;
+    }
+    .star-rating-rate label:hover,
+    .star-rating-rate label:hover ~ label,
+    .star-rating-rate input:checked ~ label {
+      color: #ffc107;
+    }
+  </style>
 </head>
 <body>
-    <header th:replace="layout :: header">
-        <h1>Mis Pedidos</h1>
-    </header>
-    <main>
-        <div th:if="${#lists.isEmpty(pedidos)}">
-            <p>No tienes pedidos realizados.</p>
-        </div>
-        <div th:each="pedido : ${pedidos}">
-            <h3 th:text="'Pedido ID: ' + ${pedido.id}"></h3>
-            <p><strong>Producto ID:</strong> <span th:text="${pedido.productoId}"></span></p>
-            <p><strong>Coste:</strong> <span th:text="${pedido.coste}"></span> €</p>
-            <p><strong>Dirección de Entrega:</strong> <span th:text="${pedido.direccionentrega}"></span></p>
-            <p><strong>Estado:</strong> <span th:text="${pedido.estado}"></span></p>
-            <p><strong>Fecha:</strong> <span th:text="${pedido.fecha}"></span></p>
-            <p>
-                <!-- Mostrar las estrellas si la valoración no es null -->
-                <div th:if="${pedido.valoracion != null and pedido.estado.toString() == 'RECOGIDO'}">
-                    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-                    <strong>Valoración:</strong>
-                    <div class="star-rating" id ="star-rating-values">
-                        <label class="bi bi-star-fill" th:classappend="${pedido.valoracion >= 5 ? 'checked' : ''}"></label>
-                        <label class="bi bi-star-fill" th:classappend="${pedido.valoracion >= 4 ? 'checked' : ''}"></label>
-                        <label class="bi bi-star-fill" th:classappend="${pedido.valoracion >= 3 ? 'checked' : ''}"></label>
-                        <label class="bi bi-star-fill" th:classappend="${pedido.valoracion >= 2 ? 'checked' : ''}"></label>
-                        <label class="bi bi-star-fill" th:classappend="${pedido.valoracion >= 1 ? 'checked' : ''}"></label>
-                    </div>
-                </div>
 
-                <!-- Mostrar el formulario si la valoración es null -->
-                <div th:if="${pedido.valoracion == null and pedido.estado.toString() == 'RECOGIDO'}">
-                    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-                    <form th:action="@{'/pedido/valorar/' + ${pedido.id}}" method="post">
-                        <div class="star-rating-rate">
-                            <input type="radio" id="star5" name="valoracion" value="5" required>
-                            <label for="star5" class="bi bi-star-fill"></label>
-                            <input type="radio" id="star4" name="valoracion" value="4">
-                            <label for="star4" class="bi bi-star-fill"></label>
-                            <input type="radio" id="star3" name="valoracion" value="3">
-                            <label for="star3" class="bi bi-star-fill"></label>
-                            <input type="radio" id="star2" name="valoracion" value="2">
-                            <label for="star2" class="bi bi-star-fill"></label>
-                            <input type="radio" id="star1" name="valoracion" value="1">
-                            <label for="star1" class="bi bi-star-fill"></label>
-                        </div>
-                        <button type="submit">Valorar</button>
-                    </form>
-                </div>
-            </p>
-            <hr/>
-        </div>
-        <button onclick="location.href='/'" type="button">Volver al Inicio</button>
-    </main>
+<header th:replace="layout :: header"></header>
 
-    <style>
-        .star-rating {
-            direction: rtl;
-            display: inline-block;
-            cursor: pointer;
-        }
-        .star-rating input {
-            display: none;
-        }
-        .star-rating label {
-            color: #ddd;
-            font-size: 24px;
-            padding: 0 2px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .star-rating label.checked {
-            color: #ffc107; /* Color de las estrellas seleccionadas */
-        }
+<main class="container py-4">
+  <h2 class="mb-4">Mis Pedidos</h2>
 
-        .star-rating-rate {
-            direction: rtl;
-            display: inline-block;
-            cursor: pointer;
-        }
-        .star-rating-rate input {
-            display: none;
-        }
-        .star-rating-rate label {
-            color: #ddd;
-            font-size: 24px;
-            padding: 0 2px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        /* Cambiar el color de las estrellas al hacer hover */
-        .star-rating-rate label:hover,
-        .star-rating-rate label:hover ~ label {
-            color: #ffc107; /* Color de las estrellas al pasar el ratón */
-        }
-        /* Cambiar el color de las estrellas seleccionadas al hacer clic */
-        .star-rating-rate input:checked ~ label {
-            color: #ffc107;
-        }
+  <div th:if="${#lists.isEmpty(pedidos)}">
+    <p class="text-muted">No tienes pedidos realizados.</p>
+  </div>
 
-    </style>
+  <div th:each="pedido : ${pedidos}" class="pedido-card">
+    <h5 class="pedido-id" th:text="'Pedido ID: ' + ${pedido.id}"></h5>
+    <p><strong>Producto ID:</strong> <span th:text="${pedido.productoId}"></span></p>
+    <p><strong>Coste:</strong> <span th:text="${pedido.coste}"></span> €</p>
+    <p><strong>Dirección de Entrega:</strong> <span th:text="${pedido.direccionentrega}"></span></p>
+    <p><strong>Estado:</strong> <span th:text="${pedido.estado}"></span></p>
+    <p><strong>Fecha:</strong> <span th:text="${pedido.fecha}"></span></p>
+
+    <!-- Mostrar estrellas si hay valoración -->
+    <div th:if="${pedido.valoracion != null and pedido.estado.toString() == 'RECOGIDO'}">
+      <strong>Valoración:</strong>
+      <div class="star-rating">
+        <label class="bi bi-star-fill" th:classappend="${pedido.valoracion >= 1 ? 'checked' : ''}"></label>
+        <label class="bi bi-star-fill" th:classappend="${pedido.valoracion >= 2 ? 'checked' : ''}"></label>
+        <label class="bi bi-star-fill" th:classappend="${pedido.valoracion >= 3 ? 'checked' : ''}"></label>
+        <label class="bi bi-star-fill" th:classappend="${pedido.valoracion >= 4 ? 'checked' : ''}"></label>
+        <label class="bi bi-star-fill" th:classappend="${pedido.valoracion >= 5 ? 'checked' : ''}"></label>
+      </div>
+    </div>
+
+    <!-- Mostrar formulario de valoración si no hay -->
+    <div th:if="${pedido.valoracion == null and pedido.estado.toString() == 'RECOGIDO'}">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+        <form th:action="@{'/pedido/valorar/' + ${pedido.id}}" method="post">
+            <div class="star-rating-rate">
+                <input type="radio" id="star1" name="valoracion" value="1" required>
+                <label for="star1" class="bi bi-star-fill"></label>
+                <input type="radio" id="star2" name="valoracion" value="2">
+                <label for="star2" class="bi bi-star-fill"></label>
+                <input type="radio" id="star3" name="valoracion" value="3">
+                <label for="star3" class="bi bi-star-fill"></label>
+                <input type="radio" id="star4" name="valoracion" value="4">
+                <label for="star4" class="bi bi-star-fill"></label>
+                <input type="radio" id="star5" name="valoracion" value="5">
+                <label for="star5" class="bi bi-star-fill"></label>
+            </div>
+            <button type="submit">Valorar</button>
+        </form>
+    </div>
+  </div>
+
+  <div class="text-center mt-4">
+    <button onclick="location.href='/'" class="btn btn-outline-success">Volver al Inicio</button>
+  </div>
+</main>
 
 </body>
 </html>
