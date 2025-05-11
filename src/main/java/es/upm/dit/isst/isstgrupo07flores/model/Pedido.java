@@ -7,6 +7,7 @@ import java.time.LocalDate;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import io.micrometer.common.lang.Nullable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -49,6 +50,7 @@ public class Pedido {
 
     @Enumerated(EnumType.ORDINAL) // Guardar como TINYINT (ordinal del enum)
     private Estados estado = Estados.SOLICITADO; // Default state
+    
 
     private LocalDate fechaEntrega;
 

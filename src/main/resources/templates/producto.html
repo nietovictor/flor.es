@@ -7,6 +7,14 @@
 </head>
 <body>
 
+    <!-- Notificaciones -->
+<div th:if="${successMessage}" class="notification success">
+    <p th:text="${successMessage}"></p>
+</div>
+<div th:if="${errorMessage}" class="notification error">
+    <p th:text="${errorMessage}"></p>
+</div>
+
 <div class="product-container">
     <h2 th:text="${producto.nombre}">Nombre del Producto</h2>
     <img th:src="@{/producto/image/{id}(id=${producto.id})}" class="product-img" alt="Imagen del producto" style="max-width: 300px; height: auto;" />
@@ -14,14 +22,51 @@
     <p><strong>Precio:</strong> <span th:text="${producto.precio}"></span> €</p>
     <p><strong>Stock disponible:</strong> <span th:text="${producto.stock}"></span></p>
 
-    <form th:action="@{/cart/add/{productId}(productId=${producto.id})}" method="post">
+    <form th:action="@{/cart/addProduct/{productId}(productId=${producto.id})}" method="post">
         <button type="submit" class="btn">Añadir a la cesta</button>
     </form>
     <!-- <button onclick="location.href='/cart/view'" type="button">Ver Cesta</button> -->
-    <button onclick="location.href='/catalog/search'" type="button">Volver a buscar</button>
+    <button onclick="history.back()" type="button">Volver</button>
     <!-- <button onclick="location.href='/'" type="button">Home</button> -->
 
 </div>
 
 </body>
+
+<style>
+    .star-rating {
+        direction: rtl;
+        display: inline-block;
+        cursor: pointer;
+    }
+    .star-rating input {
+        display: none;
+    }
+    .star-rating label {
+        color: #ddd;
+        font-size: 24px;
+        padding: 0 2px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    .star-rating label.checked {
+        color: #ffc107; /* Color de las estrellas seleccionadas */
+    }
+    .notification {
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+    .notification.success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+    .notification.error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+</style>
 </html>

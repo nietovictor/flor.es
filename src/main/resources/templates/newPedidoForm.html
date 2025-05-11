@@ -29,18 +29,29 @@
                 <label for="entregaEnFecha">Programar entrega en fecha específica:</label>
                 <input type="checkbox" id="entregaEnFecha" name="entregaEnFecha" onclick="toggleFechaEntrega()" />
                 <input type="date" id="fechaEntrega" name="fechaEntrega" disabled style="display: none;"/>
+                <label for="entregaUrgente" id="lableUrgente" style="display: none;">Entrega urgente</label>
+                <input type="checkbox" id="entregaUrgente" name="entregaUrgente" style="display: none;"/>
+                <input type="hidden" id="entregaUrgenteHidden" name="entregaUrgente" disabled value="false" />
             </div>
             <script>
                 const hoy = new Date().toISOString().split('T')[0];
                 document.getElementById("fechaEntrega").setAttribute('min', hoy);
-
                 function toggleFechaEntrega() {
                     const fechaEntrega = document.getElementById('fechaEntrega');
+                    const entregaUrgente = document.getElementById('entregaUrgente');
+                    const hiddenField = document.getElementById('entregaUrgenteHidden');
+                    const labelUrgente = document.getElementById('lableUrgente');
+                    hiddenField.disabled = !hiddenField.disabled;
                     fechaEntrega.disabled = !fechaEntrega.disabled;
+
                     if (document.getElementById('entregaEnFecha').checked) {
                         fechaEntrega.style.display = 'inline'; // Muestra el campo
+                        entregaUrgente.style.display = 'inline'; // Muestra el campo
+                        labelUrgente.style.display = 'inline'; // Muestra la etiqueta
                     } else {
                         fechaEntrega.style.display = 'none'; // Oculta el campo
+                        entregaUrgente.style.display = 'none'; // Oculta el campo
+                        labelUrgente.style.display = 'none'; // Oculta la etiqueta
                     }
                 }
             </script>

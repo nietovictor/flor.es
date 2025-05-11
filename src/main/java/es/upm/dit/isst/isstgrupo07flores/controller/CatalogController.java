@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import es.upm.dit.isst.isstgrupo07flores.model.Flor;
 import es.upm.dit.isst.isstgrupo07flores.model.Floricultor;
 import es.upm.dit.isst.isstgrupo07flores.model.Producto;
+import es.upm.dit.isst.isstgrupo07flores.repository.FlorRepository;
 import es.upm.dit.isst.isstgrupo07flores.repository.FloricultorRepository;
 import es.upm.dit.isst.isstgrupo07flores.repository.PedidoRepository;
 import es.upm.dit.isst.isstgrupo07flores.service.CatalogService;
@@ -33,6 +35,9 @@ public class CatalogController {
     private final ProductoService productoService;
     private final PedidoRepository pedidoRepository;
 
+    @Autowired
+    private FlorRepository florRepository;
+
     public CatalogController(CatalogService catalogService, ProductoService productoService, PedidoRepository pedidoRepository) {
         this.catalogService = catalogService;
         this.productoService = productoService;
@@ -41,33 +46,44 @@ public class CatalogController {
 
     // Página inicial para introducir código postal
     @GetMapping("/catalog/search")
-    public String postalCodeForm(){
-        return "postalCodeForm";
-    }
+    public String searchByPostalCode(@RequestParam(value = "cp", required = false) String postalCode, Model model) {
+        if (postalCode == null || postalCode.isEmpty()) {
+            return "postalCodeForm"; // Si no se proporciona un código postal, m uestra el formulario
+        }
 
-    // Procesar búsqueda de floricultores por CP
-    @PostMapping("/catalog/search")
-    public String searchByPostalCode(@RequestParam("cp") String postalCode, Model model) {
         try {
-            List<Floricultor> floricultores = catalogService.getFloricultoresByPostalCode(postalCode);
+            // Obtener floricultores por código postal
+            List<Floricultor> floricultores_check = catalogService.getFloricultoresByPostalCode(postalCode);
 
             Map<UUID, List<Producto>> productosPorFloricultor = new HashMap<>();
+            Map<UUID, List<Flor>> floresPorFloricultor = new HashMap<>();
             Map<UUID, Long> valoracionesPorFloricultor = new HashMap<>();
 
-            for (Floricultor f : floricultores) {
+            List<Floricultor> floricultores = new ArrayList<>();
+
+            for (Floricultor f : floricultores_check) {
                 // Obtener productos del floricultor
                 List<Producto> productos = productoService.getProductosByFloricultor(f.getId());
-                productosPorFloricultor.put(f.getId(), productos != null ? productos : new ArrayList<>());
 
-                // Contar pedidos valorados del floricultor
-                long valoraciones = pedidoRepository.findByFloricultorId(f.getId()).stream()
-                    .filter(p -> p.getValoracion() != null)
-                    .count();
-                valoracionesPorFloricultor.put(f.getId(), valoraciones);
+                // Obtener flores del floricultor
+                List<Flor> flores = florRepository.findByFloricultorId(f.getId());
+
+                if (!productos.isEmpty() || !flores.isEmpty()) {
+                    productosPorFloricultor.put(f.getId(), productos != null ? productos : new ArrayList<>());
+                    floresPorFloricultor.put(f.getId(), flores != null ? flores : new ArrayList<>());
+                    floricultores.add(f);
+                    // Contar pedidos valorados del floricultor
+                    long valoraciones = pedidoRepository.findByFloricultorId(f.getId()).stream()
+                        .filter(p -> p.getValoracion() != null)
+                        .count();
+                    valoracionesPorFloricultor.put(f.getId(), valoraciones);
+                }
             }
 
+            // Agregar datos al modelo
             model.addAttribute("floricultores", floricultores);
             model.addAttribute("productosPorFloricultor", productosPorFloricultor);
+            model.addAttribute("floresPorFloricultor", floresPorFloricultor);
             model.addAttribute("valoracionesPorFloricultor", valoracionesPorFloricultor);
             model.addAttribute("postalCode", postalCode);
 
@@ -89,18 +105,20 @@ public class CatalogController {
             if (floricultor.isEmpty()) {
                 throw new IllegalArgumentException("Floricultor no encontrado con el correo: " + email);
             }
+
             Floricultor floricultorObj = floricultor.get();
+
             List<Producto> productos = productoService.getProductosByFloricultor(floricultorObj.getId());
             if (productos == null || productos.isEmpty()) {
                 productos = new ArrayList<>(); // lista vacía en vez de null
             }
-            for (Producto p : productos) {
-                System.out.println("Producto ID: " + p.getId());
-                System.out.println("Nombre: " + p.getNombre());
-                System.out.println("Descripción: " + p.getDescripcion());
-                System.out.println("Precio: " + p.getPrecio());
-                System.out.println("Stock: " + p.getStock());
+
+             // Obtener flores del floricultor
+            List<Flor> flores = florRepository.findByFloricultorId(floricultorObj.getId());
+            if (flores == null || flores.isEmpty()) {
+                flores = new ArrayList<>(); // Lista vacía en lugar de null
             }
+
 
             long valoracionesPorFloricultor = pedidoRepository.findByFloricultorId(floricultorObj.getId()).stream()
                     .filter(p -> p.getValoracion() != null)
@@ -108,6 +126,7 @@ public class CatalogController {
 
         model.addAttribute("floricultor", floricultorObj);
         model.addAttribute("productos", productos);
+        model.addAttribute("flores", flores);
         model.addAttribute("valoracionesPorFloricultor", valoracionesPorFloricultor);
 
         return "myCatalog";
@@ -134,6 +153,7 @@ public class CatalogController {
             List<Floricultor> floricultores_check = catalogService.getFloricultoresByPostalCode(postalCode);
 
             Map<UUID, List<Producto>> productosPorFloricultor = new HashMap<>();
+            Map<UUID, List<Flor>> floresPorFloricultor = new HashMap<>();
             Map<UUID, Long> valoracionesPorFloricultor = new HashMap<>();
 
             List<Floricultor> floricultores = new ArrayList<>();
@@ -153,9 +173,30 @@ public class CatalogController {
                     })
                     .collect(Collectors.toList());
 
+                List<Flor> flores = florRepository.findByFloricultorId(f.getId()).stream()
+                    .filter(flor -> (priceMin == null || flor.getPrecio().compareTo(priceMin) >= 0))
+                    .filter(flor -> (priceMax == null || flor.getPrecio().compareTo(priceMax) <= 0))
+                    .filter(flor -> {
+                        if ("in_stock".equalsIgnoreCase(availability)) {
+                            return flor.getStock() > 1;
+                        }
+                        return true;
+                    })
+                    .collect(Collectors.toList());
 
-                if (!productos.isEmpty()) {
-                    productosPorFloricultor.put(f.getId(), productos);
+
+                //if (!productos.isEmpty()) {
+                //    productosPorFloricultor.put(f.getId(), productos);
+                //    floricultores.add(f);
+                //    // Contar pedidos valorados del floricultor
+                //    long valoraciones = pedidoRepository.findByFloricultorId(f.getId()).stream()
+                //        .filter(p -> p.getValoracion() != null)
+                //        .count();
+                //    valoracionesPorFloricultor.put(f.getId(), valoraciones);
+                //}
+                if (!productos.isEmpty() || !flores.isEmpty()) {
+                    productosPorFloricultor.put(f.getId(), productos != null ? productos : new ArrayList<>());
+                    floresPorFloricultor.put(f.getId(), flores != null ? flores : new ArrayList<>());
                     floricultores.add(f);
                     // Contar pedidos valorados del floricultor
                     long valoraciones = pedidoRepository.findByFloricultorId(f.getId()).stream()
@@ -169,6 +210,7 @@ public class CatalogController {
 
             model.addAttribute("floricultores", floricultores);
             model.addAttribute("productosPorFloricultor", productosPorFloricultor);
+            model.addAttribute("floresPorFloricultor", floresPorFloricultor);
             model.addAttribute("valoracionesPorFloricultor", valoracionesPorFloricultor);
             model.addAttribute("postalCode", postalCode);
 

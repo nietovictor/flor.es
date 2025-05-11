@@ -75,7 +75,8 @@
             <form th:if="${rol.contains('FLORICULTOR')}" th:action="@{/mycatalog}" method="post" style="display: inline;">
             <button type="submit">Mi catálogo</button>
             </form>
-            <button onclick="location.href='/producto/add'" th:if="${rol.contains('FLORICULTOR')}" type="button" style="display: inline;">Agregar productos</button>
+            <button onclick="location.href='/producto/add'" th:if="${rol.contains('FLORICULTOR')}" type="button" style="display: inline;">Agregar producto</button>
+            <button onclick="location.href='/flor/add'" th:if="${rol.contains('FLORICULTOR')}" type="button" style="display: inline;">Agregar flor</button>
         </div>
         
     </main>

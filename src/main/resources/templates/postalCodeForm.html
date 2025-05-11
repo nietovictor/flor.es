@@ -12,9 +12,9 @@
         <p style="color:red;" th:text="${error}"></p>
     </div>
 
-    <form th:action="@{/catalog/search}" method="post">
-        <label for="postalCode">Código Postal:</label>
-        <input type="text" id="cp" name="cp" required maxlength="5"/>
+    <form th:action="@{/catalog/search}" method="get">
+        <label for="cp">Introduce tu código postal:</label>
+        <input type="text" id="cp" name="cp" required>
         <button type="submit">Buscar</button>
     </form>
     <button onclick="location.href='/'" type="button" style="width:100px;">Home</button>
