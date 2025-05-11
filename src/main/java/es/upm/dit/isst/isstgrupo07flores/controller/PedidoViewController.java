@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.HashSet;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,13 @@ import es.upm.dit.isst.isstgrupo07flores.repository.ProductoRepository;
 import es.upm.dit.isst.isstgrupo07flores.service.CartService;
 import es.upm.dit.isst.isstgrupo07flores.model.Cart; // Import the Cart class
 import es.upm.dit.isst.isstgrupo07flores.model.Flor; // Import the Flor class
+import es.upm.dit.isst.isstgrupo07flores.model.ProductoPersonalizado; // Import the ProductoPersonalizado class
 import jakarta.servlet.http.HttpSession;
 import java.math.BigDecimal;
+import es.upm.dit.isst.isstgrupo07flores.model.FloresEnPersonalizado;
+import es.upm.dit.isst.isstgrupo07flores.repository.ProductoPersonalizadoRepository; // Ensure this repository is correctly defined for ProductoPersonalizado
+import es.upm.dit.isst.isstgrupo07flores.service.FlorService; // Import FlorService
+import es.upm.dit.isst.isstgrupo07flores.repository.FloresEnPersonalizadoRepository; // Import FloresEnPersonalizadoRepository
 
 
 
@@ -50,6 +56,12 @@ public class PedidoViewController {
     @Autowired
     private ProductoRepository productoRepository;
 
+    @Autowired
+    private FloresEnPersonalizadoRepository relacionRepository; // Inject FloresEnPersonalizadoRepository
+
+    @Autowired
+    private ProductoPersonalizadoRepository productoPersonalizadoRepository; // Inject ProductoPersonalizadoRepository
+
     @GetMapping("/new")
     public String mostrarFormularioNuevoPedido() {
         return "newPedidoForm"; 
@@ -67,9 +79,9 @@ public class PedidoViewController {
             throw new IllegalArgumentException("Cliente no encontrado con el correo: " + email);
         }
 
-        Cliente cliente = clienteOpt.get();
-
+        // Crear Pedido
         Pedido pedido = new Pedido();
+        Cliente cliente = clienteOpt.get();
         pedido.setClienteId(cliente.getId()); // Usa el UUID del cliente
         pedido.setDireccionentrega(direccionEntrega);
         pedido.setUrlTracking("https://example.com/tracking");
@@ -78,34 +90,26 @@ public class PedidoViewController {
 
         // Verificar si hay flores en el carrito
         if (cart.getFlores() != null && !cart.getFlores().isEmpty() && cart.getProducto() == null) {
-            // Crear un pedido con nombre "Producto personalizado"
-            pedido.setProductoId(UUID.fromString("00000000-0000-0000-0000-000000000000"));
-            // Calcular el precio como la suma de los precios de las flores
+            // Crear ProductoPersonalizado
+            ProductoPersonalizado productoPersonalizado = new ProductoPersonalizado();
+            productoPersonalizado.setFloricultorId(cart.getFlores().get(0).getFloricultorId());
+            productoPersonalizado.setCosteTotal(cart.getPrecioTotal());
+            productoPersonalizadoRepository.save(productoPersonalizado);
+
+            // Establecer relación entre ProductoPersonalizado y Pedido
+            pedido.setProductoId(productoPersonalizado.getId());
             pedido.setCoste(cart.getPrecioTotal());
 
-            // Crear una cadena con la información de las flores únicas y sus cantidades
-            StringBuilder informacionPedido = new StringBuilder();
+            // Crear relaciones FloresEnPersonalizado
             cart.getFlores().stream()
-                .collect(Collectors.groupingBy(Flor::getNombre, Collectors.counting())) // Agrupar por nombre y contar
-                .forEach((nombre, cantidad) -> {
-                    informacionPedido.append(nombre)
-                                     .append(" (x")
-                                     .append(cantidad)
-                                     .append("), ");
+                .collect(Collectors.groupingBy(Flor::getId, Collectors.counting()))
+                .forEach((florId, cantidad) -> {
+                    FloresEnPersonalizado relacion = new FloresEnPersonalizado();
+                    relacion.setFlorId(florId);
+                    relacion.setProductoPersonalizadoId(productoPersonalizado.getId());
+                    relacion.setCantidad(cantidad.intValue());
+                    relacionRepository.save(relacion);
                 });
-            
-            // Eliminar la última coma y espacio si hay flores en el carrito
-            if (informacionPedido.length() > 0) {
-                informacionPedido.setLength(informacionPedido.length() - 2);
-            }
-
-            // Eliminar la última coma y espacio si hay flores en el carrito
-            /* if (informacionPedido.length() > 0) {
-                informacionPedido.setLength(informacionPedido.length() - 2);
-            } */
-
-            // Establecer la información del pedido
-            pedido.setInformacionPedido(informacionPedido.toString());
 
         } else if (cart.getProducto() != null) {
             // Si hay un producto en el carrito, usar sus datos

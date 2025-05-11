@@ -1,6 +1,7 @@
 package es.upm.dit.isst.isstgrupo07flores.model;
 
 import java.util.UUID;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,6 +12,8 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.persistence.Lob;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Flor {
@@ -37,6 +40,9 @@ public class Flor {
 
     @Lob
     private byte[] imagen; // URL o ruta de la imagen
+
+    @OneToMany(mappedBy = "florId", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FloresEnPersonalizado> floresEnPersonalizados;
 
     // Constructor vacío
     public Flor() {}
@@ -105,6 +111,14 @@ public class Flor {
 
     public void setImagen(byte[] imagen) {
         this.imagen = imagen;
+    }
+
+    public List<FloresEnPersonalizado> getFloresEnPersonalizados() {
+        return floresEnPersonalizados;
+    }
+
+    public void setFloresEnPersonalizados(List<FloresEnPersonalizado> floresEnPersonalizados) {
+        this.floresEnPersonalizados = floresEnPersonalizados;
     }
  
     
