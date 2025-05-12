@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${pageTitle}">Flor.es</title>
+    <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+    <header th:fragment="header" style="background-color: #3d760d; padding: 20px; display: flex; justify-content: space-between; align-items: center;">
+        <img th:src="@{/img/flor.es_logo.png}" alt="Flor.es Logo" style="height: 70px; cursor: pointer;" onclick="location.href='/'" />
+        <nav>
+            <button onclick="location.href='/catalog/search'" th:if="${(rol != null and rol.contains('CLIENTE')) or #authentication.name == 'anonymousUser'}" type="button" style="background-color: #d0eac4; color: #3d760d; border: none; padding: 10px 20px; margin: 5px; cursor: pointer; border-radius: 5px;">Buscar</button>
+            <button onclick="location.href='/cart/view'" th:if="${rol != null and rol.contains('CLIENTE')}" type="button" style="background-color: #d0eac4; color: #3d760d; border: none; padding: 10px 20px; margin: 5px; cursor: pointer; border-radius: 5px;">
+                <i class="bi bi-cart"></i> Carro
+            </button>
+            <button onclick="location.href='/login'" th:if="${#authentication.name == 'anonymousUser'}" type="button" style="background-color: #d0eac4; color: #3d760d; border: none; padding: 10px 20px; margin: 5px; cursor: pointer; border-radius: 5px;">Iniciar Sesión</button>
+            <form th:action="@{/logout}" method="post" th:if="${#authentication.name != 'anonymousUser'}" style="display: inline;">
+                <button type="submit" style="background-color: #d0eac4; color: #3d760d; border: none; padding: 10px 20px; margin: 5px; cursor: pointer; border-radius: 5px;">Cerrar Sesión</button>
+            </form>
+        </nav>
+    </header>
+    <main>
+    </main>
+    <footer th:fragment="footer">
+        <p>&copy; 2025 Flor.es - Todos los derechos reservados</p>
+    </footer>
+</body>
+</html>

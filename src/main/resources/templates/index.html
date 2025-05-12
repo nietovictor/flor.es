@@ -2,8 +2,63 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Flor.es - Página de Inicio</title>
-    <link rel="stylesheet" href="../css/style.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        body {
+            background-color: #d4f4d1;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .hero-section {
+            text-align: center;
+            padding: 4rem 1rem;
+            background: linear-gradient(145deg, #b8e6b4, #d4f4d1);
+            border-radius: 15px;
+            margin-bottom: 3rem;
+        }
+        .hero-section h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+        .hero-section p {
+            font-size: 1.2rem;
+            color: #2f4f2f;
+            margin-top: 1rem;
+        }
+        .btn-hero {
+            margin-top: 2rem;
+            font-size: 1rem;
+            padding: 0.7rem 1.5rem;
+        }
+        .features-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        .feature-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            max-width: 300px;
+            text-align: center;
+        }
+        .feature-card img {
+            height: 120px;
+            margin-bottom: 1rem;
+        }
+        .feature-card h5 {
+            color: #2e7d32;
+            margin-bottom: 0.5rem;
+        }
+        .footer {
+            text-align: center;
+            padding: 1rem;
+            font-size: 0.9rem;
+            color: #3d3d3d;
+        }
         @keyframes slideIn {
             from {
                 opacity: 0;
@@ -41,48 +96,54 @@
     </style>
 </head>
 <body>
-    <header>
+<header th:replace="layout :: header"></header>
+
+<main class="container">
+    <div th:if="${successMessage}" class="notification" id="notification">
+        <p th:text="${successMessage}"></p>
+        <button onclick="document.getElementById('notification').style.display='none'">&times;</button>
+    </div>
+    <div class="hero-section">
         <h1>Bienvenido a Flor.es</h1>
-        <nav>
-            <div th:if="${#authentication.name == 'anonymousUser'}">
-                <button onclick="location.href='/login'" type="button">Iniciar sesión</button>
-            </div>
-            <div th:if="${#authentication.name != 'anonymousUser'}">
-                <p th:if="${rol.contains('CLIENTE')}">Hola, cliente</p>
-                <p th:if="${rol.contains('FLORICULTOR')}">Hola, floricultor</p>
-                <div th:if="${successMessage}" class="notification" id="notification">
-                    <p th:text="${successMessage}"></p>
-                    <button onclick="document.getElementById('notification').style.display='none'">&times;</button>
-                </div>
-                <div style="display: inline-block;">
-                    <button onclick="location.href='/cart/view'" th:if="${rol.contains('CLIENTE')}" type="button">Ver Cesta</button>
-                    <form th:action="@{/logout}" method="post" style="display: inline;">
-                        <button type="submit">Cerrar sesión</button>
-                    </form>
-                    <button onclick="location.href='/pedido/cliente'" th:if="${rol.contains('CLIENTE')}" type="button">Mis pedidos</button>
-                    <button onclick="location.href='/pedido/floricultor'" th:if="${rol.contains('FLORICULTOR')}" type="button">Mis pedidos</button>
-                </div>
-            </div>
-        </nav>
-    </header>
-
-    <main>
-        <br/>
-        <h2>Plataforma de venta y distribución de flores a domicilio</h2>
-        <p>Explora nuestras flores y realiza tu pedido fácilmente.</p>
-        <button onclick="location.href='/catalog/search'" th:if="${rol.contains('CLIENTE') or #authentication.name == 'anonymousUser'}" type="button">Buscar en catálogo</button>
-        <div style="display: inline-block;"></div>
-            <form th:if="${rol.contains('FLORICULTOR')}" th:action="@{/mycatalog}" method="get" style="display: inline;">
-            <button type="submit">Mi catálogo</button>
-            </form>
-            <button onclick="location.href='/producto/add'" th:if="${rol.contains('FLORICULTOR')}" type="button" style="display: inline;">Agregar producto</button>
-            <button onclick="location.href='/flor/add'" th:if="${rol.contains('FLORICULTOR')}" type="button" style="display: inline;">Agregar flor</button>
+        <p>Tu plataforma para comprar flores frescas directamente de floricultores locales.</p>
+        <div th:if="${rol.contains('CLIENTE') or #authentication.name == 'anonymousUser'}">
+            <button onclick="location.href='/catalog/search'" class="btn btn-success btn-hero">Explorar Catálogo</button>
+            <button onclick="location.href='/pedido/cliente'" th:if="${rol.contains('CLIENTE')}" class="btn btn-success btn-hero">Mis pedidos</button>
         </div>
-        
-    </main>
+        <div th:if="${rol.contains('FLORICULTOR')}">
+            <form th:action="@{/mycatalog}" method="get" style="display:inline-block">
+                <button type="submit" class="btn btn-success btn-hero">Mi Catálogo</button>
+            </form>
+            <button onclick="location.href='/pedido/floricultor'" class="btn btn-success btn-hero">Mis pedidos</button>
+            <button onclick="location.href='/producto/add'" class="btn btn-success btn-hero">Agregar Productos</button>
+            <button onclick="location.href='/flor/add'" class="btn btn-success btn-hero">Agregar Flores</button>
+        </div>
+        <button onclick="location.href='/practicas_sostenibles'" class="btn btn-success btn-hero">Buenas prácticas</button>
 
-    <!-- <footer>
-        <p>&copy; 2025 Flor.es - Todos los derechos reservados</p>
-    </footer> -->
+    </div>
+
+    <div class="features-section">
+        <div class="feature-card">
+            <img src="/img/delivery-icon.png" alt="Entrega rápida">
+            <h5>Entrega Rápida</h5>
+            <p>Envío a domicilio en 24h en tu zona.</p>
+        </div>
+        <div class="feature-card">
+            <img src="/img/fresh-flowers.png" alt="Flores frescas">
+            <h5>Flores Frescas</h5>
+            <p>Cosechadas localmente el mismo día del envío.</p>
+        </div>
+        <div class="feature-card">
+            <img src="/img/sustainable.png" alt="Sostenibilidad">
+            <h5>Sostenibilidad</h5>
+            <p>Comprometidos con prácticas responsables.</p>
+        </div>
+    </div>
+</main>
+
+<footer class="footer bg-light mt-5">
+    <p>&copy; 2025 Flor.es - Todos los derechos reservados</p>
+</footer>
+
 </body>
 </html>

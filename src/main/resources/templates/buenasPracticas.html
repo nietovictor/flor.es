@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Flor.es - Prácticas Sostenibles</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #e6fbe2;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .title-section {
+      background-color: #3f7f1f;
+      color: #fff;
+      padding: 1.5rem;
+      border-radius: 12px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .green-bubble {
+      background-color: #3f7f1f;
+      color: #eafbe7;
+      padding: 1.5rem;
+      border-radius: 20px;
+      text-align: justify;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .section-img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 15px;
+      object-fit: cover;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+
+    .sustain-section {
+      margin-bottom: 3rem;
+    }
+
+    @media (max-width: 768px) {
+      .title-section {
+        font-size: 1.5rem;
+      }
+
+      .green-bubble {
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header th:replace="layout :: header"></header>
+
+  <div class="container py-4">
+    <div class="title-section">PRÁCTICAS SOSTENIBLES</div>
+
+    <div class="row sustain-section align-items-center">
+      <div class="col-md-5 text-center mb-3 mb-md-0">
+        <img th:src="@{/img/ecoflor1.png}" alt="Cultivo ecológico" class="section-img">
+      </div>
+      <div class="col-md-7">
+        <div class="green-bubble">
+          <strong>Cultivo ecológico y eficiente:</strong> Implementación de invernaderos sostenibles que aprovechen la luz natural y reduzcan el consumo energético. Uso de fertilizantes orgánicos y métodos naturales para el control de plagas. Aplicación de rotación de cultivos para mejorar la salud del suelo y reducir insumos químicos. Minimización del uso de productos sintéticos para evitar la contaminación del suelo y el agua.
+        </div>
+      </div>
+    </div>
+
+    <div class="row sustain-section align-items-center flex-md-row-reverse">
+      <div class="col-md-5 text-center mb-3 mb-md-0">
+        <img th:src="@{/img/ecoflor2.png}" alt="Optimización del agua" class="section-img">
+      </div>
+      <div class="col-md-7">
+        <div class="green-bubble">
+          <strong>Optimización del agua:</strong> Uso de sistemas de riego por goteo para maximizar la eficiencia y evitar el desperdicio. Sensores de humedad para aplicar agua solo cuando sea necesario. Recolección y reutilización del agua de lluvia para reducir la dependencia de fuentes externas. Conservación del agua para minimizar el impacto ambiental.
+        </div>
+      </div>
+    </div>
+
+    <div class="row sustain-section">
+      <div class="col">
+        <div class="green-bubble">
+          <strong>Transporte y distribución sostenibles:</strong> Priorización de la venta local para reducir la huella de carbono del transporte. Uso de embalajes biodegradables o reutilizables en lugar de plásticos contaminantes. Vehículos eléctricos o con biocombustibles para distribución. Optimización de rutas logísticas para reducir consumo de combustible y emisiones de CO₂.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

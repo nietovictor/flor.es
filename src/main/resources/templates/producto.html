@@ -3,9 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${producto.nombre}">Detalle del Producto</title>
-    <link rel="stylesheet" href="../css/style.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #d4f4d1;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .product-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-details {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .product-img {
+            max-width: 300px;
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .product-info {
+            flex: 1;
+        }
+
+        .product-info h2 {
+            color: #2f5d2f;
+            margin-bottom: 1rem;
+        }
+
+        .product-info p {
+            margin-bottom: 0.5rem;
+        }
+
+        .btn {
+            margin-top: 1rem;
+        }
+    .notification {
+        position: fixed;
+        top: 130px;
+        right: -300px; /* Inicialmente fuera de la pantalla */
+        background-color: #4CAF50;
+        color: white;
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 250px; /* Ajusta el ancho según sea necesario */
+        transition: right 0.5s ease; /* Animación para que entre suavemente */
+    }
+    #notificationError {
+    background-color: #e0544a; /* Rojo para error */
+    color: white;
+    }
+    .notification.show {
+        right: 20px; /* Posición final cuando se muestra */
+    }
+
+    .notification button {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+    }
+  </style>
+  <script>
+    function toggleFilters() {
+      const wrapper = document.querySelector('.filters-wrapper');
+      const icon = document.getElementById('filters-icon');
+      const label = document.getElementById('filters-label');
+      wrapper.classList.toggle('collapsed');
+      icon.classList.toggle('bi-chevron-down');
+      icon.classList.toggle('bi-chevron-up');
+      label.innerText = wrapper.classList.contains('collapsed') ? 'Filtros' : '';
+    }
+
+    function showNotificationSuccess() {
+        const notification = document.getElementById('notificationSuccess');
+        notification.classList.add('show'); // Agrega la clase para mostrar la notificación
+        setTimeout(() => {
+            hideNotification("notificationSuccess"); // Oculta la notificación después de 5 segundos
+        }, 2000);
+    }
+
+    function showNotificationError() {
+        const notification = document.getElementById('notificationError');
+        notification.classList.add('show'); // Agrega la clase para mostrar la notificación
+        setTimeout(() => {
+            hideNotification("notificationError"); // Oculta la notificación después de 5 segundos
+        }, 2000);
+    }
+
+    function hideNotification(id) {
+    const notification = document.getElementById(id);
+    if (notification) {
+        notification.classList.remove('show'); // Elimina la clase para ocultar la notificación
+    }
+}
+
+    // Llama a showNotification() cuando la página cargue si hay un mensaje
+    window.onload = () => {
+        const notification = document.getElementById('notificationSuccess');
+        if (notification && notification.querySelector('p').innerText.trim() !== '') {
+            showNotificationSuccess();
+        }
+        const notificationError = document.getElementById('notificationError');
+        if (notificationError && notificationError.querySelector('p').innerText.trim() !== '') {
+            showNotificationError();
+        }
+    };
+  </script>
 </head>
 <body>
+<header th:replace="layout :: header"></header>
 
     <!-- Notificaciones -->
 <div th:if="${successMessage}" class="notification success">
@@ -16,19 +141,27 @@
 </div>
 
 <div class="product-container">
-    <h2 th:text="${producto.nombre}">Nombre del Producto</h2>
-    <img th:src="@{/producto/image/{id}(id=${producto.id})}" class="product-img" alt="Imagen del producto" style="max-width: 300px; height: auto;" />
-    <p><strong>Descripción:</strong> <span th:text="${producto.descripcion}"></span></p>
-    <p><strong>Precio:</strong> <span th:text="${producto.precio}"></span> €</p>
-    <p><strong>Stock disponible:</strong> <span th:text="${producto.stock}"></span></p>
-
-    <form th:action="@{/cart/addProduct/{productId}(productId=${producto.id})}" method="post">
-        <button type="submit" class="btn">Añadir a la cesta</button>
-    </form>
-    <!-- <button onclick="location.href='/cart/view'" type="button">Ver Cesta</button> -->
-    <button onclick="history.back()" type="button">Volver</button>
-    <!-- <button onclick="location.href='/'" type="button">Home</button> -->
-
+    <div th:if="${successMessage}" class="notification" id="notificationSuccess">
+    <p th:text="${successMessage}"></p>
+    <button onclick="hideNotification()">&times;</button>
+  </div>
+  <div th:if="${errorMessage}" class="notification" id="notificationError">
+    <p th:text="${errorMessage}"></p>
+    <button onclick="hideNotification()">&times;</button>
+  </div>
+    <div class="product-details">
+        <img th:src="@{/producto/image/{id}(id=${producto.id})}" class="product-img" alt="Imagen del producto" />
+        <div class="product-info">
+            <h2 th:text="${producto.nombre}">Nombre del Producto</h2>
+            <p><strong>Descripción:</strong> <span th:text="${producto.descripcion}"></span></p>
+            <p><strong>Precio:</strong> <span th:text="${producto.precio}"></span> €</p>
+            <p><strong>Stock disponible:</strong> <span th:text="${producto.stock}"></span></p>
+            <form th:action="@{/cart/addProduct/{productId}(productId=${producto.id})}" method="post">
+                <button type="submit" class="btn btn-success">Añadir a la cesta</button>
+            </form>
+            <button onclick="history.back()" class="btn btn-outline-secondary">Volver atrás</button>
+        </div>
+    </div>
 </div>
 
 </body>
