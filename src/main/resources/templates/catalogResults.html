@@ -80,7 +80,7 @@
     .notification {
         position: fixed;
         top: 130px;
-        right: -300px; /* Inicialmente fuera de la pantalla */
+        right: -300px; /* Fuera de la pantalla inicialmente */
         background-color: #4CAF50;
         color: white;
         padding: 15px;
@@ -90,15 +90,17 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        width: 250px; /* Ajusta el ancho según sea necesario */
-        transition: right 0.5s ease; /* Animación para que entre suavemente */
+        width: 250px;
+        transition: right 0.5s ease, opacity 0.5s ease; /* Transiciones suaves */
+        opacity: 0; /* Oculto inicialmente */
     }
     #notificationError {
     background-color: #e0544a; /* Rojo para error */
     color: white;
     }
     .notification.show {
-        right: 20px; /* Posición final cuando se muestra */
+        right: 20px; /* Posición visible */
+        opacity: 1; /* Totalmente visible */
     }
 
     .notification button {
@@ -131,28 +133,35 @@
       label.innerText = wrapper.classList.contains('collapsed') ? 'Filtros' : '';
     }
 
-    function showNotificationSuccess() {
-        const notification = document.getElementById('notificationSuccess');
-        notification.classList.add('show'); // Agrega la clase para mostrar la notificación
-        setTimeout(() => {
-            hideNotification("notificationSuccess"); // Oculta la notificación después de 5 segundos
-        }, 2000);
+    function showNotificationSuccess(message) {
+      const notification = document.getElementById('notificationSuccess');
+      const messageElement = document.getElementById('notificationSuccessMessage');
+      messageElement.innerText = message; // Update the message
+      notification.style.display = 'flex'; // Ensure it's visible
+      notification.classList.add('show'); // Add animation
+      setTimeout(() => {
+        hideNotification('notificationSuccess'); // Hide after 2 seconds
+      }, 1000);
     }
 
-    function showNotificationError() {
-        const notification = document.getElementById('notificationError');
-        notification.classList.add('show'); // Agrega la clase para mostrar la notificación
-        setTimeout(() => {
-            hideNotification("notificationError"); // Oculta la notificación después de 5 segundos
-        }, 2000);
+    function showNotificationError(message) {
+      const notification = document.getElementById('notificationError');
+      const messageElement = document.getElementById('notificationErrorMessage');
+      messageElement.innerText = message; // Update the message
+      notification.style.display = 'flex'; // Ensure it's visible
+      notification.classList.add('show'); // Add animation
+      setTimeout(() => {
+        hideNotification('notificationError'); // Hide after 2 seconds
+      }, 2000);
     }
 
     function hideNotification(id) {
-    const notification = document.getElementById(id);
-    if (notification) {
-        notification.classList.remove('show'); // Elimina la clase para ocultar la notificación
+      const notification = document.getElementById(id);
+      if (notification) {
+        notification.classList.remove('show'); // Remove animation
+        notification.style.display = 'none'; // Hide the element
+      }
     }
-}
 
     // Llama a showNotification() cuando la página cargue si hay un mensaje
     window.onload = () => {
@@ -165,19 +174,39 @@
             showNotificationError();
         }
     };
+
+    async function addFlowerToCart(event, flowerId) {
+      event.preventDefault();
+      try {
+        const response = await fetch(`/api/cart/addFlower/${flowerId}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        const result = await response.json();
+        if (result.status === 'success') {
+          showNotificationSuccess(result.message);
+        } else {
+          showNotificationError(result.message);
+        }
+      } catch (error) {
+        showNotificationError('Error al añadir la flor al carrito.');
+      }
+    }
   </script>
 </head>
 <body>
 <header th:replace="layout :: header"></header>
 <div class="container">
 
-  <div th:if="${successMessage}" class="notification" id="notificationSuccess">
-    <p th:text="${successMessage}"></p>
-    <button onclick="hideNotification()">&times;</button>
+  <div class="notification" id="notificationSuccess" style="display: none;">
+    <p id="notificationSuccessMessage"></p>
+    <button onclick="hideNotification('notificationSuccess')">&times;</button>
   </div>
-  <div th:if="${errorMessage}" class="notification" id="notificationError">
-    <p th:text="${errorMessage}"></p>
-    <button onclick="hideNotification()">&times;</button>
+  <div class="notification" id="notificationError" style="display: none;">
+    <p id="notificationErrorMessage"></p>
+    <button onclick="hideNotification('notificationError')">&times;</button>
   </div>
   <h1 class="text-success" th:text="'Resultados para el código postal: ' + ${postalCode}"></h1>
 
@@ -304,7 +333,7 @@
         <p th:text="${flor.descripcion}"></p>
         <p><strong th:text="${flor.precio} + ' €'"></strong></p>
         <p>Stock: <span th:text="${flor.stock}"></span></p>
-        <form th:action="@{/cart/addFlower/{florId}(florId=${flor.id})}" method="post">
+        <form onsubmit="addFlowerToCart(event, this.getAttribute('data-flor-id'))" th:attr="data-flor-id=${flor.id}">
           <button type="submit" class="btn btn-outline-success w-100">Añadir a la cesta</button>
         </form>
       </div>

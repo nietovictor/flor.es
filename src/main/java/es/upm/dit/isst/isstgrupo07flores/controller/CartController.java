@@ -139,6 +139,7 @@ public class CartController {
         return "redirect:" + (referer != null ? referer : "/catalog/search");
     }
 
+
     @PostMapping("/clear")
     public String clearCart(HttpSession session) {
         cartService.clearCart(session); // Limpia la cesta

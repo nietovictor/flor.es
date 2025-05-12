@@ -94,12 +94,12 @@
       <p><strong>Estado:</strong> <span th:text="${pedido.estado}"></span></p>
       <p><strong>Fecha:</strong> <span th:text="${#dates.format(pedido.fecha, 'dd/MM/YYYY')}"></span></p>
 
-      <div th:if="${pedido.dedicatoria != null}">
+      <div th:if="${pedido.dedicatoria != null && pedido.dedicatoria != ''}">
         <p><strong>Dedicatoria:</strong> <span th:text="${pedido.dedicatoria}"></span></p>
       </div>
 
       <!-- Mostrar estrellas si ya hay valoración -->
-      <div th:if="${pedido.valoracion != null}">
+      <div th:if="${pedido.valoracion != null }">
         <strong>Valoración:</strong>
         <div class="star-rating">
           <label class="bi bi-star-fill" th:classappend="${pedido.valoracion >= 1 ? 'checked' : ''}"></label>

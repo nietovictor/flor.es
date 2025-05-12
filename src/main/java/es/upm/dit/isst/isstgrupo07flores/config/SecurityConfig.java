@@ -46,13 +46,7 @@ public class SecurityConfig {
             .formLogin(form -> form
                 .loginPage("/login")
                 .successHandler((request, response, authentication) -> {
-                    // Obtener la URL previa al login
-                    String redirectUrl = request.getSession(false) != null && 
-                                         request.getSession(false).getAttribute("SPRING_SECURITY_SAVED_REQUEST") != null
-                                         ? ((org.springframework.security.web.savedrequest.SavedRequest) request.getSession(false)
-                                            .getAttribute("SPRING_SECURITY_SAVED_REQUEST")).getRedirectUrl()
-                                         : "/";
-                    response.sendRedirect(redirectUrl); // Redirigir a la URL previa o a la raíz
+                    response.sendRedirect("/"); // Always redirect to the home page
                 })
                 .permitAll()
             )

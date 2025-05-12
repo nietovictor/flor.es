@@ -71,9 +71,9 @@
         <p><strong>Coste:</strong> <span th:text="${pedido.coste}"></span> €</p>
         <p><strong>Dirección:</strong> <span th:text="${pedido.direccionentrega}"></span></p>
         <p><strong>Fecha:</strong> <span th:text="${#dates.format(pedido.fecha, 'dd/MM/YYYY hh:mm:ss')}"></span></p>
-        <div th:if="${pedido.dedicatoria != null}">
-          <p><strong>Dedicatoria: </strong> <span th:text="${pedido.dedicatoria}"></span></p>
-        </div>
+        <div th:if="${pedido.dedicatoria != null && pedido.dedicatoria != ''}">
+        <p><strong>Dedicatoria:</strong> <span th:text="${pedido.dedicatoria}"></span></p>
+      </div>
         <form th:action="@{/pedido/aceptar/{id}(id=${pedido.id})}" method="post" style="display:inline;">
           <button class="btn btn-success btn-sm">Aceptar</button>
         </form>
@@ -101,9 +101,9 @@
         <p><strong>Coste:</strong> <span th:text="${pedido.coste}"></span> €</p>
         <p><strong>Dirección:</strong> <span th:text="${pedido.direccionentrega}"></span></p>
         <p><strong>Fecha:</strong> <span th:text="${#dates.format(pedido.fecha, 'dd/MM/YYYY hh:mm:ss')}"></span></p>
-        <div th:if="${pedido.dedicatoria != null}">
-          <p><strong>Dedicatoria: </strong> <span th:text="${pedido.dedicatoria}"></span></p>
-        </div>
+        <div th:if="${pedido.dedicatoria != null && pedido.dedicatoria != ''}">
+        <p><strong>Dedicatoria:</strong> <span th:text="${pedido.dedicatoria}"></span></p>
+      </div>
         <form th:action="@{/pedido/listo_para_recoger/{id}(id=${pedido.id})}" method="post">
           <button class="btn btn-success btn-sm">Listo para recogida</button>
         </form>
@@ -128,9 +128,9 @@
         <p><strong>Coste:</strong> <span th:text="${pedido.coste}"></span> €</p>
         <p><strong>Dirección:</strong> <span th:text="${pedido.direccionentrega}"></span></p>
         <p><strong>Fecha:</strong> <span th:text="${#dates.format(pedido.fecha, 'dd/MM/YYYY hh:mm:ss')}"></span></p>
-        <div th:if="${pedido.dedicatoria != null}">
-          <p><strong>Dedicatoria: </strong> <span th:text="${pedido.dedicatoria}"></span></p>
-        </div>
+        <div th:if="${pedido.dedicatoria != null && pedido.dedicatoria != ''}">
+        <p><strong>Dedicatoria:</strong> <span th:text="${pedido.dedicatoria}"></span></p>
+      </div>
         <form th:action="@{/pedido/entregar/{id}(id=${pedido.id})}" method="post">
           <button class="btn btn-success btn-sm">Entregado</button>
         </form>
@@ -140,7 +140,7 @@
     <!-- BLOQUE: RECOGIDOS -->
     <h2>
       <button class="btn btn-sm btn-success btn-toggle" onclick="toggleVisibility('pedidos-entregados')">▼</button>
-      Pedidos recogidos
+      Pedidos entregados
     </h2>
     <div id="pedidos-entregados" style="display: none;">
       <div th:if="${pedidos == null or pedidos.?[estado.toString() == 'RECOGIDO'].isEmpty()}">
@@ -155,9 +155,9 @@
         <p><strong>Coste:</strong> <span th:text="${pedido.coste}"></span> €</p>
         <p><strong>Dirección:</strong> <span th:text="${pedido.direccionentrega}"></span></p>
         <p><strong>Fecha:</strong> <span th:text="${#dates.format(pedido.fecha, 'dd/MM/YYYY hh:mm:ss')}"></span></p>
-        <div th:if="${pedido.dedicatoria != null}">
-          <p><strong>Dedicatoria: </strong> <span th:text="${pedido.dedicatoria}"></span></p>
-        </div>
+        <div th:if="${pedido.dedicatoria != null && pedido.dedicatoria != ''}">
+        <p><strong>Dedicatoria:</strong> <span th:text="${pedido.dedicatoria}"></span></p>
+      </div>
         <div th:if="${pedido.valoracion != null}">
           <p><strong>Valoración:</strong></p>
           <div class="star-rating">
@@ -189,9 +189,9 @@
         <p><strong>Coste:</strong> <span th:text="${pedido.coste}"></span> €</p>
         <p><strong>Dirección:</strong> <span th:text="${pedido.direccionentrega}"></span></p>
         <p><strong>Fecha:</strong> <span th:text="${#dates.format(pedido.fecha, 'dd/MM/YYYY hh:mm:ss')}"></span></p>
-        <div th:if="${pedido.dedicatoria != null}">
-          <p><strong>Dedicatoria: </strong> <span th:text="${pedido.dedicatoria}"></span></p>
-        </div>
+        <div th:if="${pedido.dedicatoria != null && pedido.dedicatoria != ''}">
+        <p><strong>Dedicatoria:</strong> <span th:text="${pedido.dedicatoria}"></span></p>
+      </div>
       </div>
     </div>
   </main>
