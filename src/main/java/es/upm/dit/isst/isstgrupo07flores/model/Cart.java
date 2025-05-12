@@ -30,6 +30,9 @@ public class Cart {
     }
 
     public void setPrecioTotal(BigDecimal precioTotal) {
+        if (precioTotal.scale() > 2) {
+            precioTotal = precioTotal.setScale(2, BigDecimal.ROUND_HALF_UP);
+        }
         this.precioTotal = precioTotal;
     }
 

@@ -1,13 +1,13 @@
 package es.upm.dit.isst.isstgrupo07flores.controller;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.HashSet;
-import java.util.Map; // Import the Map class
-import java.util.HashMap; // Import the HashMap class
+import java.util.Map;
+import java.util.Optional; // Import the Map class
+import java.util.UUID; // Import the HashMap class
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,25 +21,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import es.upm.dit.isst.isstgrupo07flores.model.Cart;
 import es.upm.dit.isst.isstgrupo07flores.model.Cliente;
+import es.upm.dit.isst.isstgrupo07flores.model.Flor;
+import es.upm.dit.isst.isstgrupo07flores.model.FloresEnPersonalizado;
 import es.upm.dit.isst.isstgrupo07flores.model.Floricultor;
 import es.upm.dit.isst.isstgrupo07flores.model.Pedido;
 import es.upm.dit.isst.isstgrupo07flores.model.Producto;
+import es.upm.dit.isst.isstgrupo07flores.model.ProductoPersonalizado;
 import es.upm.dit.isst.isstgrupo07flores.repository.ClienteRepository;
-import es.upm.dit.isst.isstgrupo07flores.repository.FloricultorRepository;
+import es.upm.dit.isst.isstgrupo07flores.repository.FlorRepository; // Import the Cart class
+import es.upm.dit.isst.isstgrupo07flores.repository.FloresEnPersonalizadoRepository; // Import the Flor class
+import es.upm.dit.isst.isstgrupo07flores.repository.FloricultorRepository; // Import the ProductoPersonalizado class
 import es.upm.dit.isst.isstgrupo07flores.repository.PedidoRepository;
+import es.upm.dit.isst.isstgrupo07flores.repository.ProductoPersonalizadoRepository;
 import es.upm.dit.isst.isstgrupo07flores.repository.ProductoRepository;
-import es.upm.dit.isst.isstgrupo07flores.service.CartService;
-import es.upm.dit.isst.isstgrupo07flores.model.Cart; // Import the Cart class
-import es.upm.dit.isst.isstgrupo07flores.model.Flor; // Import the Flor class
-import es.upm.dit.isst.isstgrupo07flores.model.ProductoPersonalizado; // Import the ProductoPersonalizado class
-import jakarta.servlet.http.HttpSession;
-import java.math.BigDecimal;
-import es.upm.dit.isst.isstgrupo07flores.model.FloresEnPersonalizado;
-import es.upm.dit.isst.isstgrupo07flores.repository.ProductoPersonalizadoRepository; // Ensure this repository is correctly defined for ProductoPersonalizado
-import es.upm.dit.isst.isstgrupo07flores.service.FlorService; // Import FlorService
-import es.upm.dit.isst.isstgrupo07flores.repository.FloresEnPersonalizadoRepository; // Import FloresEnPersonalizadoRepository
-import es.upm.dit.isst.isstgrupo07flores.repository.FlorRepository; // Import FlorRepository
+import es.upm.dit.isst.isstgrupo07flores.service.CartService; // Ensure this repository is correctly defined for ProductoPersonalizado
+import jakarta.servlet.http.HttpSession; // Import FlorService
 
 
 
@@ -88,6 +86,10 @@ public class PedidoViewController {
                               RedirectAttributes redirectAttributes) {
    
         Cart cart = cartService.getCart(session);
+
+        // Redondear el precio total del carrito a dos decimales
+        BigDecimal precioTotal = cart.getPrecioTotal().setScale(2, BigDecimal.ROUND_HALF_UP);
+        cart.setPrecioTotal(precioTotal);
 
         // Buscar el cliente por correo electrónico
         String email = authentication.getName();
