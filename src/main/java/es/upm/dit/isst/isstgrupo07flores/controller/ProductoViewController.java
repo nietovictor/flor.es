@@ -55,9 +55,6 @@ public class ProductoViewController {
     @PostMapping("/add")
     public String guardarProducto(@RequestParam("imagenArchivo") MultipartFile imagenArchivo, Producto producto, Authentication authentication, RedirectAttributes redirectAttributes) {
         try {
-            // Asignar un ID único al producto
-            producto.setId(UUID.randomUUID());
-
             // Obtener el correo del floricultor logueado
             String email = authentication.getName();
 
@@ -83,7 +80,7 @@ public class ProductoViewController {
             // Añadir un mensaje de error al modelo
             redirectAttributes.addFlashAttribute("error", "Error al guardar el producto: " + e.getMessage());
             redirectAttributes.addFlashAttribute("producto", producto); // Mantener los datos del formulario
-            return "redirect:/productos/add";
+            return "redirect:/producto/add";
         }
     }
 

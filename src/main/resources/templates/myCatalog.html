@@ -26,21 +26,24 @@
     }
 
     .product-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1.5rem;
-      margin-top: 2rem;
-    }
-
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columnas por fila */
+    gap: 1.5rem; /* Espacio entre las tarjetas */
+    justify-items: center; /* Centra las tarjetas horizontalmente */
+}
     .product-card {
       background-color: white;
       border-radius: 10px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       padding: 1rem;
+      width: 362px; /* Ancho fijo */
+    height: 500px; /* Altura fija */
       text-align: center;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      transition: transform 0.2s;
+      
+    }
+    .product-card:hover {
+      transform: translateY(-5px);
     }
 
     .product-img {
@@ -87,6 +90,7 @@
     </div>
 
     <!-- PRODUCTOS -->
+     <h3 class="mt-5 text-center">Productos</h3>
     <div class="product-grid">
       <div th:each="producto : ${productos}" class="product-card">
         <img th:src="@{/producto/image/{id}(id=${producto.id})}" class="product-img" alt="Imagen del producto" />

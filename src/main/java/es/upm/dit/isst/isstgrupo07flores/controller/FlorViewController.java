@@ -45,9 +45,6 @@ public class FlorViewController {
     @PostMapping("/add")
     public String guardarFlor(@RequestParam("imagenArchivo") MultipartFile imagenArchivo, Flor flor, Authentication authentication, RedirectAttributes redirectAttributes) {
         try {
-            // Asignar un ID único a la flor
-          
-
             // Obtener el correo del floricultor logueado
             String email = authentication.getName();
 
