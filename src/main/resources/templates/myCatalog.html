@@ -62,14 +62,99 @@
     .btn-success:hover {
       background-color: #388e3c;
     }
+    .notification {
+        position: fixed;
+        top: 130px;
+        right: -300px; /* Inicialmente fuera de la pantalla */
+        background-color: #4CAF50;
+        color: white;
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 250px; /* Ajusta el ancho según sea necesario */
+        transition: right 0.5s ease; /* Animación para que entre suavemente */
+    }
+    #notificationError {
+    background-color: #e0544a; /* Rojo para error */
+    color: white;
+    }
+    .notification.show {
+        right: 20px; /* Posición final cuando se muestra */
+    }
+
+    .notification button {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+    }
   </style>
+
+  <script>
+    function toggleFilters() {
+      const wrapper = document.querySelector('.filters-wrapper');
+      const icon = document.getElementById('filters-icon');
+      const label = document.getElementById('filters-label');
+      wrapper.classList.toggle('collapsed');
+      icon.classList.toggle('bi-chevron-down');
+      icon.classList.toggle('bi-chevron-up');
+      label.innerText = wrapper.classList.contains('collapsed') ? 'Filtros' : '';
+    }
+
+    function showNotificationSuccess() {
+        const notification = document.getElementById('notificationSuccess');
+        notification.classList.add('show'); // Agrega la clase para mostrar la notificación
+        setTimeout(() => {
+            hideNotification("notificationSuccess"); // Oculta la notificación después de 5 segundos
+        }, 2000);
+    }
+
+    function showNotificationError() {
+        const notification = document.getElementById('notificationError');
+        notification.classList.add('show'); // Agrega la clase para mostrar la notificación
+        setTimeout(() => {
+            hideNotification("notificationError"); // Oculta la notificación después de 5 segundos
+        }, 2000);
+    }
+
+    function hideNotification(id) {
+    const notification = document.getElementById(id);
+    if (notification) {
+        notification.classList.remove('show'); // Elimina la clase para ocultar la notificación
+    }
+}
+
+    // Llama a showNotification() cuando la página cargue si hay un mensaje
+    window.onload = () => {
+        const notification = document.getElementById('notificationSuccess');
+        if (notification && notification.querySelector('p').innerText.trim() !== '') {
+            showNotificationSuccess();
+        }
+        const notificationError = document.getElementById('notificationError');
+        if (notificationError && notificationError.querySelector('p').innerText.trim() !== '') {
+            showNotificationError();
+        }
+    };
+  </script>
 </head>
 <body>
   <header th:replace="layout :: header"></header>
 
   <div class="container">
     <div th:if="${#lists.isEmpty(floricultor)}" class="alert alert-danger mt-3">Ha habido un error. Lo sentimos mucho.</div>
-
+    <div th:if="${successMessage}" class="notification" id="notificationSuccess">
+    <p th:text="${successMessage}"></p>
+    <button onclick="hideNotification()">&times;</button>
+  </div>
+  <div th:if="${errorMessage}" class="notification" id="notificationError">
+    <p th:text="${errorMessage}"></p>
+    <button onclick="hideNotification()">&times;</button>
+  </div>
     <div class="catalog-header">
       <h2 th:text="${floricultor.nombre}">Nombre Floricultor</h2>
       <div class="d-flex justify-content-center align-items-center gap-2">

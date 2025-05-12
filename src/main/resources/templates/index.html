@@ -3,6 +3,7 @@
 <head>
     <title>Flor.es - Página de Inicio</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <style>
         body {
             background-color: #d4f4d1;
@@ -106,11 +107,11 @@
     <div class="hero-section">
         <h1>Bienvenido a Flor.es</h1>
         <p>Tu plataforma para comprar flores frescas directamente de floricultores locales.</p>
-        <div th:if="${rol.contains('CLIENTE') or #authentication.name == 'anonymousUser'}">
-            <button onclick="location.href='/catalog/search'" class="btn btn-success btn-hero">Explorar Catálogo</button>
-            <button onclick="location.href='/pedido/cliente'" th:if="${rol.contains('CLIENTE')}" class="btn btn-success btn-hero">Mis pedidos</button>
+        <div >
+            <button onclick="location.href='/catalog/search'" sec:authorize="hasRole('CLIENTE') or isAnonymous()" class="btn btn-success btn-hero">Explorar Catálogo</button>
+            <button onclick="location.href='/pedido/cliente'" sec:authorize="hasRole('CLIENTE')" class="btn btn-success btn-hero">Mis pedidos</button>
         </div>
-        <div th:if="${rol.contains('FLORICULTOR')}">
+        <div sec:authorize="hasRole('FLORICULTOR')">
             <form th:action="@{/mycatalog}" method="get" style="display:inline-block">
                 <button type="submit" class="btn btn-success btn-hero">Mi Catálogo</button>
             </form>
