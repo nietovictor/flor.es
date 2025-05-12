@@ -42,6 +42,14 @@ public class Producto {
         CUMPLEANOS, CONDOLENCIAS, ANIVERSARIOS, SAN_VALENTIN    // USANDO LA Ñ A LO MEJOR DA PROBLEMAS, HABRIA QUE MIRARLO
     }
 
+    @Enumerated(EnumType.ORDINAL) // Guardar como TINYINT (ordinal del enum)
+    private Colores color;
+
+    // Enum para los colores básicos
+    public enum Colores {
+        ROJO, AZUL, AMARILLO, BLANCO, MORADO, ROSA, NARANJA
+    }
+
     // Constructor vacío
     public Producto() {}
 
@@ -120,6 +128,14 @@ public class Producto {
 
     public void setOcasion(Ocasiones ocasion) {
         this.ocasion = ocasion;
+    }
+
+     public Colores getColor() {
+    return color;
+    }
+
+    public void setColor(Colores color) {
+        this.color = color;
     }
 
     @Override

@@ -75,7 +75,7 @@ public class ProductoViewController {
             productoRepository.save(producto);
 
             // Redirigir a la página principal si se guarda correctamente
-            redirectAttributes.addFlashAttribute("successMessage", "Producto guardado exitosamente.");
+            redirectAttributes.addFlashAttribute("successMessage", "Producto guardado correctamente.");
             return "redirect:/mycatalog";
         } catch (Exception e) {
             // Añadir un mensaje de error al modelo
@@ -93,20 +93,21 @@ public class ProductoViewController {
     }
 
     @PostMapping("/editar/guardar")
-    public String guardarProductoEditado(@ModelAttribute Producto productoEditado, @RequestParam("imagenArchivo") MultipartFile imagenArchivo) {
-        Producto productoExistente = productoRepository.findById(productoEditado.getId()).orElseThrow();
-        productoEditado.setFloricultorId(productoExistente.getFloricultorId());
+    public String guardarProductoEditado(@ModelAttribute Producto productoEditado, @RequestParam("imagenArchivo") MultipartFile imagenArchivo, RedirectAttributes redirectAttributes) {
+        try {
+            Producto productoExistente = productoRepository.findById(productoEditado.getId()).orElseThrow(() -> new IllegalArgumentException("Producto no encontrado"));
+            productoEditado.setFloricultorId(productoExistente.getFloricultorId());
 
-        if (!imagenArchivo.isEmpty()) {
-            try {
+            if (!imagenArchivo.isEmpty()) {
                 productoEditado.setImagen(imagenArchivo.getBytes()); // Save uploaded image as byte array
-            } catch (IOException e) {
-                throw new RuntimeException("Error al procesar la imagen", e);
             }
-        } 
 
-        productoRepository.save(productoEditado); // Guardar el producto editado
-        return "redirect:/";
+            productoRepository.save(productoEditado); // Guardar el producto editado
+            redirectAttributes.addFlashAttribute("successMessage", "Producto editado correctamente.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Error al editar el producto: " + e.getMessage());
+        }
+        return "redirect:/mycatalog"; // Redirigir a la página de catálogo
     }
     
 }

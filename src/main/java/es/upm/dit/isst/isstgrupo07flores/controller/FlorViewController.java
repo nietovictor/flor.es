@@ -66,7 +66,7 @@ public class FlorViewController {
             florRepository.save(flor);
 
             // Redirigir a la página principal si se guarda correctamente
-            redirectAttributes.addFlashAttribute("successMessage", "Flor guardada exitosamente.");
+            redirectAttributes.addFlashAttribute("successMessage", "Flor guardada correctamente");
             return "redirect:/mycatalog";
         } catch (Exception e) {
             // Añadir un mensaje de error al modelo
@@ -86,26 +86,27 @@ public class FlorViewController {
 
     @PostMapping("/editar/guardar")
     public String guardarFlorEditada(@ModelAttribute Flor florEditada, @RequestParam("imagenArchivo") MultipartFile imagenArchivo, RedirectAttributes redirectAttributes) {
-        // Buscar la flor existente en la base de datos
-        Flor florExistente = florRepository.findById(florEditada.getId()).orElseThrow(() -> new IllegalArgumentException("Flor no encontrada"));
+        try {
+            // Buscar la flor existente en la base de datos
+            Flor florExistente = florRepository.findById(florEditada.getId()).orElseThrow(() -> new IllegalArgumentException("Flor no encontrada"));
 
-        // Mantener el ID del floricultor
-        florEditada.setFloricultorId(florExistente.getFloricultorId());
+            // Mantener el ID del floricultor
+            florEditada.setFloricultorId(florExistente.getFloricultorId());
 
-        // Procesar la imagen
-        if (!imagenArchivo.isEmpty()) {
-            try {
+            // Procesar la imagen
+            if (!imagenArchivo.isEmpty()) {
                 florEditada.setImagen(imagenArchivo.getBytes()); // Guardar la nueva imagen como un array de bytes
-            } catch (IOException e) {
-                throw new RuntimeException("Error al procesar la imagen", e);
             }
-        } 
 
-        // Guardar la flor editada en la base de datos
-        florRepository.save(florEditada);
+            // Guardar la flor editada en la base de datos
+            florRepository.save(florEditada);
 
-        // Añadir un mensaje de éxito
-        redirectAttributes.addFlashAttribute("success", "Flor editada exitosamente.");
+            // Añadir un mensaje de éxito
+            redirectAttributes.addFlashAttribute("successMessage", "Flor editada correctamente");
+        } catch (Exception e) {
+            // Añadir un mensaje de error
+            redirectAttributes.addFlashAttribute("errorMessage", "Error al editar la flor: " + e.getMessage());
+        }
         return "redirect:/mycatalog"; // Redirigir al catálogo
     }
 }

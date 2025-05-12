@@ -140,85 +140,75 @@ public class CatalogController {
     // Procesar búsqueda de floricultores por CP
     @PostMapping("/catalog/search/filter")
     public String searchByFilter(@RequestParam("cp") String postalCode,
-                            @RequestParam(value = "ocasion", required = false) String ocasion,
-                            @RequestParam(value = "price_min", required = false) Double priceMin,
-                            @RequestParam(value = "price_max", required = false) Double priceMax,
-                            //@RequestParam(value = "flower_type", required = false) List<String> flowerType,
-                            @RequestParam(value = "availability", required = false) String availability,
+                             @RequestParam(value = "ocasion", required = false) String ocasion,
+                             @RequestParam(value = "price_min", required = false) Double priceMin,
+                             @RequestParam(value = "price_max", required = false) Double priceMax,
+                             @RequestParam(value = "color", required = false) String color, // Nuevo parámetro
+                             @RequestParam(value = "availability", required = false) String availability,
                              Model model) {
 
-        try {
-            // Filtrar floricultores por código postal
-            List<Floricultor> floricultores_check = catalogService.getFloricultoresByPostalCode(postalCode);
+    try {
+        // Filtrar floricultores por código postal
+        List<Floricultor> floricultores_check = catalogService.getFloricultoresByPostalCode(postalCode);
 
-            Map<UUID, List<Producto>> productosPorFloricultor = new HashMap<>();
-            Map<UUID, List<Flor>> floresPorFloricultor = new HashMap<>();
-            Map<UUID, Long> valoracionesPorFloricultor = new HashMap<>();
+        Map<UUID, List<Producto>> productosPorFloricultor = new HashMap<>();
+        Map<UUID, List<Flor>> floresPorFloricultor = new HashMap<>();
+        Map<UUID, Long> valoracionesPorFloricultor = new HashMap<>();
 
-            List<Floricultor> floricultores = new ArrayList<>();
+        List<Floricultor> floricultores = new ArrayList<>();
 
-            for (Floricultor f : floricultores_check) {
-                // Obtener productos del floricultor y aplicar filtros
-                List<Producto> productos = productoService.getProductosByFloricultor(f.getId()).stream()
-                    .filter(p -> (ocasion == null || (p.getOcasion() != null && p.getOcasion().toString().equalsIgnoreCase(ocasion))))
-                    //.filter(p -> (flowerType == null || flowerType.contains(p.getTipo())))
-                    .filter(p -> (priceMin == null || p.getPrecio().compareTo(BigDecimal.valueOf(priceMin)) >= 0))
-                    .filter(p -> (priceMax == null || p.getPrecio().compareTo(BigDecimal.valueOf(priceMax)) <= 0))
-                    .filter(p -> {
-                        if ("in_stock".equalsIgnoreCase(availability)) {
-                            return p.getStock() > 1;
-                        }
-                        return true;
-                    })
-                    .collect(Collectors.toList());
+        for (Floricultor f : floricultores_check) {
+            // Obtener productos del floricultor y aplicar filtros
+            List<Producto> productos = productoService.getProductosByFloricultor(f.getId()).stream()
+                .filter(p -> (ocasion == null || (p.getOcasion() != null && p.getOcasion().toString().equalsIgnoreCase(ocasion))))
+                .filter(p -> (priceMin == null || p.getPrecio().compareTo(BigDecimal.valueOf(priceMin)) >= 0))
+                .filter(p -> (priceMax == null || p.getPrecio().compareTo(BigDecimal.valueOf(priceMax)) <= 0))
+                .filter(p -> (color == null || (p.getColor() != null && p.getColor().toString().equalsIgnoreCase(color)))) // Filtro por color
+                .filter(p -> {
+                    if ("in_stock".equalsIgnoreCase(availability)) {
+                        return p.getStock() > 1;
+                    }
+                    return true;
+                })
+                .collect(Collectors.toList());
 
-                List<Flor> flores = florRepository.findByFloricultorId(f.getId()).stream()
-                    .filter(flor -> (priceMin == null || flor.getPrecio().compareTo(priceMin) >= 0))
-                    .filter(flor -> (priceMax == null || flor.getPrecio().compareTo(priceMax) <= 0))
-                    .filter(flor -> {
-                        if ("in_stock".equalsIgnoreCase(availability)) {
-                            return flor.getStock() > 1;
-                        }
-                        return true;
-                    })
-                    .collect(Collectors.toList());
+            // Obtener flores del floricultor y aplicar filtros
+            List<Flor> flores = florRepository.findByFloricultorId(f.getId()).stream()
+                .filter(flor -> (priceMin == null || flor.getPrecio().compareTo(priceMin) >= 0))
+                .filter(flor -> (priceMax == null || flor.getPrecio().compareTo(priceMax) <= 0))
+                .filter(flor -> (color == null || (flor.getColor() != null && flor.getColor().toString().equalsIgnoreCase(color)))) // Filtro por color
+                .filter(flor -> {
+                    if ("in_stock".equalsIgnoreCase(availability)) {
+                        return flor.getStock() > 1;
+                    }
+                    return true;
+                })
+                .collect(Collectors.toList());
 
-
-                //if (!productos.isEmpty()) {
-                //    productosPorFloricultor.put(f.getId(), productos);
-                //    floricultores.add(f);
-                //    // Contar pedidos valorados del floricultor
-                //    long valoraciones = pedidoRepository.findByFloricultorId(f.getId()).stream()
-                //        .filter(p -> p.getValoracion() != null)
-                //        .count();
-                //    valoracionesPorFloricultor.put(f.getId(), valoraciones);
-                //}
-                if (!productos.isEmpty() || !flores.isEmpty()) {
-                    productosPorFloricultor.put(f.getId(), productos != null ? productos : new ArrayList<>());
-                    floresPorFloricultor.put(f.getId(), flores != null ? flores : new ArrayList<>());
-                    floricultores.add(f);
-                    // Contar pedidos valorados del floricultor
-                    long valoraciones = pedidoRepository.findByFloricultorId(f.getId()).stream()
-                        .filter(p -> p.getValoracion() != null)
-                        .count();
-                    valoracionesPorFloricultor.put(f.getId(), valoraciones);
-                }
-
-                
+            if (!productos.isEmpty() || !flores.isEmpty()) {
+                productosPorFloricultor.put(f.getId(), productos != null ? productos : new ArrayList<>());
+                floresPorFloricultor.put(f.getId(), flores != null ? flores : new ArrayList<>());
+                floricultores.add(f);
+                // Contar pedidos valorados del floricultor
+                long valoraciones = pedidoRepository.findByFloricultorId(f.getId()).stream()
+                    .filter(p -> p.getValoracion() != null)
+                    .count();
+                valoracionesPorFloricultor.put(f.getId(), valoraciones);
             }
-
-            model.addAttribute("floricultores", floricultores);
-            model.addAttribute("productosPorFloricultor", productosPorFloricultor);
-            model.addAttribute("floresPorFloricultor", floresPorFloricultor);
-            model.addAttribute("valoracionesPorFloricultor", valoracionesPorFloricultor);
-            model.addAttribute("postalCode", postalCode);
-
-            return "catalogResults";
-        } catch (IllegalArgumentException e) {
-            model.addAttribute("error", e.getMessage());
-            e.printStackTrace();
-            return "postalCodeForm";
         }
+
+        model.addAttribute("floricultores", floricultores);
+        model.addAttribute("productosPorFloricultor", productosPorFloricultor);
+        model.addAttribute("floresPorFloricultor", floresPorFloricultor);
+        model.addAttribute("valoracionesPorFloricultor", valoracionesPorFloricultor);
+        model.addAttribute("postalCode", postalCode);
+
+        return "catalogResults";
+    } catch (IllegalArgumentException e) {
+        model.addAttribute("error", e.getMessage());
+        e.printStackTrace();
+        return "postalCodeForm";
     }
+}
 }
 

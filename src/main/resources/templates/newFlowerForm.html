@@ -109,6 +109,16 @@
             <input type="file" id="imagenArchivo" name="imagenArchivo" class="form-control" accept="image/*" />
           </div>
 
+          <div class="mb-3"></div>
+            <label for="color">Color:</label>
+            <select id="color" name="color" class="form-control" th:field="*{color}">
+              <option value="" disabled selected>Seleccione un color</option>
+              <option th:each="color : ${T(es.upm.dit.isst.isstgrupo07flores.model.Flor.Colores).values()}" 
+                      th:value="${color}" 
+                      th:text="${color}"></option>
+            </select>
+          </div>
+
           <button type="submit" class="submit-button">Guardar Producto</button>
         </form>
       </div>

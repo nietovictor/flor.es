@@ -5,6 +5,8 @@ import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -38,11 +40,21 @@ public class Flor {
     @Min(value = 0, message = "El stock no puede ser negativo")
     private Integer stock;
 
+    
+    @OneToMany(mappedBy = "florId")
+    private List<FloresEnPersonalizado> floresEnPersonalizados;
+
+    @Enumerated(EnumType.ORDINAL) // Guardar como TINYINT (ordinal del enum)
+    private Colores color;
+
+    // Enum para los colores básicos
+    public enum Colores {
+        ROJO, AZUL, AMARILLO, BLANCO, MORADO, ROSA, NARANJA
+    }
+
     @Lob
     private byte[] imagen; // URL o ruta de la imagen
 
-    @OneToMany(mappedBy = "florId")
-    private List<FloresEnPersonalizado> floresEnPersonalizados;
 
     // Constructor vacío
     public Flor() {}
@@ -119,6 +131,14 @@ public class Flor {
 
     public void setFloresEnPersonalizados(List<FloresEnPersonalizado> floresEnPersonalizados) {
         this.floresEnPersonalizados = floresEnPersonalizados;
+    }
+    
+    public Colores getColor() {
+    return color;
+    }
+
+    public void setColor(Colores color) {
+        this.color = color;
     }
  
     

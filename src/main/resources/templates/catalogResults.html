@@ -199,6 +199,19 @@
           </select>
         </div>
         <div class="col-md-4 mb-3">
+          <label for="filter-color">Color</label>
+          <select name="color" id="filter-color" class="form-select">
+            <option value="" disabled selected>Selecciona un color</option>
+            <option value="rojo">Rojo</option>
+            <option value="azul">Azul</option>
+            <option value="amarillo">Amarillo</option>
+            <option value="blanco">Blanco</option>
+            <option value="morado">Morado</option>
+            <option value="rosa">Rosa</option>
+            <option value="naranja">Naranja</option>
+          </select>
+        </div>
+        <div class="col-md-4 mb-3">
           <label>Precio (€)</label>
           <div class="d-flex gap-2">
             <input type="number" name="price_min" min="0" step="1" placeholder="Mín" class="form-control">
@@ -217,7 +230,7 @@
       </div>
     </form>
   </div>
-  <button onclick="location.href='/cart/view'" class="btn btn-success w-100 btn-cart"><i class="bi bi-cart"></i> Ver Carro</button>
+
 
   <div th:if="${#lists.isEmpty(floricultores)}">
     <p>No se encontraron floricultores en tu zona.</p>
