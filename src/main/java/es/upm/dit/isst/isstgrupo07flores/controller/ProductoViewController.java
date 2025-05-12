@@ -75,10 +75,11 @@ public class ProductoViewController {
             productoRepository.save(producto);
 
             // Redirigir a la página principal si se guarda correctamente
-            return "redirect:/";
+            redirectAttributes.addFlashAttribute("successMessage", "Producto guardado exitosamente.");
+            return "redirect:/mycatalog";
         } catch (Exception e) {
             // Añadir un mensaje de error al modelo
-            redirectAttributes.addFlashAttribute("error", "Error al guardar el producto: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("errorMessage", "Error al guardar el producto: " + e.getMessage());
             redirectAttributes.addFlashAttribute("producto", producto); // Mantener los datos del formulario
             return "redirect:/producto/add";
         }

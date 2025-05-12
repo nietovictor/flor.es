@@ -66,11 +66,11 @@ public class FlorViewController {
             florRepository.save(flor);
 
             // Redirigir a la página principal si se guarda correctamente
-            redirectAttributes.addFlashAttribute("success", "Flor guardada exitosamente.");
-            return "redirect:/";
+            redirectAttributes.addFlashAttribute("successMessage", "Flor guardada exitosamente.");
+            return "redirect:/mycatalog";
         } catch (Exception e) {
             // Añadir un mensaje de error al modelo
-            redirectAttributes.addFlashAttribute("error", "Error al guardar la flor: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("errorMessage", "Error al guardar la flor: " + e.getMessage());
             redirectAttributes.addFlashAttribute("flor", flor); // Mantener los datos del formulario
             return "redirect:/flor/add";
         }
