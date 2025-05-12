@@ -156,10 +156,12 @@
     <button onclick="hideNotification()">&times;</button>
   </div>
     <div class="catalog-header">
+      <p style="color: red; font-weight: bold;" th:if="${!floricultor.verificado}">Tu cuenta aún no está verificada. Puedes preparar tu catálogo pero todavía no se le mostrará a los clientes.</p>
       <h2 th:text="${floricultor.nombre}">Nombre Floricultor</h2>
       <div class="d-flex justify-content-center align-items-center gap-2">
         <span th:text="${floricultor.mediaValoraciones}"></span>
         <div class="star-rating">
+          
           <label class="bi bi-star-fill" th:classappend="${floricultor.mediaValoraciones >= 1 ? 'checked' : ''}"></label>
           <label class="bi bi-star-fill" th:classappend="${floricultor.mediaValoraciones >= 2 ? 'checked' : ''}"></label>
           <label class="bi bi-star-fill" th:classappend="${floricultor.mediaValoraciones >= 3 ? 'checked' : ''}"></label>

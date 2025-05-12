@@ -302,13 +302,15 @@
   <div th:each="floricultor : ${floricultores}" class="floricultor-section mt-4">
     <div class="floricultor-header">
       <h2 th:text="${floricultor.nombre}"></h2>
+      
       <div class="star-rating">
+        <p th:text="${floricultor.mediaValoraciones}" style="padding-right: 10px; color: black;"></p>
         <span class="bi bi-star-fill" th:classappend="${floricultor.mediaValoraciones >= 1 ? 'text-warning' : 'text-muted'}"></span>
         <span class="bi bi-star-fill" th:classappend="${floricultor.mediaValoraciones >= 2 ? 'text-warning' : 'text-muted'}"></span>
         <span class="bi bi-star-fill" th:classappend="${floricultor.mediaValoraciones >= 3 ? 'text-warning' : 'text-muted'}"></span>
         <span class="bi bi-star-fill" th:classappend="${floricultor.mediaValoraciones >= 4 ? 'text-warning' : 'text-muted'}"></span>
         <span class="bi bi-star-fill" th:classappend="${floricultor.mediaValoraciones >= 5 ? 'text-warning' : 'text-muted'}"></span>
-        <span class="ms-2" th:text="'(' + ${valoracionesPorFloricultor[floricultor.id]} + ')'">(0)</span>
+        <span class="ms-2" th:text="'(' + ${valoracionesPorFloricultor[floricultor.id]} + ')'" style="padding-right: 10px; color: black;">(0)</span>
       </div>
       <p>Código Postal: <span th:text="${floricultor.cp}"></span></p>
     </div>
