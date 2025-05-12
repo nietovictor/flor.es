@@ -52,6 +52,17 @@ public class Flor {
         ROJO, AZUL, AMARILLO, BLANCO, MORADO, ROSA, NARANJA
     }
 
+    @Enumerated(EnumType.STRING) // Guardar como STRING en la base de datos
+    private TipoDeFlor tipoDeFlor;
+
+    // Enum para los tipos de flor más comunes
+    public enum TipoDeFlor {
+        OTRA, AMAPOLA, ANEMONA, AZUCENA, CAMELIA, CLAVEL, CRISANTEMO, DALIA, 
+        FREESIA, GERANIO, GIRASOL, GLADIOLO, HELICONIA, HIBISCO, HORTENSIA, JAZMIN, 
+        LAVANDA, LIRIO, MAGNOLIA, MARGARITA, NARCISO, ORQUIDEA, 
+        PEONIA, PETUNIA, ROSA, TULIPAN, VIOLETA
+    }
+
     @Lob
     private byte[] imagen; // URL o ruta de la imagen
 
@@ -132,13 +143,21 @@ public class Flor {
     public void setFloresEnPersonalizados(List<FloresEnPersonalizado> floresEnPersonalizados) {
         this.floresEnPersonalizados = floresEnPersonalizados;
     }
-    
+
     public Colores getColor() {
     return color;
     }
 
     public void setColor(Colores color) {
         this.color = color;
+    }
+
+    public TipoDeFlor getTipoDeFlor() {
+        return tipoDeFlor;
+    }
+
+    public void setTipoDeFlor(TipoDeFlor tipoDeFlor) {
+        this.tipoDeFlor = tipoDeFlor;
     }
  
     

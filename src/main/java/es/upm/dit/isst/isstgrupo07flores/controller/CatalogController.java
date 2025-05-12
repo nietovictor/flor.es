@@ -143,7 +143,8 @@ public class CatalogController {
                              @RequestParam(value = "ocasion", required = false) String ocasion,
                              @RequestParam(value = "price_min", required = false) Double priceMin,
                              @RequestParam(value = "price_max", required = false) Double priceMax,
-                             @RequestParam(value = "color", required = false) String color, // Nuevo parámetro
+                             @RequestParam(value = "color", required = false) String color, 
+                             @RequestParam(value = "tipoDeFlor", required = false) String tipoDeFlor, // Nuevo parámetro
                              @RequestParam(value = "availability", required = false) String availability,
                              Model model) {
 
@@ -177,6 +178,7 @@ public class CatalogController {
                 .filter(flor -> (priceMin == null || flor.getPrecio().compareTo(priceMin) >= 0))
                 .filter(flor -> (priceMax == null || flor.getPrecio().compareTo(priceMax) <= 0))
                 .filter(flor -> (color == null || (flor.getColor() != null && flor.getColor().toString().equalsIgnoreCase(color)))) // Filtro por color
+                .filter(flor -> (tipoDeFlor == null || (flor.getTipoDeFlor() != null && flor.getTipoDeFlor().toString().equalsIgnoreCase(tipoDeFlor))))
                 .filter(flor -> {
                     if ("in_stock".equalsIgnoreCase(availability)) {
                         return flor.getStock() > 1;
