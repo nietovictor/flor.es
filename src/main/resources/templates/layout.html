@@ -16,9 +16,9 @@
             <button onclick="location.href='/cart/view'" sec:authorize="hasRole('CLIENTE')" type="button" style="background-color: #d0eac4; color: #3d760d; border: none; padding: 10px 20px; margin: 5px; cursor: pointer; border-radius: 5px;">
                 <i class="bi bi-cart"></i> 
             </button>
-            <button onclick="location.href='/login'" th:if="${#authentication.name == 'anonymousUser'}" type="button" style="background-color: #d0eac4; color: #3d760d; border: none; padding: 10px 20px; margin: 5px; cursor: pointer; border-radius: 5px;">Iniciar Sesión</button>
+            <button onclick="location.href='/login'" th:if="${#authentication.name == 'anonymousUser'}" type="button" style="background-color: #d0eac4; color: #3d760d; border: none; padding: 10px 20px; margin: 5px; cursor: pointer; border-radius: 5px;">Iniciar sesión</button>
             <form th:action="@{/logout}" method="post" th:if="${#authentication.name != 'anonymousUser'}" style="display: inline;">
-                <button type="submit" style="background-color: #d0eac4; color: #3d760d; border: none; padding: 10px 20px; margin: 5px; cursor: pointer; border-radius: 5px;">Cerrar Sesión</button>
+                <button type="submit" style="background-color: #d0eac4; color: #3d760d; border: none; padding: 10px 20px; margin: 5px; cursor: pointer; border-radius: 5px;">Cerrar sesión</button>
             </form>
         </nav>
     </header>
